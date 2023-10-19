@@ -1,0 +1,36 @@
+* {
+  background-image: none;
+}
+
+window {
+  background-color: rgba(30, 30, 46, 0.7);
+}
+
+button {
+  color: #FFFFFF;
+  background-color: #1E1E1E;
+  border-style: solid;
+  border-width: 2px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 25%;
+}
+
+button:focus,
+button:active,
+button:hover {
+  background-color: #3700B3;
+  outline-style: none;
+}
+
+#lock {}
+
+#logout {}
+
+#suspend {}
+
+#hibernate {}
+
+#shutdown {}
+
+#reboot {}
