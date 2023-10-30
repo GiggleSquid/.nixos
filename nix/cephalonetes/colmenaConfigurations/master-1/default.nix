@@ -4,7 +4,7 @@
 }: let
   inherit (inputs) common;
 in {
-  imports = [cell.nixosConfigurations.master1];
+  imports = [cell.nixosConfigurations.master-1];
   inherit (common) bee;
 
   deployment =
