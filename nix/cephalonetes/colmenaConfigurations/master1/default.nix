@@ -5,7 +5,7 @@
   inherit (inputs) common;
   inherit (common.deployment) tags;
 in {
-  imports = [cell.nixosConfigurations.cephalonetes-master1];
+  imports = [cell.nixosConfigurations.master1];
   inherit (common) bee;
 
   deployment = {

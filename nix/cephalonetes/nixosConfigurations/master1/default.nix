@@ -3,7 +3,8 @@
   cell,
 }: let
   inherit (inputs) common nixpkgs;
-  inherit (cell) hardwareProfiles nixosProfiles nixosSuites homeProfiles homeSuites homeModules;
+  inherit (cell) hardwareProfiles;
+  inherit (inputs.cells.squid) nixosProfiles nixosSuites homeProfiles homeSuites homeModules;
   lib = nixpkgs.lib // builtins;
   hostName = "master-1";
 in {
