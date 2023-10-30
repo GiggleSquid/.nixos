@@ -1,6 +1,6 @@
 {
   users.users.root = {
-    initialHashedPassword = "$6$2YboufYBM5MYECR8$26f3JBjlrq1cMnFVG7MqudsacLiNboEqVHPOieLxFZtclS7R4Xu9g.WistS/21xK6pj73g1FWGlaHVri6vB/N/";
+    initialHashedPassword = "$6$m0o.shyjBsMVPpxD$SC3ZLVDNdJRl1p6DetWU0F6kkaSl2mtFx98kTnyTwg.fBJQbqpALByc7F8iQ9d5F8bBgB5o9i77HP/gclSHta/";
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIK4CfBSXxCxcfTDDLzKLmoW26wQqjVkHLjIPhpbCoHvV"
     ];

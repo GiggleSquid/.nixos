@@ -6,7 +6,7 @@
   inherit (inputs) nixpkgs;
 in {
   users.users.squid = {
-    initialHashedPassword = "$6$B8KFagrxZxZU7J77$knmMEQtoPIJNairthrUkALr.y2RWJEoOnLlHbsrpdSgpuscup1B3GsDcnYYVMvyH7tkoS0K0rtvKGRO/vR9Gt/";
+    initialHashedPassword = "$6$1KocIsrw7AqDtt3/$ON4m5yb/XMH8pUXHW05Ps5rGAlt.H4F.8boIbVj8gUOoA3vRv6f4TZk7DlQWv1VVGVHFK3bOuPA0B74I6R0bJ.";
     isNormalUser = true;
     uid = 1000;
     createHome = true;
