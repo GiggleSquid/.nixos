@@ -2,7 +2,7 @@
   inputs,
   cell,
 }: let
-  inherit (inputs) nixpkgs hive std colmena nixos-generators;
+  inherit (inputs) nixpkgs hive std colmena;
   inherit (nixpkgs) lib;
   inherit (hive.bootstrap.shell) bootstrap;
   inherit (std.lib) dev;
@@ -12,10 +12,6 @@ in
       name = "Hive";
 
       imports = [bootstrap];
-
-      packages = with nixpkgs; [
-        alejandra
-      ];
 
       commands = let
         mkCategory = category: attrset: attrset // {inherit category;};
