@@ -31,7 +31,7 @@ in
           ])
           (builtins.map nix [
             {
-              name = "switch";
+              name = "sw";
               help = "Switch configurations";
               command = "sudo nixos-rebuild switch --flake $PRJ_ROOT $@";
             }
