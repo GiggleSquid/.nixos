@@ -3,14 +3,13 @@
   cell,
 }: let
   inherit (inputs) common nixpkgs;
-  inherit (cell) hardwareProfiles nixosProfiles nixosSuites homeProfiles homeSuites homeModules;
+  inherit (inputs.cells.squid) hardwareProfiles nixosProfiles nixosSuites homeProfiles homeSuites homeModules;
   lib = nixpkgs.lib // builtins;
-  hostName = "master-1";
+  hostName = "nixos-lxc";
 in {
   inherit (common) bee time;
   networking = {
     inherit hostName;
-    domain = "cephalonetes.lan.gigglesquid.tech";
   };
 
   imports = let

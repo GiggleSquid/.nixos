@@ -2,7 +2,7 @@
   inputs,
   cell,
 }: let
-  inherit (inputs) nixpkgs hive std colmena;
+  inherit (inputs) nixpkgs hive std colmena nixos-generators;
   inherit (nixpkgs) lib;
   inherit (hive.bootstrap.shell) bootstrap;
   inherit (std.lib) dev;
@@ -25,6 +25,13 @@ in
         lib.concatLists [
           (builtins.map hexagon [
             {package = colmena.packages.colmena;}
+            {
+              name = "larva";
+              help = "Write a minimal proxmox lxc image to disk";
+              command = ''
+                nixos-generate --flake "$PRJ_ROOT"#larva -f proxmox-lxc
+              '';
+            }
           ])
           (builtins.map nix [
             {
