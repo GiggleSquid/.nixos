@@ -9,6 +9,7 @@
     };
     deployment = {
       allowLocalDeployment = true;
+      buildOnTarget = true;
       tags = ["all"];
     };
   };

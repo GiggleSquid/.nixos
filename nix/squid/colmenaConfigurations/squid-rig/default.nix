@@ -3,15 +3,15 @@
   cell,
 }: let
   inherit (inputs) common;
-  inherit (common.deployment) tags;
+  inherit (common) deployment;
 in {
   imports = [cell.nixosConfigurations.squid-rig];
   inherit (common) bee;
 
-  deployment = {
-    buildOnTarget = true;
-    allowLocalDeployment = true;
-    targetHost = "10.10.10.10";
-    tags = ["main" "squid"] ++ tags;
-  };
+  deployment =
+    deployment
+    // {
+      targetHost = null;
+      tags = (common.deployment.tags) ++ ["main" "squid"];
+    };
 }

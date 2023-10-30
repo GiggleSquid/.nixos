@@ -8,8 +8,9 @@
       pkgs = inputs.nixpkgs;
     };
     deployment = {
-      allowLocalDeployment = true;
-      tags = ["all"];
+      allowLocalDeployment = false;
+      buildOnTarget = false;
+      tags = ["all" "cephalonetes"];
     };
   };
 in
