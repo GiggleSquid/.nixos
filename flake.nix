@@ -7,7 +7,14 @@
     std,
     ...
   } @ inputs: let
-    myCollect = hive.collect // {renamer = cell: target: "${target}";};
+    myCollect =
+      hive.collect
+      // {
+        renamer = cell: target:
+          if cell == "squid" || cell == "repo"
+          then "${target}"
+          else "${cell}-${target}";
+      };
     lib = inputs.nixpkgs.lib // builtins;
   in
     hive.growOn {
