@@ -30,21 +30,5 @@ in {
         "usbhid"
       ];
     };
-    plymouth = {
-      enable = true;
-      themePackages = [
-        ((nixpkgs.catppuccin-plymouth.overrideAttrs
-          (finalAttrs: previousAttrs: {
-            src = nixpkgs.fetchFromGitHub {
-              owner = "gigglesquid";
-              repo = "catppuccin-plymouth";
-              rev = "ea35464f0f2d865ab9d6db7d07630e95a88c3aac";
-              hash = "sha256-zFxsEZ+So14YQjk0TWMAxyIp79MJ/x+bsNSWkadt3+o=";
-            };
-          }))
-        .override {variant = "mocha";})
-      ];
-      theme = "catppuccin-mocha";
-    };
   };
 }
