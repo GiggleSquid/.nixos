@@ -11,15 +11,19 @@ in {
     {
       username = {
         show_always = true;
+        style_user = "bold peach";
+        style_root = "bold red";
         format = "[$user]($style)";
       };
       hostname = {
         ssh_only = false;
+        style = "bold dimmed peach";
         format = "@[$hostname]($style) ";
       };
       localip = {
         disabled = false;
         ssh_only = true;
+        style = "bold dimmed peach";
         format = "[\\[$localipv4\\]]($style) ";
       };
       directory = {
@@ -32,9 +36,13 @@ in {
         repo_root_style = "bold lavender";
         repo_root_format = "[  ]($style)[$before_root_path]($before_repo_root_style)[$repo_root]($repo_root_style)[$path]($style)[$read_only]($read_only_style) ";
       };
+      git_branch = {
+        style = "bold peach";
+      };
       git_commit = {
         tag_disabled = false;
         only_detached = false;
+        style = "bold dimmed lavender";
       };
       git_metrics = {
         disabled = false;
@@ -42,22 +50,25 @@ in {
       helm = {
         style = "bold text";
       };
+      container = {
+        style = "bold dimmed maroon";
+      };
       shell = {
         disabled = false;
         style = "bold subtext1";
       };
       character = {
-        success_symbol = "[❯](green)";
+        success_symbol = "[❯](peach)";
         error_symbol = "[❯](red)";
-        vimcmd_symbol = "[❮](green)";
+        vimcmd_symbol = "[❮](peach)";
       };
       time = {
         disabled = false;
         use_12hr = true;
       };
       format = ''
-        [┌──](bold green) $username$hostname$localip$sudo$shlvl
-        [│](bold green) ${lib.concatStrings [
+        [┌──](bold peach) $username$hostname$localip$sudo$shlvl
+        [│](bold peach) ${lib.concatStrings [
           "$singularity"
           "$kubernetes"
           "$directory"
@@ -128,7 +139,7 @@ in {
           "$crystal"
           "$custom"
         ]}
-        [└──](bold green) $cmd_duration$jobs$battery$os$container$shell$character
+        [└──](bold peach) $cmd_duration$jobs$battery$os$container$shell$character
       '';
 
       palette = "catppuccin_mocha";
