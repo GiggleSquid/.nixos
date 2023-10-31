@@ -3,7 +3,7 @@
   cell,
 }: let
   inherit (inputs) nixpkgs;
-  inherit (nixpkgs) lib;
+  lib = nixpkgs.lib // builtins;
 in {
   fish = {
     enable = true;
@@ -56,25 +56,22 @@ in {
         };
         hostname = {
           ssh_only = false;
-          format = "@[$ssh_symbol$hostname]($style) ";
+          format = "@[$hostname]($style) ";
         };
         localip = {
           disabled = false;
           ssh_only = true;
-          format = "[$localipv4]($style) ";
+          format = "[\\[$localipv4\\]]($style) ";
         };
         directory = {
           truncation_length = 5;
           truncation_symbol = ".../";
           truncate_to_repo = false;
-          style = "bold lavender";
-          format = "in [$path]($style)[$read_only]($read_only_style)";
+          style = "lavender";
+          format = "[  ]($style)[$path]($style)[$read_only]($read_only_style) ";
           before_repo_root_style = "dimmed lavender";
           repo_root_style = "bold lavender";
-          repo_root_format = "in [$before_root_path]($before_repo_root_style)[$repo_root]($repo_root_style)[$path]($style)[$read_only]($read_only_style)";
-        };
-        git_branch = {
-          format = "[$symbol$branch(:$remote_branch)]($style) ";
+          repo_root_format = "[  ]($style)[$before_root_path]($before_repo_root_style)[$repo_root]($repo_root_style)[$path]($style)[$read_only]($read_only_style) ";
         };
         git_commit = {
           tag_disabled = false;
@@ -83,8 +80,12 @@ in {
         git_metrics = {
           disabled = false;
         };
+        helm = {
+          style = "bold text";
+        };
         shell = {
           disabled = false;
+          style = "bold subtext1";
         };
         character = {
           success_symbol = "[❯](green)";
@@ -95,95 +96,85 @@ in {
           disabled = false;
           use_12hr = true;
         };
-        format = lib.concatStrings [
-          "$username"
-          "$hostname"
-          "$localip"
-          "$sudo"
-          "$shlvl"
-          "$singularity"
-          "$kubernetes"
-          "$directory"
-          "$line_break"
-          "$vcsh"
-          "$fossil_branch"
-          "$git_branch"
-          "$git_commit"
-          "$git_state"
-          "$git_metrics"
-          "$git_status"
-          "$hg_branch"
-          "$pijul_channel"
-          "$docker_context"
-          "$package"
-          "$c"
-          "$cmake"
-          "$cobol"
-          "$daml"
-          "$dart"
-          "$deno"
-          "$dotnet"
-          "$elixir"
-          "$elm"
-          "$erlang"
-          "$fennel"
-          "$golang"
-          "$guix_shell"
-          "$haskell"
-          "$haxe"
-          "$helm"
-          "$java"
-          "$julia"
-          "$kotlin"
-          "$gradle"
-          "$lua"
-          "$nim"
-          "$nodejs"
-          "$ocaml"
-          "$opa"
-          "$perl"
-          "$php"
-          "$pulumi"
-          "$purescript"
-          "$python"
-          "$raku"
-          "$rlang"
-          "$red"
-          "$ruby"
-          "$rust"
-          "$scala"
-          "$solidity"
-          "$swift"
-          "$terraform"
-          "$vlang"
-          "$vagrant"
-          "$zig"
-          "$buf"
-          "$nix_shell"
-          "$conda"
-          "$meson"
-          "$spack"
-          "$memory_usage"
-          "$aws"
-          "$gcloud"
-          "$openstack"
-          "$azure"
-          "$env_var"
-          "$crystal"
-          "$custom"
-          "$line_break"
-          "$cmd_duration"
-          "$jobs"
-          "$battery"
-          # "$time"
-          "$os"
-          "$container"
-          "$shell"
-          "$character"
-        ];
+        format = ''
+          [┌──](bold green) $username$hostname$localip$sudo$shlvl
+          [│](bold green) ${lib.concatStrings [
+            "$singularity"
+            "$kubernetes"
+            "$directory"
+            "$vcsh"
+            "$fossil_branch"
+            "$git_branch"
+            "$git_commit"
+            "$git_state"
+            "$git_metrics"
+            "$git_status"
+            "$hg_branch"
+            "$pijul_channel"
+            "$docker_context"
+            "$package"
+            "$c"
+            "$cmake"
+            "$cobol"
+            "$daml"
+            "$dart"
+            "$deno"
+            "$dotnet"
+            "$elixir"
+            "$elm"
+            "$erlang"
+            "$fennel"
+            "$golang"
+            "$guix_shell"
+            "$haskell"
+            "$haxe"
+            "$helm"
+            "$java"
+            "$julia"
+            "$kotlin"
+            "$gradle"
+            "$lua"
+            "$nim"
+            "$nodejs"
+            "$ocaml"
+            "$opa"
+            "$perl"
+            "$php"
+            "$pulumi"
+            "$purescript"
+            "$python"
+            "$raku"
+            "$rlang"
+            "$red"
+            "$ruby"
+            "$rust"
+            "$scala"
+            "$solidity"
+            "$swift"
+            "$terraform"
+            "$vlang"
+            "$vagrant"
+            "$zig"
+            "$buf"
+            "$nix_shell"
+            "$conda"
+            "$meson"
+            "$spack"
+            "$memory_usage"
+            "$aws"
+            "$gcloud"
+            "$openstack"
+            "$azure"
+            "$env_var"
+            "$crystal"
+            "$custom"
+          ]}
+          [└──](bold green) $cmd_duration$jobs$battery$os$container$shell$character
+        '';
+
         palette = "catppuccin_mocha";
       }
-      // builtins.fromTOML (builtins.readFile (nixpkgs.fetchFromGitHub {
+      // lib.fromTOML (lib.readFile (nixpkgs.fetchFromGitHub {
           owner = "catppuccin";
           repo = "starship";
           rev = "5629d2356f62a9f2f8efad3ff37476c19969bd4f";
