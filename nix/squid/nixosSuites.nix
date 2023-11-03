@@ -2,10 +2,10 @@
   inputs,
   cell,
 }: let
-  inherit (cell) nixosProfiles userProfiles;
+  inherit (cell) nixosProfiles userProfiles nixosModules;
 in
   with nixosProfiles; rec {
-    base = [core fonts gpg userProfiles.root];
+    base = [core fonts gpg userProfiles.root nixosModules.sops];
 
     server =
       base

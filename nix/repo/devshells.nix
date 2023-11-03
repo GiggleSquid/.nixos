@@ -21,6 +21,7 @@ in
         lib.concatLists [
           (builtins.map hexagon [
             {package = colmena.packages.colmena;}
+            {package = nixpkgs.sops;}
             {
               name = "larva";
               help = "Write a minimal proxmox lxc image to disk";

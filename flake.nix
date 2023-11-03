@@ -26,6 +26,7 @@
       with hive.blockTypes; [
         (devshells "devshells")
 
+        (functions "nixosModules")
         (functions "homeModules")
 
         (functions "nixosSuites")
@@ -94,6 +95,11 @@
 
     nixos-hardware = {
       url = "github:nixos/nixos-hardware";
+    };
+
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     flake-utils.url = "github:numtide/flake-utils";
