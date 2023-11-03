@@ -8,7 +8,7 @@ in {
   users.users.nixos = {
     initialHashedPassword = "$6$1r2jPEFZNED9GXqz$ISSTI3YF1JmjnAmUPJ8djwCT9dFziASyuFGvQ7.nATofAobwo/213B0Ac.ha4rVFkprS695uDBgzHf8pm3Y1k1";
     openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIK4CfBSXxCxcfTDDLzKLmoW26wQqjVkHLjIPhpbCoHvV"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIN6ycNhEFVP15KHUowD7aqlmhryYjTE+BSSbseJsKG1c"
     ];
     isNormalUser = true;
     uid = 1001;

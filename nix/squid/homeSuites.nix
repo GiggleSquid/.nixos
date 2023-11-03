@@ -16,6 +16,7 @@ in
       ++ [
         browser
         gpg
+        ssh
         git
         shell
         helix
