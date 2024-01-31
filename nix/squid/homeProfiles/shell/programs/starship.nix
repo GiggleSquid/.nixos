@@ -31,10 +31,10 @@ in {
         truncation_symbol = ".../";
         truncate_to_repo = false;
         style = "lavender";
-        format = "[  ]($style)[$path]($style)[$read_only]($read_only_style) ";
+        format = "[  ]($style)[$path]($style) [$read_only]($read_only_style) ";
         before_repo_root_style = "dimmed lavender";
         repo_root_style = "bold lavender";
-        repo_root_format = "[  ]($style)[$before_root_path]($before_repo_root_style)[$repo_root]($repo_root_style)[$path]($style)[$read_only]($read_only_style) ";
+        repo_root_format = "[  ]($style)[$before_root_path]($before_repo_root_style)[$repo_root]($repo_root_style)[$path]($style) [$read_only]($read_only_style) ";
       };
       git_branch = {
         style = "bold peach";

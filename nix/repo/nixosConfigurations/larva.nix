@@ -1,12 +1,9 @@
-{
-  inputs,
-  cell,
-}: let
+{inputs}: let
   inherit (inputs) common nixpkgs;
-  inherit (inputs.cells.cephalonetes) hardwareProfiles;
-  inherit (inputs.cells.squid) nixosProfiles nixosSuites homeProfiles homeSuites homeModules;
+  inherit (inputs.cells.cephalonetes) hardwareProfiles rke2Profiles;
+  inherit (inputs.cells.squid) nixosSuites;
   lib = nixpkgs.lib // builtins;
-  hostName = "nixos-lxc";
+  hostName = "nixos-vm";
 in {
   inherit (common) bee time;
   networking = {
@@ -14,34 +11,13 @@ in {
   };
 
   imports = let
-    profiles = with nixosProfiles; [
+    profiles = [
       hardwareProfiles.cephalonetes
+      rke2Profiles.common
     ];
-    suites = with nixosSuites; server;
+    suites = with nixosSuites; larva;
   in
     lib.concatLists [profiles suites];
-
-  home-manager = {
-    useUserPackages = true;
-    useGlobalPkgs = true;
-    users = {
-      squid = {
-        imports = let
-          modules = with homeModules; [
-          ];
-          profiles = with homeProfiles; [
-          ];
-          suites = with homeSuites; squid;
-        in
-          lib.concatLists [modules profiles suites];
-        home.stateVersion = "23.05";
-      };
-      nixos = {
-        imports = with homeSuites; nixos;
-        home.stateVersion = "23.05";
-      };
-    };
-  };
 
   system.stateVersion = "23.05";
 }

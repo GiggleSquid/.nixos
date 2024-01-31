@@ -3,9 +3,25 @@
 # Also see https://github.com/Mic92/dotfiles/blob/master/nixos/.sops.yaml
 # for a more complex example.
 keys:
-  - &gigglesquid age1dwp8gxep67hf2mux2e54qqel6cs7ndvp008vsdv5t984s68reu0sxkm04q
+  - &squid age1dwp8gxep67hf2mux2e54qqel6cs7ndvp008vsdv5t984s68reu0sxkm04q
+
+  - &squid-rig age1v47gzxuhfxs389gmyecaz7ng6xzzm4x5l9a53cqdeh4kv3hj0axqr25unm
+  - &squid-top age1mfe5l2x5prlvdxzy9vnfau7grl8xyapnzud9qqk6hx9uagj0sppsjlt0v0
+    
+  - &timesquid-0 age1xjudtumpl945cdewuukwlzm9l0xvcaev0ae97ucf7ggkvlhuquusj0n7cu
+    
+  - &cephalonetes_server-1 age1fzaxl3qgl7ya586ydrx0kyjz67varej4gxeyhlaq79m72rnfc5gqdrns4k
+  - &cephalonetes_server-2 age1eh2gqgav75jvha5pf62u3tg0cg4sa0aj4vs3scu7ee0dnwn6hc8qwvq2dr
+  - &cephalonetes_server-3 age1hgnlx366vnlj7tj9pgwxymejfudcncth0gj90gun2ruvrr4lc9msfcgykv
+
 creation_rules:
-  - path_regex: secrets/[^/]+\.(yaml|json|env|ini)$
+  - path_regex: sops/[^/]+\.yaml$
     key_groups:
     - age:
-      - *gigglesquid
+      - *squid
+      - *squid-rig
+      - *squid-top
+      - *timesquid-0
+      - *cephalonetes_server-1
+      - *cephalonetes_server-2
+      - *cephalonetes_server-3

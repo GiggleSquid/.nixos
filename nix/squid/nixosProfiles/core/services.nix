@@ -6,4 +6,7 @@
       KbdInteractiveAuthentication = false;
     };
   };
+  udisks2 = {
+    enable = true;
+  };
 }

@@ -12,6 +12,7 @@ in {
 
   home.shellAliases = {
     l = "lsd -Al";
+    cat = "bat";
     mkdir = "mkdir -p";
   };
 }

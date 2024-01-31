@@ -1,0 +1,36 @@
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: longhorn
+  namespace: kube-system
+spec:
+  chart: longhorn/longhorn
+  createNamespace: true
+  repo: https://charts.longhorn.io
+  targetNamespace: longhorn-system
+  version: 1.6.0
+  valuesContent: |-
+    defaultSettings:
+      systemManagedComponentsNodeSelector: "node-role.kubernetes.io/control-plane:true"
+      taintToleration: "CriticalAddonsOnly=true:NoExecute"
+    longhornDriver:
+      nodeSelector:
+        node-role.kubernetes.io/control-plane: "true"
+      tolerations:
+      - key: "CriticalAddonsOnly"
+        operator: "Exists"
+        effect: "NoExecute"
+    longhornManager:
+      nodeSelector:
+        node-role.kubernetes.io/control-plane: "true"
+      tolerations:
+      - key: "CriticalAddonsOnly"
+        operator: "Exists"
+        effect: "NoExecute"
+    longhornUI:
+      nodeSelector:
+        node-role.kubernetes.io/control-plane: "true"
+      tolerations:
+      - key: "CriticalAddonsOnly"
+        operator: "Exists"
+        effect: "NoExecute"

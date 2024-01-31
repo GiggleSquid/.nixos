@@ -12,6 +12,6 @@ in {
     deployment
     // {
       targetHost = null;
-      tags = (common.deployment.tags) ++ ["main" "squid"];
+      tags = (common.deployment.tags) ++ ["desktop" "squid-rig"];
     };
 }

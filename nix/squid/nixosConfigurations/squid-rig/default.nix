@@ -3,18 +3,33 @@
   cell,
 }: let
   inherit (inputs) common nixpkgs;
-  inherit (cell) hardwareProfiles nixosProfiles nixosSuites homeProfiles homeSuites homeModules;
+  inherit (cell) machineProfiles hardwareProfiles nixosSuites homeSuites;
   lib = nixpkgs.lib // builtins;
   hostName = "squid-rig";
+  ip = "10.10.10.10/24";
 in {
   inherit (common) bee time;
   networking = {inherit hostName;};
+  systemd.network = {
+    networks = {
+      "10-lan" = {
+        networkConfig = {
+          Address = ip;
+        };
+      };
+    };
+  };
 
   imports = let
-    profiles = with nixosProfiles; [
+    profiles = [
       hardwareProfiles."${hostName}"
+      machineProfiles.squid-rig
     ];
-    suites = with nixosSuites; desktop;
+    suites = with nixosSuites;
+      lib.concatLists [
+        desktop
+        plasma5
+      ];
   in
     lib.concatLists [profiles suites];
 
@@ -24,23 +39,12 @@ in {
     users = {
       squid = {
         imports = let
-          modules = with homeModules; [
-            anyrun
-          ];
-          profiles = with homeProfiles; [
-            {
-              wayland.windowManager.hyprland.settings.monitor = lib.mkForce [
-                "HDMI-A-1,1920x1080@60,0x0,1"
-                "HDMI-A-2,1920x1080@60,1920x0,1"
-                "DP-2,3440x1440@120,200x1080,1"
-                ",preferred,auto,1"
-              ];
-            }
-          ];
+          modules = [];
+          profiles = [];
           suites = with homeSuites;
             lib.concatLists [
               squid
-              hyprland
+              plasma5
             ];
         in
           lib.concatLists [modules profiles suites];

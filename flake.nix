@@ -31,11 +31,16 @@
 
         (functions "nixosSuites")
         (functions "homeSuites")
+        (functions "serverSuites")
+        (functions "rke2Suites")
 
+        (functions "machineProfiles")
         (functions "hardwareProfiles")
         (functions "nixosProfiles")
         (functions "userProfiles")
         (functions "homeProfiles")
+        (functions "rke2Profiles")
+        (functions "rke2Manifests")
 
         nixosConfigurations
         colmenaConfigurations
@@ -50,6 +55,7 @@
           "nvidia-settings"
           "discord"
           "vintagestory"
+          "starsector"
         ];
     }
     {
@@ -73,25 +79,25 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    fenix = {
-      url = "github:nix-community/fenix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # fenix = {
+    #   url = "github:nix-community/fenix";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
 
-    anyrun = {
-      url = "github:Kirottu/anyrun";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # rust-overlay = {
+    #   url = "github:oxalica/rust-overlay";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
 
-    hyprland = {
-      url = "github:hyprwm/Hyprland/";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # hyprland = {
+    #   url = "github:hyprwm/Hyprland/";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
 
-    rust-overlay = {
-      url = "github:oxalica/rust-overlay";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # anyrun = {
+    #   url = "github:Kirottu/anyrun";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
 
     nixos-hardware = {
       url = "github:nixos/nixos-hardware";
@@ -99,6 +105,11 @@
 
     sops-nix = {
       url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    kubenix = {
+      url = "github:hall/kubenix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

@@ -10,5 +10,6 @@
     lua-language-server
     alejandra
     # rust-analyzer
+    yaml-language-server
   ];
 }

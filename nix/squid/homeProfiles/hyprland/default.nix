@@ -1,13 +1,9 @@
-{
-  inputs,
-  cell,
-}: let
+{inputs}: let
   lib = inputs.nixpkgs.lib // builtins;
 in {
   wayland.windowManager.hyprland = {
     enable = true;
     systemd.enable = true;
-    enableNvidiaPatches = true;
 
     settings = {
       env = [
@@ -46,7 +42,8 @@ in {
         "librewolf"
         # "mullvad-vpn"
         "vorta -d"
-        # "gridcoinresearch"
+        "qbittorrent"
+        "gridcoinresearch"
       ];
 
       input = {

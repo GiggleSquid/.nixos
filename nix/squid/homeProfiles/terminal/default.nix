@@ -5,9 +5,9 @@
   inherit (inputs) nixpkgs;
   lib = nixpkgs.lib // builtins;
 in {
-  home.packages = with nixpkgs; [
-    (iosevka-bin.override {variant = "sgr-iosevka-term-ss14";})
-  ];
+  # home.packages = with nixpkgs; [
+  # (iosevka-bin.override {variant = "sgr-iosevka-term-ss14";})
+  # ];
 
   programs.wezterm = {
     enable = true;

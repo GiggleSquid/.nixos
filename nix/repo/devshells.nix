@@ -24,9 +24,9 @@ in
             {package = nixpkgs.sops;}
             {
               name = "larva";
-              help = "Write a minimal proxmox lxc image to disk";
+              help = "Write a minimal proxmox vm image to disk";
               command = ''
-                nixos-generate --flake "$PRJ_ROOT"#larva -f proxmox-lxc
+                nixos-generate --flake "$PRJ_ROOT"#larva -f proxmox $@
               '';
             }
           ])
@@ -34,12 +34,12 @@ in
             {
               name = "sw";
               help = "Switch configurations";
-              command = "sudo nixos-rebuild switch --flake $PRJ_ROOT $@";
+              command = "sudo nixos-rebuild switch --upgrade --flake $PRJ_ROOT $@";
             }
             {
               name = "boot";
               help = "Switch boot configuration";
-              command = "sudo nixos-rebuild boot --flake $PRJ_ROOT $@";
+              command = "sudo nixos-rebuild boot --upgrade --flake $PRJ_ROOT $@";
             }
             {
               name = "test";
@@ -49,7 +49,7 @@ in
             {
               name = "update";
               help = "Update inputs";
-              command = "nix flake update $PRJ_ROOT $@";
+              command = "sudo nix-channel --update && nix flake update $PRJ_ROOT $@";
             }
             {
               name = "check";

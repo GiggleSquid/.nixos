@@ -1,20 +1,31 @@
 {
   inputs,
   cell,
-  # config,
+  config,
 }: let
-  inherit (inputs) nixpkgs;
+  inherit (inputs) self nixpkgs;
 in {
-  users.users.squid = {
-    initialHashedPassword = "$6$1KocIsrw7AqDtt3/$ON4m5yb/XMH8pUXHW05Ps5rGAlt.H4F.8boIbVj8gUOoA3vRv6f4TZk7DlQWv1VVGVHFK3bOuPA0B74I6R0bJ.";
-    openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIN6ycNhEFVP15KHUowD7aqlmhryYjTE+BSSbseJsKG1c"
-    ];
-    isNormalUser = true;
-    uid = 1000;
-    createHome = true;
-    extraGroups = ["wheel" "video" "audio" "input" "power" "libvirtd" "boinc"];
-    shell = nixpkgs.fish;
+  sops.secrets.user_pass_squid = {
+    sopsFile = "${self}/sops/squid-rig.yaml";
+    neededForUsers = true;
+  };
+  users = {
+    users.squid = {
+      hashedPasswordFile = config.sops.secrets.user_pass_squid.path;
+      openssh.authorizedKeys.keys = [
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIN6ycNhEFVP15KHUowD7aqlmhryYjTE+BSSbseJsKG1c"
+      ];
+      isNormalUser = true;
+      uid = 1000;
+      createHome = true;
+      group = "squid";
+      extraGroups = ["wheel" "video" "audio" "input" "power" "libvirtd" "boinc" "users"];
+      shell = nixpkgs.fish;
+    };
+    groups.squid = {
+      name = "squid";
+      gid = 1000;
+    };
   };
   programs.fish.enable = true;
 }

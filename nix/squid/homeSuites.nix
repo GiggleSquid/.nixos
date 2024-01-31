@@ -9,25 +9,39 @@ in
       core
     ];
 
-    nixos = base;
+    nixos =
+      base
+      ++ [
+        ssh
+        git
+        shell
+        helix
+      ];
+
+    gui = [
+      qt
+      gtk
+      terminal
+      browser
+      packages
+    ];
 
     squid =
       base
       ++ [
-        browser
         gpg
         ssh
         git
         shell
         helix
-        vorta
       ];
 
-    hyprland = [
-      homeProfiles.hyprland
-      wallpaper
-      qt
-      gtk
-      terminal
-    ];
+    plasma5 = gui;
+
+    hyprland =
+      gui
+      ++ [
+        homeProfiles.hyprland
+        wallpaper
+      ];
   }

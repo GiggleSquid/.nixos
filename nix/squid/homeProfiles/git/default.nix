@@ -1,25 +1,31 @@
 {config}: {
-  programs.git = {
-    enable = true;
-    userName = "GiggleSquid";
-    userEmail = "jack.connors@protonmail.com";
-
-    signing = {
-      signByDefault = true;
-      key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJuSKLhdONlRgnIeGcAbUUT+kZlIOOhJKs3jW/CUxYLT jack.connors@protonmail.com | signing";
+  programs = {
+    gh = {
+      enable = true;
     };
 
-    extraConfig = {
-      init = {
-        defaultBranch = "main";
+    git = {
+      enable = true;
+      userName = "GiggleSquid";
+      userEmail = "jack.connors@protonmail.com";
+
+      signing = {
+        signByDefault = true;
+        key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJuSKLhdONlRgnIeGcAbUUT+kZlIOOhJKs3jW/CUxYLT jack.connors@protonmail.com | signing";
       };
-      core = {
-        editor = "hx";
-      };
-      gpg = {
-        format = "ssh";
-        ssh = {
-          allowedSignersFile = "${config.home.homeDirectory}/.config/git/allowed_signers";
+
+      extraConfig = {
+        init = {
+          defaultBranch = "main";
+        };
+        core = {
+          editor = "hx";
+        };
+        gpg = {
+          format = "ssh";
+          ssh = {
+            allowedSignersFile = "${config.home.homeDirectory}/.config/git/allowed_signers";
+          };
         };
       };
     };

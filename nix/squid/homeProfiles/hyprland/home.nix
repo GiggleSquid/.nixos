@@ -23,28 +23,5 @@ in {
     libsForQt5.filelight
     libsForQt5.ark
     libsForQt5.okular
-    libreoffice
-    prismlauncher
-    prusa-slicer
-    qbittorrent
-    gimp
-    gridcoin-research
-    inkscape
-    jellyfin-media-player
-    kate
-    monero-gui
-    vintagestory
-    bitwarden
-
-    #https://github.com/NixOS/nixpkgs/issues/159267#issuecomment-1037372237
-    (writeShellApplication {
-      name = "discord";
-      text = "${pkgs.discord}/bin/discord --use-gl=desktop";
-    })
-    (makeDesktopItem {
-      name = "discord";
-      exec = "discord";
-      desktopName = "Discord";
-    })
   ];
 }

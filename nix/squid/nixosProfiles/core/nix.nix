@@ -1,13 +1,10 @@
-{
-  inputs,
-  cell,
-}: let
+{inputs}: let
   inherit (inputs) nixpkgs;
 in {
   gc = {
     automatic = true;
     dates = "daily";
-    options = "--delete-older-than 7d";
+    options = "--delete-older-than 3d";
   };
 
   settings = {

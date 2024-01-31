@@ -1,7 +1,4 @@
-{
-  inputs,
-  cell,
-}: let
+{inputs}: let
   inherit (inputs) nixpkgs;
 in {
   security.polkit.enable = true;

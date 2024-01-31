@@ -62,6 +62,18 @@
             command = "clippy";
           };
         };
+        yaml-language-server = {
+          config.yaml = {
+            format.enable = true;
+            validate = true;
+            hover = true;
+            completion = true;
+            schemaStore.enable = true;
+            # schemas = {
+
+            # };
+          };
+        };
       };
     };
   };

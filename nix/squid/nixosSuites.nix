@@ -5,15 +5,27 @@
   inherit (cell) nixosProfiles userProfiles nixosModules;
 in
   with nixosProfiles; rec {
-    base = [core fonts gpg userProfiles.root nixosModules.sops];
+    base = [core fonts gpg fish nixosModules.sops userProfiles.root];
+
+    larva = [core fonts nixosModules.sops userProfiles.larvaRoot];
 
     server =
       base
       ++ [userProfiles.nixos userProfiles.squid];
 
+    hyprland = [
+      hyprland
+      greetd
+    ];
+
+    plasma5 = [
+      nixosProfiles.plasma5
+    ];
+
     pc =
       base
       ++ [
+        userProfiles.squid
         pipewire
         networking
         polkit
@@ -22,13 +34,16 @@ in
     desktop =
       pc
       ++ [
-        userProfiles.squid
-        hyprland
         games
-        greetd
         boinc
         virtualisation
         partition-manager
-        # https://github.com/NixOS/nixpkgs/issues/263445 mullvad
+      ];
+
+    laptop =
+      pc
+      ++ [
+        games
+        partition-manager
       ];
   }

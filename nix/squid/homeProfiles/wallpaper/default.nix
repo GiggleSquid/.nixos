@@ -1,7 +1,6 @@
 {
   inputs,
   cell,
-  config,
 }: let
   inherit (inputs) nixpkgs;
   inherit (nixpkgs) formats;
