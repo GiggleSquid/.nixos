@@ -15,6 +15,7 @@ in
         ssh
         git
         shell
+        k9s
         helix
       ];
 
