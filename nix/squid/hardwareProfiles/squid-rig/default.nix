@@ -2,7 +2,7 @@
   inputs,
   cell,
 }: let
-  inherit (inputs) commonNvidia nixos-hardware nixpkgs;
+  inherit (inputs) commonNvidia nixos-hardware nixpkgs self;
 in {
   imports = with nixos-hardware.nixosModules; [
     common-pc
@@ -20,7 +20,8 @@ in {
     loader = {
       systemd-boot = {
         enable = true;
-        configurationLimit = 4;
+        consoleMode = "auto";
+        configurationLimit = 10;
       };
       efi.canTouchEfiVariables = true;
     };
@@ -46,19 +47,9 @@ in {
 
     plymouth = {
       enable = true;
-      themePackages = [
-        ((nixpkgs.catppuccin-plymouth.overrideAttrs
-          (finalAttrs: previousAttrs: {
-            src = nixpkgs.fetchFromGitHub {
-              owner = "gigglesquid";
-              repo = "catppuccin-plymouth";
-              rev = "ea35464f0f2d865ab9d6db7d07630e95a88c3aac";
-              hash = "sha256-zFxsEZ+So14YQjk0TWMAxyIp79MJ/x+bsNSWkadt3+o=";
-            };
-          }))
-        .override {variant = "mocha";})
-      ];
+      themePackages = [(nixpkgs.catppuccin-plymouth.override {variant = "mocha";})];
       theme = "catppuccin-mocha";
+      logo = "${self}/artwork/SquidNix.png";
     };
 
     swraid.enable = true;
@@ -86,21 +77,36 @@ in {
     };
 
     "/mnt/cephalonas/backups/squid-rig" = {
-      device = "cephalonas.lan.gigglesquid.tech:/mnt/Main/Backups/Squid-Rig";
+      device = "cephalonas.lan.gigglesquid.tech:/mnt/main/backups/squid-rig";
       fsType = "nfs";
       noCheck = true;
     };
 
     "/mnt/cephalonas/media" = {
-      device = "cephalonas.lan.gigglesquid.tech:/mnt/Main/Media";
+      device = "cephalonas.lan.gigglesquid.tech:/mnt/main/media";
       fsType = "nfs";
       noCheck = true;
     };
 
-    "/mnt/cephalonas/torrents" = {
-      device = "cephalonas.lan.gigglesquid.tech:/mnt/Torrents/qbittorrent";
+    "/mnt/cephalonas/media/torrents" = {
+      device = "cephalonas.lan.gigglesquid.tech:/mnt/main/media/torrents";
       fsType = "nfs";
       noCheck = true;
+      depends = ["/mnt/cephalonas/media"];
+    };
+
+    "/mnt/cephalonas/media/squidjelly" = {
+      device = "cephalonas.lan.gigglesquid.tech:/mnt/main/media/squidjelly";
+      fsType = "nfs";
+      noCheck = true;
+      depends = ["/mnt/cephalonas/media"];
+    };
+
+    "/mnt/cephalonas/media/audiobookshelf" = {
+      device = "cephalonas.lan.gigglesquid.tech:/mnt/main/media/audiobookshelf";
+      fsType = "nfs";
+      noCheck = true;
+      depends = ["/mnt/cephalonas/media"];
     };
   };
 }
