@@ -1,3 +1,0 @@
-{
-  rtkit.enable = true;
-}

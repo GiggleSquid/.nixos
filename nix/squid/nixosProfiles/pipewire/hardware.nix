@@ -1,3 +1,0 @@
-{
-  pulseaudio.enable = false;
-}
