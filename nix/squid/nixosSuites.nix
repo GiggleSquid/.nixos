@@ -13,11 +13,6 @@ in
       base
       ++ [userProfiles.nixos userProfiles.squid];
 
-    hyprland = [
-      hyprland
-      greetd
-    ];
-
     plasma5 = [
       nixosProfiles.plasma5
     ];

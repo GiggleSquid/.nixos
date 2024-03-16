@@ -89,16 +89,6 @@
     #   inputs.nixpkgs.follows = "nixpkgs";
     # };
 
-    # hyprland = {
-    #   url = "github:hyprwm/Hyprland/";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
-
-    # anyrun = {
-    #   url = "github:Kirottu/anyrun";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
-
     nixos-hardware = {
       url = "github:nixos/nixos-hardware";
     };
@@ -162,7 +152,6 @@
       "https://anyrun.cachix.org"
       "https://colmena.cachix.org"
       "https://helix.cachix.org"
-      "https://hyprland.cachix.org"
       "https://nixpkgs-wayland.cachix.org"
       "https://nix-community.cachix.org"
     ];
@@ -170,7 +159,6 @@
       "anyrun.cachix.org-1:pqBobmOjI7nKlsUMV25u9QHa9btJK65/C8vnO3p346s="
       "colmena.cachix.org-1:7BzpDnjjH8ki2CT3f6GdOk7QAzPOl+1t3LvTLXqYcSg="
       "helix.cachix.org-1:ejp9KQpR1FBI2onstMQ34yogDm4OgU2ru6lIwPvuCVs="
-      "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
       "nixpkgs-wayland.cachix.org-1:3lwxaILxMRkVhehr5StQprHdEo4IrE8sRho9R9HOLYA="
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
     ];

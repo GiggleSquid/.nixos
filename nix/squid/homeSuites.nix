@@ -38,11 +38,4 @@ in
       ];
 
     plasma5 = gui;
-
-    hyprland =
-      gui
-      ++ [
-        homeProfiles.hyprland
-        wallpaper
-      ];
   }
