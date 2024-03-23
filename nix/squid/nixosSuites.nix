@@ -13,8 +13,8 @@ in
       base
       ++ [userProfiles.nixos userProfiles.squid];
 
-    plasma5 = [
-      nixosProfiles.plasma5
+    plasma6 = [
+      nixosProfiles.plasma6
     ];
 
     pc =
@@ -23,7 +23,6 @@ in
         userProfiles.squid
         pipewire
         networking
-        polkit
       ];
 
     desktop =
@@ -32,13 +31,11 @@ in
         games
         boinc
         virtualisation
-        partition-manager
       ];
 
     laptop =
       pc
       ++ [
         games
-        partition-manager
       ];
   }

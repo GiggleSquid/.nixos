@@ -20,7 +20,7 @@ in {
       ];
       exclude_caches = true;
       keep_within = "24H";
-      keep_daily = 5;
+      keep_daily = 7;
       repositories = [
         {
           label = "local";

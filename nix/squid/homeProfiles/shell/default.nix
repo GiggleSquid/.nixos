@@ -7,9 +7,7 @@ in {
   home.packages = with nixpkgs; [
     ripgrep
     git
-    btop
   ];
-
   home.shellAliases = {
     l = "lsd -Al";
     cat = "bat";

@@ -18,7 +18,6 @@
         open = false;
         nvidiaSettings = true;
         powerManagement.enable = true;
-        # forceFullCompositionPipeline = true;
       };
       opengl = {
         driSupport = true;

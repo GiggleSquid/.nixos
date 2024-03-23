@@ -9,9 +9,9 @@ in {
     packages = with nixpkgs; [
       noto-fonts-emoji
       sarasa-gothic
-      (iosevka-bin.override {variant = "etoile";})
-      (iosevka-bin.override {variant = "aile";})
-      (iosevka-bin.override {variant = "ss14";})
+      (iosevka-bin.override {variant = "Etoile";})
+      (iosevka-bin.override {variant = "Aile";})
+      (iosevka-bin.override {variant = "SS14";})
       (nerdfonts.override {fonts = ["Iosevka" "IosevkaTerm"];})
     ];
     fontconfig.defaultFonts = {

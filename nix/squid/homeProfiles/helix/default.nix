@@ -17,11 +17,31 @@
           render = true;
           character = "┊";
         };
-        gutters = ["diff" "diagnostics" "line-numbers" "spacer"];
+        gutters = [
+          "diff"
+          "diagnostics"
+          "line-numbers"
+          "spacer"
+        ];
         statusline = {
-          left = ["mode" "selections" "spinner" "file-name" "file-modification-indicator" "version-control"];
-          center = [];
-          right = ["diagnostics" "file-encoding" "file-line-ending" "file-type" "position" "separator" "total-line-numbers"];
+          left = [
+            "mode"
+            "selections"
+            "spinner"
+            "file-name"
+            "file-modification-indicator"
+            "version-control"
+          ];
+          center = [ ];
+          right = [
+            "diagnostics"
+            "file-encoding"
+            "file-line-ending"
+            "file-type"
+            "position"
+            "separator"
+            "total-line-numbers"
+          ];
           mode = {
             normal = "NORMAL";
             insert = "INSERT";
@@ -29,6 +49,8 @@
           };
         };
         lsp = {
+          auto-signature-help = false;
+          display-messages = true;
           display-inlay-hints = true;
         };
         whitespace = {
@@ -51,8 +73,7 @@
           name = "nix";
           auto-format = true;
           formatter = {
-            command = "alejandra";
-            args = ["-q"];
+            command = "nixfmt";
           };
         }
       ];

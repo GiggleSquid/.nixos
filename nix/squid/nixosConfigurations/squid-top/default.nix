@@ -28,7 +28,7 @@ in {
     suites = with nixosSuites;
       lib.concatLists [
         laptop
-        plasma5
+        plasma6
       ];
   in
     lib.concatLists [profiles suites];
@@ -44,7 +44,7 @@ in {
           suites = with homeSuites;
             lib.concatLists [
               squid
-              plasma5
+              plasma6
             ];
         in
           lib.concatLists [modules profiles suites];

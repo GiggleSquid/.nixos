@@ -11,6 +11,7 @@ in {
       };
     };
     spiceUSBRedirection.enable = true;
+    docker.enable = true;
   };
 
   systemd.tmpfiles.rules = ["f /dev/shm/looking-glass 0660 squid kvm -"];

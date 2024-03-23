@@ -1,41 +1,33 @@
-{
-  inputs,
-  cell,
-}: let
+{ inputs, cell }:
+let
   inherit (cell) homeProfiles;
 in
-  with homeProfiles; rec {
-    base = [
-      core
-    ];
+with homeProfiles;
+rec {
+  base = [ core ];
 
-    nixos =
-      base
-      ++ [
-        ssh
-        git
-        shell
-        k9s
-        helix
-      ];
+  nixos = base ++ [
+    ssh
+    git
+    shell
+    k9s
+    helix
+  ];
 
-    gui = [
-      qt
-      gtk
-      terminal
-      browser
-      packages
-    ];
+  gui = [
+    terminal
+    browser
+    packages
+  ];
 
-    squid =
-      base
-      ++ [
-        gpg
-        ssh
-        git
-        shell
-        helix
-      ];
+  squid = base ++ [
+    gpg
+    ssh
+    git
+    shell
+    k9s
+    helix
+  ];
 
-    plasma5 = gui;
-  }
+  plasma6 = gui;
+}

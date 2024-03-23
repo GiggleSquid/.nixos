@@ -71,18 +71,18 @@ in {
     };
   };
 
-  xdg = {
-    configFile = {
-      "k9s/skins/catppuccin-mocha.yaml" = {
-        source =
-          nixpkgs.fetchFromGitHub {
-            owner = "catppuccin";
-            repo = "k9s";
-            rev = "590a762110ad4b6ceff274265f2fe174c576ce96";
-            hash = "sha256-EBDciL3F6xVFXvND+5duT+OiVDWKkFMWbOOSruQ0lus=";
-          }
-          + /dist/catppuccin-mocha.yaml;
-      };
-    };
-  };
+  # xdg = {
+  #   configFile = {
+  #     "k9s/skins/catppuccin-mocha.yaml" = {
+  #       source =
+  #         nixpkgs.fetchFromGitHub {
+  #           owner = "catppuccin";
+  #           repo = "k9s";
+  #           rev = "590a762110ad4b6ceff274265f2fe174c576ce96";
+  #           hash = "sha256-EBDciL3F6xVFXvND+5duT+OiVDWKkFMWbOOSruQ0lus=";
+  #         }
+  #         + /dist/catppuccin-mocha.yaml;
+  #     };
+  #   };
+  # };
 }

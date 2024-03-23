@@ -5,9 +5,8 @@
   inherit (inputs) nixpkgs;
 in {
   packages = with nixpkgs; [
-    libsForQt5.filelight
-    libsForQt5.kate
-    libsForQt5.kcalc
+    kdePackages.filelight
+    kdePackages.kcalc
     isoimagewriter
     libreoffice
     prismlauncher

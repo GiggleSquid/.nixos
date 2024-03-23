@@ -8,7 +8,7 @@
     marksman
     taplo
     lua-language-server
-    alejandra
+    nixfmt-rfc-style
     # rust-analyzer
     yaml-language-server
   ];

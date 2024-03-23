@@ -95,6 +95,13 @@ in {
       depends = ["/mnt/cephalonas/media"];
     };
 
+    "/mnt/cephalonas/media/torrents/downloads" = {
+      device = "cephalonas.lan.gigglesquid.tech:/mnt/main/media/torrents/downloads";
+      fsType = "nfs";
+      noCheck = true;
+      depends = ["/mnt/cephalonas/media"];
+    };
+
     "/mnt/cephalonas/media/squidjelly" = {
       device = "cephalonas.lan.gigglesquid.tech:/mnt/main/media/squidjelly";
       fsType = "nfs";

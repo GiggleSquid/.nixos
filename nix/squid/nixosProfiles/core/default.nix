@@ -1,4 +1,51 @@
-{
+{inputs}: let
+  inherit (inputs) nixpkgs;
+in {
+  nix = {
+    gc = {
+      automatic = true;
+      dates = "daily";
+      options = "--delete-older-than 3d";
+    };
+    settings = {
+      auto-optimise-store = true;
+      allowed-users = ["@wheel"];
+      trusted-users = ["root" "@wheel"];
+      experimental-features = "nix-command flakes";
+    };
+    registry.nixpkgs.flake = nixpkgs;
+  };
+
+  zramSwap = {
+    enable = true;
+    priority = 5;
+  };
+
+  services = {
+    openssh = {
+      enable = true;
+      settings = {
+        PasswordAuthentication = false;
+        KbdInteractiveAuthentication = false;
+      };
+    };
+    udisks2 = {
+      enable = true;
+    };
+  };
+
+  environment.systemPackages = with nixpkgs; [
+    jq
+    git
+    direnv
+    ripgrep
+    unzip
+    curl
+    wget
+    ventoy
+    kdiskmark
+  ];
+
   i18n = let
     defaultLocale = "en_GB.UTF-8";
   in {
