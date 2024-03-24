@@ -1,12 +1,11 @@
-{
-  inputs,
-  cell,
-}: let
+{ inputs, cell }:
+let
   inherit (inputs) common nixpkgs self;
   inherit (cell) hardwareProfiles rke2Suites;
   inherit (inputs.cells.squid) nixosSuites homeSuites;
   lib = nixpkgs.lib // builtins;
-in {
+in
+{
   inherit (common) bee time;
   networking = {
     hostName = "server-3";
@@ -35,29 +34,37 @@ in {
     };
   };
 
-  imports = let
-    profiles = [
-      hardwareProfiles.cephalonetes
+  imports =
+    let
+      profiles = [ hardwareProfiles.cephalonetes ];
+      suites =
+        with rke2Suites;
+        lib.concatLists [
+          nixosSuites.server
+          server
+        ];
+    in
+    lib.concatLists [
+      profiles
+      suites
     ];
-    suites = with rke2Suites;
-      lib.concatLists [
-        nixosSuites.server
-        server
-      ];
-  in
-    lib.concatLists [profiles suites];
 
   home-manager = {
     useUserPackages = true;
     useGlobalPkgs = true;
     users = {
       squid = {
-        imports = let
-          modules = [];
-          profiles = [];
-          suites = with homeSuites; squid;
-        in
-          lib.concatLists [modules profiles suites];
+        imports =
+          let
+            modules = [ ];
+            profiles = [ ];
+            suites = with homeSuites; squid;
+          in
+          lib.concatLists [
+            modules
+            profiles
+            suites
+          ];
         home.stateVersion = "23.05";
       };
       nixos = {

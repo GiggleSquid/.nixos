@@ -1,10 +1,9 @@
-{
-  inputs,
-  cell,
-}: let
+{ inputs, cell }:
+let
   inherit (inputs) nixpkgs;
   lib = nixpkgs.lib // builtins;
-in {
+in
+{
   # home.packages = with nixpkgs; [
   # (iosevka-bin.override {variant = "sgr-iosevka-term-ss14";})
   # ];

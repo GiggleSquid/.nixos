@@ -1,9 +1,8 @@
-{
-  inputs,
-  cell,
-}: let
+{ inputs, cell }:
+let
   inherit (inputs) nixpkgs;
-in {
+in
+{
   services.boinc = {
     enable = true;
     extraEnvPackages = with nixpkgs; [

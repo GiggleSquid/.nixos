@@ -1,27 +1,33 @@
-{inputs}: let
+{ inputs }:
+let
   inherit (inputs) nixpkgs;
-in {
+in
+{
   virtualisation = {
     libvirtd = {
       enable = true;
       qemu = {
         swtpm.enable = true;
         ovmf.enable = true;
-        ovmf.packages = [nixpkgs.OVMFFull.fd];
+        ovmf.packages = [ nixpkgs.OVMFFull.fd ];
       };
     };
     spiceUSBRedirection.enable = true;
     docker.enable = true;
   };
 
-  systemd.tmpfiles.rules = ["f /dev/shm/looking-glass 0660 squid kvm -"];
+  systemd.tmpfiles.rules = [ "f /dev/shm/looking-glass 0660 squid kvm -" ];
 
   services = {
     spice-vdagentd.enable = true;
   };
 
   boot = {
-    kernelParams = ["intel_iommu=on" "iommu=pt" "vfio-pci.ids=10de:1401,10de:0fba"];
+    kernelParams = [
+      "intel_iommu=on"
+      "iommu=pt"
+      "vfio-pci.ids=10de:1401,10de:0fba"
+    ];
     extraModprobeConfig = ''
       options kvm ignore_msrs=Y report_ignored_msrs=N
     '';

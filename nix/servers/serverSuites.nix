@@ -1,15 +1,10 @@
-{
-  inputs,
-  cell,
-}: let
+{ inputs, cell }:
+let
   inherit (cell) nixosProfiles;
 in
-  with nixosProfiles; rec {
-    base = [common];
+with nixosProfiles;
+rec {
+  base = [ common ];
 
-    ntp-server =
-      base
-      ++ [
-        chrony
-      ];
-  }
+  ntp-server = base ++ [ chrony ];
+}

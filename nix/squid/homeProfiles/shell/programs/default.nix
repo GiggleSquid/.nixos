@@ -1,10 +1,11 @@
-{inputs}: let
+{ inputs }:
+let
   inherit (inputs) nixpkgs;
-in {
+in
+{
   fish = {
     enable = true;
-    interactiveShellInit = ''
-    '';
+    interactiveShellInit = '''';
     functions = {
       starship_transient_rprompt_func = ''
         starship module time
@@ -14,9 +15,7 @@ in {
 
   zoxide = {
     enable = true;
-    options = [
-      "--cmd cd"
-    ];
+    options = [ "--cmd cd" ];
   };
 
   bat = {
@@ -28,8 +27,7 @@ in {
 
   btop = {
     enable = true;
-    settings = {
-    };
+    settings = { };
   };
 
   lsd = {

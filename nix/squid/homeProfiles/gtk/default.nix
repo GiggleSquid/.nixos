@@ -1,9 +1,8 @@
-{
-  inputs,
-  cell,
-}: let
+{ inputs, cell }:
+let
   inherit (inputs) nixpkgs;
-in {
+in
+{
   home.pointerCursor = {
     package = nixpkgs.catppuccin-cursors.mochaPeach;
     name = "Catppuccin-Mocha-Peach-Cursors";
@@ -17,9 +16,9 @@ in {
     theme = {
       name = "Catppuccin-Mocha-Compact-Peach-Dark";
       package = nixpkgs.catppuccin-gtk.override {
-        accents = ["peach"];
+        accents = [ "peach" ];
         size = "compact";
-        tweaks = ["rimless"];
+        tweaks = [ "rimless" ];
         variant = "mocha";
       };
     };

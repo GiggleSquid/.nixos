@@ -1,73 +1,78 @@
 {
   description = "The Squid Hive";
 
-  outputs = {
-    self,
-    hive,
-    std,
-    ...
-  } @ inputs: let
-    myCollect =
-      hive.collect
-      // {
-        renamer = cell: target:
-          if cell == "squid" || cell == "repo"
-          then "${target}"
-          else "${cell}-${target}";
+  outputs =
+    {
+      self,
+      hive,
+      std,
+      ...
+    }@inputs:
+    let
+      myCollect = hive.collect // {
+        renamer =
+          cell: target: if cell == "squid" || cell == "repo" then "${target}" else "${cell}-${target}";
       };
-    lib = inputs.nixpkgs.lib // builtins;
-  in
-    hive.growOn {
-      inherit inputs;
+      lib = inputs.nixpkgs.lib // builtins;
+    in
+    hive.growOn
+      {
+        inherit inputs;
 
-      cellsFrom = ./nix;
+        cellsFrom = ./nix;
 
-      cellBlocks = with std.blockTypes;
-      with hive.blockTypes; [
-        (devshells "devshells")
+        cellBlocks =
+          with std.blockTypes;
+          with hive.blockTypes;
+          [
+            (devshells "devshells")
 
-        (functions "nixosModules")
-        (functions "homeModules")
+            (functions "nixosModules")
+            (functions "homeModules")
 
-        (functions "nixosSuites")
-        (functions "homeSuites")
-        (functions "serverSuites")
-        (functions "rke2Suites")
+            (functions "nixosSuites")
+            (functions "homeSuites")
+            (functions "serverSuites")
+            (functions "rke2Suites")
 
-        (functions "machineProfiles")
-        (functions "hardwareProfiles")
-        (functions "nixosProfiles")
-        (functions "userProfiles")
-        (functions "homeProfiles")
-        (functions "rke2Profiles")
-        (functions "rke2Manifests")
+            (functions "machineProfiles")
+            (functions "hardwareProfiles")
+            (functions "nixosProfiles")
+            (functions "userProfiles")
+            (functions "homeProfiles")
+            (functions "rke2Profiles")
+            (functions "rke2Manifests")
 
-        nixosConfigurations
-        colmenaConfigurations
-      ];
+            nixosConfigurations
+            colmenaConfigurations
+          ];
 
-      nixpkgsConfig.allowUnfreePredicate = pkg:
-        lib.elem (lib.getName pkg) [
-          "steam"
-          "steam-run"
-          "steam-original"
-          "nvidia-x11"
-          "nvidia-settings"
-          "discord"
-          "vintagestory"
-          "starsector"
+        nixpkgsConfig.allowUnfreePredicate =
+          pkg:
+          lib.elem (lib.getName pkg) [
+            "steam"
+            "steam-run"
+            "steam-original"
+            "nvidia-x11"
+            "nvidia-settings"
+            "discord"
+            "vintagestory"
+            "starsector"
+          ];
+      }
+      {
+        devShells = hive.harvest self [
+          "repo"
+          "devshells"
         ];
-    }
-    {
-      devShells = hive.harvest self ["repo" "devshells"];
-    }
-    {
-      nixosConfigurations = myCollect self "nixosConfigurations";
-      colmenaHive = myCollect self "colmenaConfigurations";
+      }
+      {
+        nixosConfigurations = myCollect self "nixosConfigurations";
+        colmenaHive = myCollect self "colmenaConfigurations";
 
-      # Might work on this. Atm I just import the modules in the nixosConfiguration for the machine
-      # hmModules = hive.collect self "homeModules";
-    };
+        # Might work on this. Atm I just import the modules in the nixosConfiguration for the machine
+        # hmModules = hive.collect self "homeModules";
+      };
 
   inputs = {
     nixpkgs = {

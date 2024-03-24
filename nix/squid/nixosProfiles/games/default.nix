@@ -1,6 +1,8 @@
-{inputs}: let
+{ inputs }:
+let
   inherit (inputs) nixpkgs;
-in {
+in
+{
   hardware.steam-hardware.enable = true;
 
   environment.systemPackages = with nixpkgs; [

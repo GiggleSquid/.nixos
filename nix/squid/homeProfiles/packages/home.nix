@@ -1,9 +1,8 @@
-{
-  inputs,
-  cell,
-}: let
+{ inputs, cell }:
+let
   inherit (inputs) nixpkgs;
-in {
+in
+{
   packages = with nixpkgs; [
     kdePackages.filelight
     kdePackages.kcalc

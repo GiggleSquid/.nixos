@@ -1,15 +1,21 @@
-{
-  inputs,
-  cell,
-}: let
+{ inputs, cell }:
+let
   inherit (inputs) common nixpkgs;
-  inherit (cell) machineProfiles hardwareProfiles nixosSuites homeSuites;
+  inherit (cell)
+    machineProfiles
+    hardwareProfiles
+    nixosSuites
+    homeSuites
+    ;
   lib = nixpkgs.lib // builtins;
   hostName = "squid-rig";
   ip = "10.10.10.10/24";
-in {
+in
+{
   inherit (common) bee time;
-  networking = {inherit hostName;};
+  networking = {
+    inherit hostName;
+  };
   systemd.network = {
     networks = {
       "10-lan" = {
@@ -20,34 +26,45 @@ in {
     };
   };
 
-  imports = let
-    profiles = [
-      hardwareProfiles."${hostName}"
-      machineProfiles.squid-rig
-    ];
-    suites = with nixosSuites;
-      lib.concatLists [
-        desktop
-        plasma6
+  imports =
+    let
+      profiles = [
+        hardwareProfiles."${hostName}"
+        machineProfiles.squid-rig
       ];
-  in
-    lib.concatLists [profiles suites];
+      suites =
+        with nixosSuites;
+        lib.concatLists [
+          desktop
+          plasma6
+        ];
+    in
+    lib.concatLists [
+      profiles
+      suites
+    ];
 
   home-manager = {
     useUserPackages = true;
     useGlobalPkgs = true;
     users = {
       squid = {
-        imports = let
-          modules = [];
-          profiles = [];
-          suites = with homeSuites;
-            lib.concatLists [
-              squid
-              plasma6
-            ];
-        in
-          lib.concatLists [modules profiles suites];
+        imports =
+          let
+            modules = [ ];
+            profiles = [ ];
+            suites =
+              with homeSuites;
+              lib.concatLists [
+                squid
+                plasma6
+              ];
+          in
+          lib.concatLists [
+            modules
+            profiles
+            suites
+          ];
         home.stateVersion = "23.05";
       };
     };

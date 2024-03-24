@@ -2,9 +2,11 @@
   inputs,
   cell,
   config,
-}: let
+}:
+let
   inherit (inputs) self nixpkgs;
-in {
+in
+{
   sops.secrets.user_pass_nixos = {
     sopsFile = "${self}/sops/squid-rig.yaml";
     neededForUsers = true;
@@ -19,7 +21,13 @@ in {
       uid = 1001;
       createHome = true;
       group = "nixos";
-      extraGroups = ["wheel" "video" "audio" "input" "power"];
+      extraGroups = [
+        "wheel"
+        "video"
+        "audio"
+        "input"
+        "power"
+      ];
       shell = nixpkgs.fish;
     };
     groups.nixos = {

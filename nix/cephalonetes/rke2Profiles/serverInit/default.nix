@@ -1,16 +1,15 @@
-{
-  inputs,
-  config,
-}: let
+{ inputs, config }:
+let
   inherit (inputs) nixpkgs;
-in {
+in
+{
   systemd.services.rke2-server = {
     description = "Rancher Kubernetes Engine v2 (server)";
-    documentation = ["https://github.com/rancher/rke2#readme"];
-    wants = ["network-online.target"];
-    after = ["network-online.target"];
-    conflicts = ["rke2-agent.service"];
-    wantedBy = ["multi-user.target"];
+    documentation = [ "https://github.com/rancher/rke2#readme" ];
+    wants = [ "network-online.target" ];
+    after = [ "network-online.target" ];
+    conflicts = [ "rke2-agent.service" ];
+    wantedBy = [ "multi-user.target" ];
     environment = {
       HOME = "/root";
     };
@@ -28,7 +27,7 @@ in {
       TimeoutStartSec = 0;
       Restart = "always";
       RestartSec = "5s";
-      Environment = ["PATH=/run/wrappers/bin/:$PATH"];
+      Environment = [ "PATH=/run/wrappers/bin/:$PATH" ];
     };
   };
 }

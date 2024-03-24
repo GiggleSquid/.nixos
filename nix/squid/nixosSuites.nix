@@ -1,41 +1,43 @@
-{
-  inputs,
-  cell,
-}: let
+{ inputs, cell }:
+let
   inherit (cell) nixosProfiles userProfiles nixosModules;
 in
-  with nixosProfiles; rec {
-    base = [core fonts gpg fish nixosModules.sops userProfiles.root];
+with nixosProfiles;
+rec {
+  base = [
+    core
+    fonts
+    gpg
+    fish
+    nixosModules.sops
+    userProfiles.root
+  ];
 
-    larva = [core fonts nixosModules.sops userProfiles.larvaRoot];
+  larva = [
+    core
+    fonts
+    nixosModules.sops
+    userProfiles.larvaRoot
+  ];
 
-    server =
-      base
-      ++ [userProfiles.nixos userProfiles.squid];
+  server = base ++ [
+    userProfiles.nixos
+    userProfiles.squid
+  ];
 
-    plasma6 = [
-      nixosProfiles.plasma6
-    ];
+  plasma6 = [ nixosProfiles.plasma6 ];
 
-    pc =
-      base
-      ++ [
-        userProfiles.squid
-        pipewire
-        networking
-      ];
+  pc = base ++ [
+    userProfiles.squid
+    pipewire
+    networking
+  ];
 
-    desktop =
-      pc
-      ++ [
-        games
-        boinc
-        virtualisation
-      ];
+  desktop = pc ++ [
+    games
+    boinc
+    virtualisation
+  ];
 
-    laptop =
-      pc
-      ++ [
-        games
-      ];
-  }
+  laptop = pc ++ [ games ];
+}

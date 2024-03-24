@@ -1,7 +1,5 @@
-{
-  inputs,
-  cell,
-}: let
+{ inputs, cell }:
+let
   common = {
     bee = {
       system = "x86_64-linux";
@@ -10,12 +8,14 @@
     deployment = {
       allowLocalDeployment = true;
       buildOnTarget = true;
-      tags = ["all"];
+      tags = [ "all" ];
     };
   };
 in
-  inputs.hive.findLoad {
-    inherit cell;
-    inputs = inputs // {inherit common;};
-    block = ./.;
-  }
+inputs.hive.findLoad {
+  inherit cell;
+  inputs = inputs // {
+    inherit common;
+  };
+  block = ./.;
+}

@@ -1,6 +1,4 @@
+{ inputs, cell }:
 {
-  inputs,
-  cell,
-}: {
-  imports = [inputs.anyrun.homeManagerModules.default];
+  imports = [ inputs.anyrun.homeManagerModules.default ];
 }

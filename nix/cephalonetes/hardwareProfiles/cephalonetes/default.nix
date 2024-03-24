@@ -1,6 +1,8 @@
-{inputs}: let
+{ inputs }:
+let
   inherit (inputs) common nixos-hardware nixpkgs;
-in {
+in
+{
   imports = with nixos-hardware.nixosModules; [
     common-pc
     common-pc-ssd

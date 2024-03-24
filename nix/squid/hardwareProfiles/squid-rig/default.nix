@@ -1,9 +1,13 @@
+{ inputs, cell }:
+let
+  inherit (inputs)
+    commonNvidia
+    nixos-hardware
+    nixpkgs
+    self
+    ;
+in
 {
-  inputs,
-  cell,
-}: let
-  inherit (inputs) commonNvidia nixos-hardware nixpkgs self;
-in {
   imports = with nixos-hardware.nixosModules; [
     common-pc
     common-pc-ssd
@@ -15,8 +19,8 @@ in {
 
   boot = {
     kernelPackages = nixpkgs.linuxPackages_latest;
-    extraModulePackages = [nixpkgs.linuxPackages_latest.nvidia_x11];
-    kernelModules = ["kvm-intel"];
+    extraModulePackages = [ nixpkgs.linuxPackages_latest.nvidia_x11 ];
+    kernelModules = [ "kvm-intel" ];
     loader = {
       systemd-boot = {
         enable = true;
@@ -47,7 +51,7 @@ in {
 
     plymouth = {
       enable = true;
-      themePackages = [(nixpkgs.catppuccin-plymouth.override {variant = "mocha";})];
+      themePackages = [ (nixpkgs.catppuccin-plymouth.override { variant = "mocha"; }) ];
       theme = "catppuccin-mocha";
       logo = "${self}/artwork/SquidNix.png";
     };
@@ -92,28 +96,28 @@ in {
       device = "cephalonas.lan.gigglesquid.tech:/mnt/main/media/torrents";
       fsType = "nfs";
       noCheck = true;
-      depends = ["/mnt/cephalonas/media"];
+      depends = [ "/mnt/cephalonas/media" ];
     };
 
     "/mnt/cephalonas/media/torrents/downloads" = {
       device = "cephalonas.lan.gigglesquid.tech:/mnt/main/media/torrents/downloads";
       fsType = "nfs";
       noCheck = true;
-      depends = ["/mnt/cephalonas/media"];
+      depends = [ "/mnt/cephalonas/media" ];
     };
 
     "/mnt/cephalonas/media/squidjelly" = {
       device = "cephalonas.lan.gigglesquid.tech:/mnt/main/media/squidjelly";
       fsType = "nfs";
       noCheck = true;
-      depends = ["/mnt/cephalonas/media"];
+      depends = [ "/mnt/cephalonas/media" ];
     };
 
     "/mnt/cephalonas/media/audiobookshelf" = {
       device = "cephalonas.lan.gigglesquid.tech:/mnt/main/media/audiobookshelf";
       fsType = "nfs";
       noCheck = true;
-      depends = ["/mnt/cephalonas/media"];
+      depends = [ "/mnt/cephalonas/media" ];
     };
   };
 }

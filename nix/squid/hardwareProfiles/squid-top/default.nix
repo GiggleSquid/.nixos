@@ -1,9 +1,8 @@
-{
-  inputs,
-  cell,
-}: let
+{ inputs, cell }:
+let
   inherit (inputs) common nixos-hardware nixpkgs;
-in {
+in
+{
   imports = with nixos-hardware.nixosModules; [
     common-pc
     common-pc-ssd
@@ -17,7 +16,7 @@ in {
 
   boot = {
     kernelPackages = nixpkgs.linuxPackages_latest;
-    kernelModules = ["kvm-intel"];
+    kernelModules = [ "kvm-intel" ];
     loader = {
       systemd-boot = {
         enable = true;
@@ -27,8 +26,7 @@ in {
       efi.canTouchEfiVariables = true;
     };
     initrd = {
-      kernelModules = [
-      ];
+      kernelModules = [ ];
       availableKernelModules = [
         "ahci"
         "xhci_pci"
@@ -44,16 +42,19 @@ in {
     plymouth = {
       enable = true;
       themePackages = [
-        ((nixpkgs.catppuccin-plymouth.overrideAttrs
-          (finalAttrs: previousAttrs: {
-            src = nixpkgs.fetchFromGitHub {
-              owner = "gigglesquid";
-              repo = "catppuccin-plymouth";
-              rev = "ea35464f0f2d865ab9d6db7d07630e95a88c3aac";
-              hash = "sha256-zFxsEZ+So14YQjk0TWMAxyIp79MJ/x+bsNSWkadt3+o=";
-            };
-          }))
-        .override {variant = "mocha";})
+        (
+          (nixpkgs.catppuccin-plymouth.overrideAttrs (
+            finalAttrs: previousAttrs: {
+              src = nixpkgs.fetchFromGitHub {
+                owner = "gigglesquid";
+                repo = "catppuccin-plymouth";
+                rev = "ea35464f0f2d865ab9d6db7d07630e95a88c3aac";
+                hash = "sha256-zFxsEZ+So14YQjk0TWMAxyIp79MJ/x+bsNSWkadt3+o=";
+              };
+            }
+          )).override
+          { variant = "mocha"; }
+        )
       ];
       theme = "catppuccin-mocha";
     };

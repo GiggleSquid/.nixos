@@ -1,7 +1,5 @@
+{ inputs, cell }:
 {
-  inputs,
-  cell,
-}: {
   packages = with inputs.nixpkgs; [
     nil
     vscode-langservers-extracted

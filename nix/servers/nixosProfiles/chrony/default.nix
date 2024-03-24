@@ -1,13 +1,10 @@
 {
-  networking.timeServers = [
-  ];
+  networking.timeServers = [ ];
 
   services = {
     chrony = {
       enable = true;
-      extraFlags = [
-        "-x"
-      ];
+      extraFlags = [ "-x" ];
       extraConfig = ''
         pool uk.pool.ntp.org iburst maxsources 4 minstratum 2 xleave
         pool time.nist.gov maxsources 2 minstratum 2 xleave

@@ -1,32 +1,28 @@
-{
-  inputs,
-  cell,
-}: let
+{ inputs, cell }:
+let
   inherit (inputs) nixpkgs kubenix;
   lib = nixpkgs.lib // builtins;
-in {
+in
+{
   environment.etc = {
     "test.yaml" = {
       source =
         (kubenix.evalModules.x86_64-linux {
-          module = {kubenix, ...}: {
-            imports = [kubenix.modules.k8s];
-            kubernetes.resources.pods.example.spec.containers.example.image = "nginx";
-          };
-        })
-        .config
-        .kubernetes
-        .resultYAML;
+          module =
+            { kubenix, ... }:
+            {
+              imports = [ kubenix.modules.k8s ];
+              kubernetes.resources.pods.example.spec.containers.example.image = "nginx";
+            };
+        }).config.kubernetes.resultYAML;
     };
 
     "manifests/kube-vip-rbac.yaml" = {
       mode = "0644";
-      source =
-        nixpkgs.fetchurl
-        {
-          url = "https://kube-vip.io/manifests/rbac.yaml";
-          hash = "sha256-B6018KsDpuhPq4PjJxGHszmvzuQuqnPd9e2AoNH21tg=";
-        };
+      source = nixpkgs.fetchurl {
+        url = "https://kube-vip.io/manifests/rbac.yaml";
+        hash = "sha256-B6018KsDpuhPq4PjJxGHszmvzuQuqnPd9e2AoNH21tg=";
+      };
     };
 
     "manifests/kube-vip-ds.yaml" = {

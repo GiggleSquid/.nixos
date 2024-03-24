@@ -1,6 +1,8 @@
-{inputs}: let
+{ inputs }:
+let
   inherit (inputs) nixpkgs;
-in {
+in
+{
   programs.k9s = {
     enable = true;
     aliases = {
@@ -46,8 +48,8 @@ in {
         imageScans = {
           enable = false;
           exclusions = {
-            namespaces = [];
-            labels = {};
+            namespaces = [ ];
+            labels = { };
           };
         };
         logger = {

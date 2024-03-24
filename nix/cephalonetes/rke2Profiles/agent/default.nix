@@ -2,18 +2,20 @@
   inputs,
   cell,
   config,
-}: let
+}:
+let
   inherit (inputs) nixpkgs;
-in {
-  sops.secrets.rke2_token = {};
+in
+{
+  sops.secrets.rke2_token = { };
 
   systemd.services.rke2-agent = {
     description = "Rancher Kubernetes Engine v2 (agent)";
-    documentation = ["https://github.com/rancher/rke2#readme"];
-    wants = ["network-online.target"];
-    after = ["network-online.target"];
-    conflicts = ["rke2-server.service"];
-    wantedBy = ["multi-user.target"];
+    documentation = [ "https://github.com/rancher/rke2#readme" ];
+    wants = [ "network-online.target" ];
+    after = [ "network-online.target" ];
+    conflicts = [ "rke2-server.service" ];
+    wantedBy = [ "multi-user.target" ];
     environment = {
       HOME = "/root";
     };
@@ -31,7 +33,7 @@ in {
       TimeoutStartSec = 0;
       Restart = "always";
       RestartSec = "5s";
-      Environment = ["PATH=/run/wrappers/bin/:$PATH"];
+      Environment = [ "PATH=/run/wrappers/bin/:$PATH" ];
     };
   };
 }

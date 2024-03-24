@@ -1,4 +1,5 @@
-{inputs}: {
+{ inputs }:
+{
   environment.systemPackages = with inputs.nixpkgs; [
     fishPlugins.sponge
     fishPlugins.fzf-fish

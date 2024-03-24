@@ -1,6 +1,8 @@
-{inputs}: let
+{ inputs }:
+let
   inherit (inputs) nixpkgs;
-in {
+in
+{
   nix = {
     gc = {
       automatic = true;
@@ -9,8 +11,11 @@ in {
     };
     settings = {
       auto-optimise-store = true;
-      allowed-users = ["@wheel"];
-      trusted-users = ["root" "@wheel"];
+      allowed-users = [ "@wheel" ];
+      trusted-users = [
+        "root"
+        "@wheel"
+      ];
       experimental-features = "nix-command flakes";
     };
     registry.nixpkgs.flake = nixpkgs;
@@ -46,22 +51,24 @@ in {
     kdiskmark
   ];
 
-  i18n = let
-    defaultLocale = "en_GB.UTF-8";
-  in {
-    inherit defaultLocale;
-    extraLocaleSettings = {
-      LC_ADDRESS = defaultLocale;
-      LC_IDENTIFICATION = defaultLocale;
-      LC_MEASUREMENT = defaultLocale;
-      LC_MONETARY = defaultLocale;
-      LC_NAME = defaultLocale;
-      LC_NUMERIC = defaultLocale;
-      LC_PAPER = defaultLocale;
-      LC_TELEPHONE = defaultLocale;
-      LC_TIME = defaultLocale;
+  i18n =
+    let
+      defaultLocale = "en_GB.UTF-8";
+    in
+    {
+      inherit defaultLocale;
+      extraLocaleSettings = {
+        LC_ADDRESS = defaultLocale;
+        LC_IDENTIFICATION = defaultLocale;
+        LC_MEASUREMENT = defaultLocale;
+        LC_MONETARY = defaultLocale;
+        LC_NAME = defaultLocale;
+        LC_NUMERIC = defaultLocale;
+        LC_PAPER = defaultLocale;
+        LC_TELEPHONE = defaultLocale;
+        LC_TIME = defaultLocale;
+      };
     };
-  };
 
   console = {
     earlySetup = true;

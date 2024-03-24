@@ -1,9 +1,8 @@
-{
-  inputs,
-  cell,
-}: let
+{ inputs, cell }:
+let
   inherit (inputs) nixpkgs;
-in {
+in
+{
   services.mullvad-vpn = {
     enable = true;
     package = nixpkgs.mullvad-vpn;

@@ -1,14 +1,11 @@
-{
-  inputs,
-  cell,
-}: let
+{ inputs, cell }:
+let
   inherit (inputs) nixpkgs;
-in {
+in
+{
   networking = {
     useNetworkd = true;
-    timeServers = [
-      "10.10.3.5"
-    ];
+    timeServers = [ "10.10.3.5" ];
     firewall = {
       enable = false;
       allowedTCPPorts = [
@@ -33,8 +30,7 @@ in {
     };
     timesyncd.enable = false;
     resolved = {
-      fallbackDns = [
-      ];
+      fallbackDns = [ ];
     };
     qemuGuest.enable = true;
   };
@@ -47,7 +43,7 @@ in {
         networkConfig = {
           DHCP = "no";
         };
-        dns = ["10.10.4.1"];
+        dns = [ "10.10.4.1" ];
         # make routing on this interface a dependency for network-online.target
         linkConfig.RequiredForOnline = "routable";
       };

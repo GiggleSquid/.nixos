@@ -1,10 +1,9 @@
-{
-  inputs,
-  cell,
-}: let
+{ inputs, cell }:
+let
   inherit (inputs) nixpkgs;
   lib = nixpkgs.lib // builtins;
-in {
+in
+{
   environment.etc = {
     "manifests/longhorn.yaml" = {
       mode = "0644";

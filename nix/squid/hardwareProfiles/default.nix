@@ -1,7 +1,5 @@
-{
-  inputs,
-  cell,
-}: let
+{ inputs, cell }:
+let
   common = {
     hardware = {
       opengl = {
@@ -22,14 +20,19 @@
       opengl = {
         driSupport = true;
         driSupport32Bit = true;
-        extraPackages = with inputs.nixpkgs; [nvidia-vaapi-driver libvdpau-va-gl];
+        extraPackages = with inputs.nixpkgs; [
+          nvidia-vaapi-driver
+          libvdpau-va-gl
+        ];
       };
       enableRedistributableFirmware = true;
     };
   };
 in
-  inputs.hive.findLoad {
-    inherit cell;
-    inputs = inputs // {inherit common commonNvidia;};
-    block = ./.;
-  }
+inputs.hive.findLoad {
+  inherit cell;
+  inputs = inputs // {
+    inherit common commonNvidia;
+  };
+  block = ./.;
+}

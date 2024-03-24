@@ -1,3 +1,4 @@
-{inputs}: {
-  imports = [inputs.kubenix.evalModules];
+{ inputs }:
+{
+  imports = [ inputs.kubenix.evalModules ];
 }
