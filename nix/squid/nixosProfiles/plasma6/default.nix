@@ -24,12 +24,7 @@ in
 
   environment.systemPackages = with nixpkgs; [
     (catppuccin.override {
-      themeList = [
-        "bat"
-        "btop"
-        "k9s"
-        "starship"
-      ];
+      themeList = [ "k9s" ];
       variant = "mocha";
       accent = "peach";
     })

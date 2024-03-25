@@ -3,6 +3,19 @@ let
   inherit (inputs) nixpkgs;
 in
 {
+  xdg = {
+    configFile = {
+      "k9s/skins/catppuccin-mocha.yaml" = {
+        source = "${
+          nixpkgs.catppuccin.override {
+            themeList = [ "k9s" ];
+            variant = "mocha";
+            accent = "peach";
+          }
+        }/k9s/catppuccin-mocha.yaml";
+      };
+    };
+  };
   programs.k9s = {
     enable = true;
     aliases = {
@@ -72,19 +85,4 @@ in
       };
     };
   };
-
-  # xdg = {
-  #   configFile = {
-  #     "k9s/skins/catppuccin-mocha.yaml" = {
-  #       source =
-  #         nixpkgs.fetchFromGitHub {
-  #           owner = "catppuccin";
-  #           repo = "k9s";
-  #           rev = "590a762110ad4b6ceff274265f2fe174c576ce96";
-  #           hash = "sha256-EBDciL3F6xVFXvND+5duT+OiVDWKkFMWbOOSruQ0lus=";
-  #         }
-  #         + /dist/catppuccin-mocha.yaml;
-  #     };
-  #   };
-  # };
 }
