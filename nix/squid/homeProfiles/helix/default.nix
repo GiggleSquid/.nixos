@@ -71,6 +71,16 @@
       language = [
         {
           name = "nix";
+          scope = "source.nix";
+          injection-regex = "nix";
+          file-types = [ "nix" ];
+          shebangs = [ ];
+          comment-token = "#";
+          language-servers = [ "nixd" ];
+          indent = {
+            tab-width = 2;
+            unit = "  ";
+          };
           auto-format = true;
           formatter = {
             command = "nixfmt";
@@ -78,13 +88,20 @@
         }
       ];
       language-server = {
+        nixd = {
+          command = "nixd";
+        };
+
         rust-analyzer = {
           config.check = {
             command = "clippy";
           };
         };
+
         yaml-language-server = {
-          config.yaml = {
+          command = "yaml-language-server";
+          args = [ "--stdio" ];
+          yaml = {
             format.enable = true;
             validate = true;
             hover = true;
