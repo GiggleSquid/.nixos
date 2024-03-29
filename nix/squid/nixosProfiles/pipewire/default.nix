@@ -9,12 +9,20 @@
       support32Bit = true;
     };
     # jack.enable = true;
-    extraConfig.pipewire."92-low-latency" = {
+    extraConfig.pipewire."92-latency" = {
       context.properties = {
-        default.clock.rate = 48000;
-        default.clock.quantum = 2048;
-        default.clock.min-quantum = 1024;
-        default.clock.max-quantum = 4098;
+        default.clock = {
+          rate = 48000;
+          allowed-rates = [
+            44100
+            48000
+            96000
+            192000
+          ];
+          quantum = 4098;
+          min-quantum = 1024;
+          max-quantum = 6144;
+        };
       };
     };
   };
