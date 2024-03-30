@@ -9,6 +9,7 @@ in
   programs = {
     gnupg.agent.pinentryPackage = lib.mkForce nixpkgs.pinentry-qt;
     partition-manager.enable = true;
+    kdeconnect.enable = true;
   };
 
   services = {
