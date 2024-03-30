@@ -2,18 +2,13 @@
   networking = {
     useNetworkd = true;
     wireguard.enable = true;
+    timeServers = [ "10.10.3.5" ];
   };
 
-  networking.timeServers = [ "10.10.3.5" ];
-
   services = {
-    chrony = {
-      enable = true;
-    };
+    chrony.enable = true;
     timesyncd.enable = false;
-    resolved = {
-      fallbackDns = [ ];
-    };
+    resolved.fallbackDns = [ ];
   };
 
   systemd.network = {
