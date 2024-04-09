@@ -26,11 +26,20 @@ lib.mapAttrs (_: dev.mkShell) {
         (builtins.map hexagon [
           { package = colmena.packages.colmena; }
           { package = nixpkgs.sops; }
+          { package = nixpkgs.kubectl; }
+          { package = nixpkgs.fluxcd; }
           {
             name = "larva";
+            help = "Write a minimal proxmox lxc image to disk";
+            command = ''
+              nixos-generate --flake "$PRJ_ROOT"#larva -f proxmox-lxc $@
+            '';
+          }
+          {
+            name = "pupae";
             help = "Write a minimal proxmox vm image to disk";
             command = ''
-              nixos-generate --flake "$PRJ_ROOT"#larva -f proxmox $@
+              nixos-generate --flake "$PRJ_ROOT"#pupae -f proxmox $@
             '';
           }
         ])

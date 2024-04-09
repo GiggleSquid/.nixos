@@ -14,16 +14,18 @@ in
     qemuConf = {
       boot = "order=virtio0";
       bootSize = "512M";
-      scsihw = "virtio-scsi-single";
-      virtio0 = "local-zfs:vm-9999-disk-0,iothread=1,aio=native";
+      bios = "ovmf";
       cores = 1;
       memory = 1024;
-      bios = "ovmf";
       net0 = "virtio=00:00:00:00:00:00,bridge=vmbr0,firewall=0,tag=4";
+      scsihw = "virtio-scsi-single";
+      virtio0 = "cephalonas-vm-storage:vm-9999-disk-1,iothread=1,aio=native";
     };
     qemuExtraConf = {
       cpu = "host";
       numa = 1;
+      machine = "q35";
+      vmstatestorage = "cephalonas-vm-storage";
     };
     partitionTableType = "efi";
   };

@@ -1,10 +1,10 @@
 { inputs }:
 let
   inherit (inputs) common nixpkgs;
-  inherit (inputs.cells.servers) hardwareProfiles nixosProfiles;
+  inherit (inputs.cells.servers) hardwareProfiles rke2Profiles;
   inherit (inputs.cells.squid) nixosSuites;
   lib = nixpkgs.lib // builtins;
-  hostName = "nixos-lxc";
+  hostName = "nixos-vm";
 in
 {
   inherit (common) bee time;
@@ -15,8 +15,8 @@ in
   imports =
     let
       profiles = [
-        hardwareProfiles.servers
-        nixosProfiles.common
+        hardwareProfiles.cephalonetes
+        rke2Profiles.common
       ];
       suites = with nixosSuites; larva;
     in

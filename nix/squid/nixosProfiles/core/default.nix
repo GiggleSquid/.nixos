@@ -47,8 +47,6 @@ in
     unzip
     curl
     wget
-    ventoy
-    kdiskmark
   ];
 
   i18n =

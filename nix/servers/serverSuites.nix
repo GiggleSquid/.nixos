@@ -7,4 +7,8 @@ rec {
   base = [ common ];
 
   ntp-server = base ++ [ chrony ];
+
+  dns-server = [ technitium ];
+
+  caddy-server = [ caddy ];
 }

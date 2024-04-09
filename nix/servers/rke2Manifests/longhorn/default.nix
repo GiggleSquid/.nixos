@@ -10,9 +10,9 @@ in
       text = lib.readFile ./longhorn.yaml;
     };
   };
-  system.activationScripts = {
-    "longhorn.yaml".text = ''
-      ln -sf /etc/manifests/longhorn.yaml /var/lib/rancher/rke2/server/manifests/longhorn.yaml
-    '';
-  };
+  # system.activationScripts = {
+  #   "longhorn.yaml".text = ''
+  #     ln -sf /etc/manifests/longhorn.yaml /var/lib/rancher/rke2/server/manifests/longhorn.yaml
+  #   '';
+  # };
 }

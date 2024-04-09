@@ -2,19 +2,13 @@
 let
   inherit (inputs) common nixpkgs self;
   inherit (cell) hardwareProfiles rke2Suites;
-  inherit (inputs.cells.squid)
-    nixosSuites
-    homeProfiles
-    homeSuites
-    homeModules
-    ;
+  inherit (inputs.cells.squid) nixosSuites homeSuites;
   lib = nixpkgs.lib // builtins;
 in
 {
   inherit (common) bee time;
-
   networking = {
-    hostName = "server-1";
+    hostName = "agent-3";
     domain = "cephalonetes.lan.gigglesquid.tech";
   };
 
@@ -22,7 +16,7 @@ in
     networks = {
       "10-lan" = {
         networkConfig = {
-          Address = "10.10.4.41/24";
+          Address = "10.10.4.53/24";
           Gateway = "10.10.4.1";
         };
       };
@@ -30,13 +24,13 @@ in
   };
 
   sops = {
-    defaultSopsFile = "${self}/sops/cephalonetes.yaml";
+    defaultSopsFile = "${self}/sops/squid-rig.yaml";
   };
 
   services = {
     openiscsi = {
       enable = true;
-      name = "iqn.2023-01.tech.gigglesquid.lan.iscsi:server1";
+      name = "iqn.2023-01.tech.gigglesquid.lan.iscsi:server3";
     };
   };
 
@@ -47,7 +41,7 @@ in
         with rke2Suites;
         lib.concatLists [
           nixosSuites.server
-          serverInit
+          agent
         ];
     in
     lib.concatLists [
@@ -62,23 +56,17 @@ in
       squid = {
         imports =
           let
-            modules = with homeModules; [ ];
-            profiles = with homeProfiles; [ ];
-            suites = with homeSuites; lib.concatLists [ squid ];
+            suites = with homeSuites; squid;
           in
-          lib.concatLists [
-            modules
-            profiles
-            suites
-          ];
-        home.stateVersion = "23.05";
+          lib.concatLists [ suites ];
+        home.stateVersion = "24.05";
       };
       nixos = {
         imports = with homeSuites; nixos;
-        home.stateVersion = "23.05";
+        home.stateVersion = "24.05";
       };
     };
   };
 
-  system.stateVersion = "23.05";
+  system.stateVersion = "24.05";
 }

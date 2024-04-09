@@ -1,29 +1,47 @@
 { inputs, cell }:
 let
-  inherit (inputs) common nixpkgs;
-  inherit (cell) machineProfiles hardwareProfiles serverSuites;
+  inherit (inputs) common nixpkgs self;
+  inherit (cell) hardwareProfiles rke2Suites;
   inherit (inputs.cells.squid) nixosSuites homeSuites;
   lib = nixpkgs.lib // builtins;
-  hostName = "timesquid-0";
 in
 {
   inherit (common) bee time;
   networking = {
-    inherit hostName;
-    domain = "lan.gigglesquid.tech";
+    hostName = "server-3";
+    domain = "cephalonetes.lan.gigglesquid.tech";
+  };
+
+  systemd.network = {
+    networks = {
+      "10-lan" = {
+        networkConfig = {
+          Address = "10.10.4.33/24";
+          Gateway = "10.10.4.1";
+        };
+      };
+    };
+  };
+
+  sops = {
+    defaultSopsFile = "${self}/sops/squid-rig.yaml";
+  };
+
+  services = {
+    openiscsi = {
+      enable = true;
+      name = "iqn.2023-01.tech.gigglesquid.lan.iscsi:server3";
+    };
   };
 
   imports =
     let
-      profiles = [
-        hardwareProfiles.servers
-        machineProfiles.timesquid-0
-      ];
+      profiles = [ hardwareProfiles.cephalonetes ];
       suites =
-        with serverSuites;
+        with rke2Suites;
         lib.concatLists [
           nixosSuites.server
-          ntp-server
+          server
         ];
     in
     lib.concatLists [
@@ -38,15 +56,9 @@ in
       squid = {
         imports =
           let
-            modules = [ ];
-            profiles = [ ];
             suites = with homeSuites; squid;
           in
-          lib.concatLists [
-            modules
-            profiles
-            suites
-          ];
+          lib.concatLists [ suites ];
         home.stateVersion = "24.05";
       };
       nixos = {

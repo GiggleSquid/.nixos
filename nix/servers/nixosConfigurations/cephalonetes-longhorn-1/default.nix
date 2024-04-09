@@ -8,7 +8,7 @@ in
 {
   inherit (common) bee time;
   networking = {
-    hostName = "server-2";
+    hostName = "longhorn-1";
     domain = "cephalonetes.lan.gigglesquid.tech";
   };
 
@@ -16,7 +16,7 @@ in
     networks = {
       "10-lan" = {
         networkConfig = {
-          Address = "10.10.4.42/24";
+          Address = "10.10.4.41/24";
           Gateway = "10.10.4.1";
         };
       };
@@ -24,13 +24,13 @@ in
   };
 
   sops = {
-    defaultSopsFile = "${self}/sops/cephalonetes.yaml";
+    defaultSopsFile = "${self}/sops/squid-rig.yaml";
   };
 
   services = {
     openiscsi = {
       enable = true;
-      name = "iqn.2023-01.tech.gigglesquid.lan.iscsi:server2";
+      name = "iqn.2023-01.tech.gigglesquid.lan.iscsi:server1";
     };
   };
 
@@ -41,7 +41,7 @@ in
         with rke2Suites;
         lib.concatLists [
           nixosSuites.server
-          server
+          agent
         ];
     in
     lib.concatLists [
@@ -56,23 +56,17 @@ in
       squid = {
         imports =
           let
-            modules = [ ];
-            profiles = [ ];
             suites = with homeSuites; lib.concatLists [ squid ];
           in
-          lib.concatLists [
-            modules
-            profiles
-            suites
-          ];
-        home.stateVersion = "23.05";
+          lib.concatLists [ suites ];
+        home.stateVersion = "24.05";
       };
       nixos = {
         imports = with homeSuites; nixos;
-        home.stateVersion = "23.05";
+        home.stateVersion = "24.05";
       };
     };
   };
 
-  system.stateVersion = "23.05";
+  system.stateVersion = "24.05";
 }

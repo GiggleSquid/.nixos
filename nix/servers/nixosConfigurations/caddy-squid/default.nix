@@ -4,26 +4,36 @@ let
   inherit (cell) machineProfiles hardwareProfiles serverSuites;
   inherit (inputs.cells.squid) nixosSuites homeSuites;
   lib = nixpkgs.lib // builtins;
-  hostName = "timesquid-0";
+  hostName = "caddy-squid";
 in
 {
   inherit (common) bee time;
   networking = {
     inherit hostName;
     domain = "lan.gigglesquid.tech";
+    nameservers = [
+      "10.10.3.11"
+      "10.10.3.12"
+    ];
+    firewall = {
+      allowedTCPPorts = [
+        80
+        443
+      ];
+    };
   };
 
   imports =
     let
       profiles = [
         hardwareProfiles.servers
-        machineProfiles.timesquid-0
+        machineProfiles.caddy-squid
       ];
       suites =
         with serverSuites;
         lib.concatLists [
           nixosSuites.server
-          ntp-server
+          caddy-server
         ];
     in
     lib.concatLists [

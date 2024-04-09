@@ -7,7 +7,7 @@ in
     useNetworkd = true;
     timeServers = [ "10.10.3.5" ];
     firewall = {
-      enable = false;
+      enable = true;
       allowedTCPPorts = [
         6443
         9345
@@ -39,7 +39,7 @@ in
     enable = true;
     networks = {
       "10-lan" = {
-        matchConfig.Name = "ens18";
+        matchConfig.Name = "enp6s18";
         networkConfig = {
           DHCP = "no";
         };
