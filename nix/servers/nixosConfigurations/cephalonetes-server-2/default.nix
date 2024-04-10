@@ -30,7 +30,7 @@ in
   services = {
     openiscsi = {
       enable = true;
-      name = "iqn.2023-01.tech.gigglesquid.lan.iscsi:server2";
+      name = "iqn.2023-01.tech.gigglesquid.lan.iscsi:server-2";
     };
   };
 

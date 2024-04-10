@@ -12,7 +12,7 @@ rec {
 
   server = serverBase ++ [ rke2Profiles.server ];
 
-  longhorn = bas ++ [ rke2Profiles.longhorn ];
+  longhorn = base ++ [ rke2Profiles.longhorn ];
 
   agent = base ++ [ rke2Profiles.agent ];
 }

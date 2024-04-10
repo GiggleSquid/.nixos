@@ -35,6 +35,11 @@ in
     qemuGuest.enable = true;
   };
 
+  # Longhorn uses nsenter for entering host namesoace,
+  # and nsenter uses the path of the namespaces that called it
+  # see: https://github.com/longhorn/longhorn/issues/2166
+  systemd.tmpfiles.rules = [ "L+ /usr/local/bin - - - - /run/current-system/sw/bin/" ];
+
   systemd.network = {
     enable = true;
     networks = {
