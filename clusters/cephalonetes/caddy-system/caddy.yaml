@@ -21,7 +21,10 @@ spec:
         kind: HelmRepository
         name: caddy-ingress-controller
       version: 1.1.0
-  loadBalancer:
-    annotations:
-      kube-vip.io/loadbalancerIPs: 10.10.5.10
+  driftDetection:
+    mode: enabled
+  values:
+    loadBalancer:
+      annotations:
+        kube-vip.io/loadbalancerIPs: 10.10.5.10
   interval: 1m0s
