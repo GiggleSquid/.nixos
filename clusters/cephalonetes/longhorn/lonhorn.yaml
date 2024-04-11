@@ -48,6 +48,7 @@ metadata:
   namespace: longhorn-system
   annotations:
     kubernetes.io/ingress.class: caddy
+    caddy.ingress.kubernetes.io/disable-ssl-redirect: "true"
 spec:
   rules:
   - host: longhorn.cephalonetes.lan.gigglesquid.tech
