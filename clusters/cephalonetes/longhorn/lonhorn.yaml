@@ -22,6 +22,8 @@ spec:
         name: longhorn
       version: 1.6.1
   interval: 1m0s
+  driftDetection:
+    mode: enabled
   values:
     defaultSettings:
       taintToleration: "LonghornOnly=true:NoExecute"
