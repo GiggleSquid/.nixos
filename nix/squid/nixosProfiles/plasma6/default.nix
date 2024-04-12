@@ -13,11 +13,11 @@ in
   };
 
   services = {
-    xserver = {
+    displayManager.sddm = {
       enable = true;
-      displayManager.sddm = {
+      wayland = {
         enable = true;
-        wayland.enable = true;
+        compositor = "kwin";
       };
     };
     desktopManager.plasma6.enable = true;
