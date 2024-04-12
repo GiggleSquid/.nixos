@@ -16,7 +16,7 @@ in
     networks = {
       "10-lan" = {
         networkConfig = {
-          Address = "10.10.4.51/24";
+          Address = "10.10.4.41/24";
           Gateway = "10.10.4.1";
         };
       };
@@ -41,7 +41,7 @@ in
         with rke2Suites;
         lib.concatLists [
           nixosSuites.server
-          agent
+          agent-suite
         ];
     in
     lib.concatLists [

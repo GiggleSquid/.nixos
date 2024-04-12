@@ -25,8 +25,6 @@ in
       --node-taint "CriticalAddonsOnly=true:NoExecute" \
       --disable "rke2-ingress-nginx" \
       --disable-cloud-controller \
-      --kube-proxy-arg "--proxy-mode=ipvs" \
-      --kube-proxy-arg "--ipvs-scheduler=rr"
     '';
     serviceConfig = {
       Type = "notify";

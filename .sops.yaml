@@ -15,15 +15,12 @@ keys:
   - &ns-root age17fhjh5pvuph39spz8d3x445gajfw4h0cq3t2mj29l83y6tlazg9sqpkdvu
   - &ns1 age1ukvapr6llvuw6yddkr3srcnpkhj4r0hyhup0yj0ft80lmutwcdeqyq7j7f
     
-  - &cephalonetes-server-1 age1rvupqt5eznce3g4xl2spzc3dr4k3csqrzxjlkmuzuhkzrzgdzvzqr7vl5p
-  - &cephalonetes-server-2 age1heenc7wtx0mtgpwch6ky8e2n8dr9tppfuvjd49ltlmtuaeznqc2q2qjhp0
-  - &cephalonetes-server-3 age18epjr653t6nku9w9nu8udz74eyzl54qmlgyagfrpkyttqep5kg0sdyjn7a
-  - &cephalonetes-longhorn-1 age1yumyyq4ujhtq05vhzz86tpv3em75ujrq6y80ns2g80ctyftqvppst8fdkl
-  - &cephalonetes-longhorn-2 age1j8z0xlzl3cnd03rfr2e23nfmme7le0t6u8zce5qgsfa8kx80pfvsdwukyu
-  - &cephalonetes-longhorn-3 age1dgew0y4f072wjudenzqvrp30atvhgew5k2gz3v9juck4vl77cqvsuujleh
-  - &cephalonetes-agent-1 age10qplnnu39na0zy57t4ku95lluumfa8wthudskuz4u6y6ulm28p5sz87h6a
-  - &cephalonetes-agent-2 age1qujaahmj7zpels8eyk82qfcxle68h7jcuz882vnhfmnzhpgjvqxsjl9d25
-  - &cephalonetes-agent-3 age1zkvmw3a466lnuwe7fgcrays035wcys3x88k3rmm929lvrh6q0g2s39lyre
+  - &cephalonetes-server-1 age13yyayp56jjnjk2qsk3380jcu82dftwgpsteyr7x0kaghzvdxvsrq2hwl4q
+  - &cephalonetes-server-2 age10nt49epgyctvee5lsq506cyczaykn58nlu3r3cpmjkrhjfje2ses7hgp85
+  - &cephalonetes-server-3 age1qqvgcagxzt5q02tweg7qwz3x40p0h3jguwqphfhpfkv0pxmg3y7qkwp0q5
+  - &cephalonetes-agent-1 age19l9at5nxnrf504vac3wd6hgdacl7m8cyvd7aqmq43tt48hz5k9tsjnfs9s
+  - &cephalonetes-agent-2 age1wzu8fm2zuwxu8sa6ldjxgtjalfvgy9wswpy79vwaw23ly9frl36smf4sme
+  - &cephalonetes-agent-3 age195ehdg77mrxpce8ma5fxn9tzrdka5zcrqvhcd6jg9ducq703ws0qs0fjxw
 
 creation_rules:
   - path_regex: sops/[^/]+\.yaml$
@@ -39,9 +36,6 @@ creation_rules:
       - *cephalonetes-server-1
       - *cephalonetes-server-2
       - *cephalonetes-server-3
-      - *cephalonetes-longhorn-1
-      - *cephalonetes-longhorn-2
-      - *cephalonetes-longhorn-3
       - *cephalonetes-agent-1
       - *cephalonetes-agent-2
       - *cephalonetes-agent-3

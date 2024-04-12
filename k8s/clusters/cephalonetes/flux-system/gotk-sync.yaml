@@ -20,7 +20,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m0s
-  path: ./clusters/cephalonetes
+  path: ./k8s/clusters/cephalonetes
   prune: true
   sourceRef:
     kind: GitRepository

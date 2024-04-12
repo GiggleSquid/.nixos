@@ -1,18 +1,14 @@
 { inputs, cell }:
 let
-  inherit (cell) rke2Profiles rke2Manifests;
+  inherit (cell) rke2Profiles;
 in
-with rke2Manifests;
+with rke2Profiles;
 rec {
-  base = [ rke2Profiles.common ];
+  base = [ common ];
 
-  serverBase = base ++ [ kube-vip ];
+  serverInit-suite = base ++ [ serverInit ];
 
-  serverInit = serverBase ++ [ rke2Profiles.serverInit ];
+  server-suite = base ++ [ server ];
 
-  server = serverBase ++ [ rke2Profiles.server ];
-
-  longhorn = base ++ [ rke2Profiles.longhorn ];
-
-  agent = base ++ [ rke2Profiles.agent ];
+  agent-suite = base ++ [ agent ];
 }

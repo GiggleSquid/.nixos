@@ -41,7 +41,7 @@ in
         with rke2Suites;
         lib.concatLists [
           nixosSuites.server
-          serverInit
+          server-suite
         ];
     in
     lib.concatLists [

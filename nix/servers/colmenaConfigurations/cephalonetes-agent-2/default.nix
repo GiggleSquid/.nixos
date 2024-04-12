@@ -7,7 +7,7 @@ in
   inherit (common) bee;
 
   deployment = common.deployment // {
-    targetHost = "10.10.4.52";
+    targetHost = "10.10.4.42";
     tags = (common.deployment.tags) ++ [
       "rke2"
       "cluster"
