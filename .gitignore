@@ -1,5 +1,7 @@
-.config
-.run
-.cache
-.data
+result
 .bin
+.cache
+.config
+.data
+.direnv
+.run
