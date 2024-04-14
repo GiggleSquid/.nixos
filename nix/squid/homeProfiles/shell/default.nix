@@ -83,6 +83,7 @@ in
       enableTransience = true;
       settings =
         {
+          command_timeout = 1000;
           username = {
             show_always = true;
             style_user = "bold peach";
