@@ -1,6 +1,6 @@
 { inputs, cell }:
 let
-  inherit (cell) homeProfiles;
+  inherit (cell) homeProfiles homeModules;
 in
 with homeProfiles;
 rec {
@@ -29,5 +29,8 @@ rec {
     helix
   ];
 
-  plasma6 = gui;
+  plasma6 = gui ++ [
+    homeModules.plasma-manager
+    plasma-manager
+  ];
 }

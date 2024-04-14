@@ -84,6 +84,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    plasma-manager = {
+      url = "github:pjones/plasma-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
+    };
+
     # fenix = {
     #   url = "github:nix-community/fenix";
     #   inputs.nixpkgs.follows = "nixpkgs";
