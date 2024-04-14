@@ -46,6 +46,8 @@ in
       luks.devices = {
         "root".device = "/dev/disk/by-uuid/21c64da5-832e-4175-a725-aac396633a7d";
         "backups".device = "/dev/disk/by-uuid/8c8c3fe4-b5df-4d60-b141-5d5ad6b6a32a";
+        "steam0".device = "/dev/disk/by-uuid/f06e951b-3bf5-4011-8266-44d944380803";
+        "steam1".device = "/dev/disk/by-uuid/1841fb4d-de0c-4444-83ce-8401fff0311b";
       };
     };
 
@@ -55,8 +57,6 @@ in
       theme = "catppuccin-mocha";
       logo = "${self}/artwork/SquidNix.png";
     };
-
-    swraid.enable = true;
   };
 
   fileSystems = {
@@ -76,10 +76,10 @@ in
       fsType = "ext4";
     };
 
-    # "/mnt/steam" = {
-    #   device = "/dev/disk/by-uuid/e60c1aa4-1c16-49cd-b349-eb433f368145";
-    #   fsType = "ext4";
-    # };
+    "/mnt/steam" = {
+      device = "/dev/volgroup_steam/lv_steam";
+      fsType = "ext4";
+    };
 
     "/mnt/cephalonas/backups/squid-rig" = {
       device = "cephalonas.lan.gigglesquid.tech:/mnt/main/backups/squid-rig";
