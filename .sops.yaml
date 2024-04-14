@@ -5,7 +5,7 @@
 keys:
   - &squid age1dwp8gxep67hf2mux2e54qqel6cs7ndvp008vsdv5t984s68reu0sxkm04q
 
-  - &squid-rig age1v47gzxuhfxs389gmyecaz7ng6xzzm4x5l9a53cqdeh4kv3hj0axqr25unm
+  - &squid-rig age1qvktpvzde3rfnjnt3y9s9fvt9m23cgzqmp5qhgtrwgwqp70m7ewqnkkup4
   - &squid-top age1mfe5l2x5prlvdxzy9vnfau7grl8xyapnzud9qqk6hx9uagj0sppsjlt0v0
 
   - &caddy age1hp8fnxf6dvd7rznhx37aau5yr40jvvzsz8xc82t8cdwdzsxx5atsgshala

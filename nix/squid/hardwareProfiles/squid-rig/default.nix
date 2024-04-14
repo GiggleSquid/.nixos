@@ -44,8 +44,8 @@ in
         "sd_mod"
       ];
       luks.devices = {
-        "luks-main".device = "/dev/disk/by-uuid/b1c59a07-745f-4618-b502-b2c6cb95b63a";
-        "luks-backups".device = "/dev/disk/by-uuid/8c8c3fe4-b5df-4d60-b141-5d5ad6b6a32a";
+        "root".device = "/dev/disk/by-uuid/21c64da5-832e-4175-a725-aac396633a7d";
+        "backups".device = "/dev/disk/by-uuid/8c8c3fe4-b5df-4d60-b141-5d5ad6b6a32a";
       };
     };
 
@@ -61,24 +61,25 @@ in
 
   fileSystems = {
     "/" = {
-      device = "/dev/disk/by-uuid/aac57c6e-3471-4214-8e80-4bf9062c67b2";
+      device = "/dev/mapper/root";
       fsType = "ext4";
     };
 
     "/boot" = {
-      device = "/dev/disk/by-uuid/7FA7-F6B5";
+      device = "/dev/disk/by-uuid/DCD3-2C5B";
       fsType = "vfat";
+      options = [ "umask=0077" ];
     };
 
     "/mnt/backups" = {
-      device = "/dev/disk/by-uuid/95a47dae-280d-4fd1-a6ff-309db8ed338b";
+      device = "/dev/mapper/backups";
       fsType = "ext4";
     };
 
-    "/mnt/steam" = {
-      device = "/dev/disk/by-uuid/e60c1aa4-1c16-49cd-b349-eb433f368145";
-      fsType = "ext4";
-    };
+    # "/mnt/steam" = {
+    #   device = "/dev/disk/by-uuid/e60c1aa4-1c16-49cd-b349-eb433f368145";
+    #   fsType = "ext4";
+    # };
 
     "/mnt/cephalonas/backups/squid-rig" = {
       device = "cephalonas.lan.gigglesquid.tech:/mnt/main/backups/squid-rig";
