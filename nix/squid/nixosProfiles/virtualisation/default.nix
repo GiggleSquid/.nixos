@@ -14,6 +14,14 @@ in
     };
     spiceUSBRedirection.enable = true;
     docker.enable = true;
+    vmVariant = {
+      virtualisation.sharedDirectories = {
+        keys = {
+          source = "/etc/ssh";
+          target = "/etc/ssh";
+        };
+      };
+    };
   };
 
   systemd.tmpfiles.rules = [ "f /dev/shm/looking-glass 0660 squid kvm -" ];

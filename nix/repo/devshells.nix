@@ -55,6 +55,11 @@ lib.mapAttrs (_: dev.mkShell) {
             command = "sudo nixos-rebuild boot --upgrade --flake $PRJ_ROOT $@";
           }
           {
+            name = "vm";
+            help = "Test configuration in a VM";
+            command = "sudo nixos-rebuild build-vm --flake $PRJ_ROOT $@";
+          }
+          {
             name = "test";
             help = "Test configuration";
             command = "sudo nixos-rebuild test --flake $PRJ_ROOT $@";
@@ -68,6 +73,11 @@ lib.mapAttrs (_: dev.mkShell) {
             name = "check";
             help = "Check flake";
             command = "nix flake check $PRJ_ROOT $@";
+          }
+          {
+            name = "gc";
+            help = "Garbage collection";
+            command = "sudo nix-collect-garbage $@";
           }
         ])
       ];

@@ -1,4 +1,5 @@
 result
+*.qcow2
 .bin
 .cache
 .config
