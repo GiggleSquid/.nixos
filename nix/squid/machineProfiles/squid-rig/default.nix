@@ -14,7 +14,7 @@ in
       source_directories = [ "/home" ];
       exclude_patterns = [ "*/.cache" ];
       exclude_caches = true;
-      keep_within = "24H";
+      keep_within = "48H";
       keep_daily = 7;
       repositories = [
         {
@@ -34,7 +34,7 @@ in
       wantedBy = [ "timers.target" ];
       timerConfig = {
         Unit = "borgmatic.service";
-        OnCalendar = "0/3:00";
+        OnCalendar = "0/6:00";
         Persistent = true;
         RandomizedDelaySec = "15m";
       };
