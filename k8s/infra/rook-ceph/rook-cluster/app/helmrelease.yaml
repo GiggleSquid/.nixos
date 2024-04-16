@@ -1,0 +1,33 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: rook-cluster
+  namespace: rook-ceph
+spec:
+  chart:
+    spec:
+      chart: rook/rook-ceph-cluster
+      reconcileStrategy: ChartVersion
+      sourceRef:
+        kind: HelmRepository
+        name: rook-ceph
+      version: 1.14.0
+  driftDetection:
+    mode: enabled
+  interval: 1m0s
+  values:
+    storage:
+      useAllNodes: true
+      useAllDevices: true
+      deviceFilter: sda
+      config:
+        databaseSizeMB: "1024"
+    dashboard:
+      ssl: false
+    ingress:
+      dashboard:
+        annotations:
+          kubernetes.io/ingress.class: caddy
+          caddy.ingress.kubernetes.io/disable-ssl-redirect: "true"
+        host:
+          name: rook.cephalonetes.lan.gigglesquid.tech
