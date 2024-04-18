@@ -26,6 +26,7 @@ lib.mapAttrs (_: dev.mkShell) {
         (builtins.map hexagon [
           { package = colmena.packages.colmena; }
           { package = nixpkgs.sops; }
+          { package = nixpkgs.ssh-to-age; }
           { package = nixpkgs.kubectl; }
           { package = nixpkgs.fluxcd; }
           {
@@ -40,6 +41,14 @@ lib.mapAttrs (_: dev.mkShell) {
             help = "Write a minimal proxmox vm image to disk";
             command = ''
               nixos-generate --flake "$PRJ_ROOT"#pupae -f proxmox $@
+            '';
+          }
+          {
+            name = "get-age";
+            help = "Convert ssh ed25519 pub key (from ssh-keyscan) to age";
+            command = ''
+              read -p "Remote machine IP/domain: " remote
+              ssh-keyscan $remote | ssh-to-age $@
             '';
           }
         ])
