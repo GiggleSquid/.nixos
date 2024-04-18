@@ -14,7 +14,7 @@ spec:
       version: 1.14.0
   driftDetection:
     mode: enabled
-  interval: 1m0s
+  interval: 10m0s
   values:
     storage:
       useAllNodes: true

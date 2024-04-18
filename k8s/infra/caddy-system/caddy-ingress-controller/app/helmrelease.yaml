@@ -4,7 +4,7 @@ metadata:
   name: caddy-ingress-controller
   namespace: caddy-system
 spec:
-  interval: 1m0s
+  interval: 10m0s
   url: https://caddyserver.github.io/ingress
 ---
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
@@ -27,4 +27,4 @@ spec:
     loadBalancer:
       annotations:
         kube-vip.io/loadbalancerIPs: 10.10.4.10
-  interval: 1m0s
+  interval: 10m0s
