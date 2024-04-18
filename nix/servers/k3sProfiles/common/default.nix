@@ -15,8 +15,12 @@ in
         10250
         80
         443
+        53
       ];
-      allowedUDPPorts = [ 51820 ];
+      allowedUDPPorts = [
+        53
+        51820
+      ];
     };
   };
 
