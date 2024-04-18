@@ -6,7 +6,7 @@ metadata:
 spec:
   chart:
     spec:
-      chart: rook/rook-ceph-cluster
+      chart: rook-ceph-cluster
       reconcileStrategy: ChartVersion
       sourceRef:
         kind: HelmRepository

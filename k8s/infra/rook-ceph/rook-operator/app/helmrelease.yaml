@@ -15,7 +15,7 @@ metadata:
 spec:
   chart:
     spec:
-      chart: rook/rook-ceph
+      chart: rook-ceph
       reconcileStrategy: ChartVersion
       sourceRef:
         kind: HelmRepository
