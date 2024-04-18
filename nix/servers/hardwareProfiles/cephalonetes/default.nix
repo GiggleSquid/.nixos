@@ -38,6 +38,7 @@ in
       "kvm-intel"
       "nf_conntrack"
       "br_netfilter"
+      "overlay"
       "iptable_nat"
       "iptable_filter"
       "ip_vs"
