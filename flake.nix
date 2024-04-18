@@ -27,6 +27,9 @@
           [
             (devshells "devshells")
 
+            (pkgs "pkgs")
+            (pkgs "overlays")
+
             (functions "nixosModules")
             (functions "homeModules")
 
