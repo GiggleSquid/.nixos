@@ -33,15 +33,14 @@
             (functions "nixosSuites")
             (functions "homeSuites")
             (functions "serverSuites")
-            (functions "rke2Suites")
+            (functions "k3sSuites")
 
             (functions "machineProfiles")
             (functions "hardwareProfiles")
             (functions "nixosProfiles")
             (functions "userProfiles")
             (functions "homeProfiles")
-            (functions "rke2Profiles")
-            (functions "rke2Manifests")
+            (functions "k3sProfiles")
 
             nixosConfigurations
             colmenaConfigurations

@@ -15,12 +15,12 @@ keys:
   - &ns-root age17fhjh5pvuph39spz8d3x445gajfw4h0cq3t2mj29l83y6tlazg9sqpkdvu
   - &ns1 age1ukvapr6llvuw6yddkr3srcnpkhj4r0hyhup0yj0ft80lmutwcdeqyq7j7f
     
-  - &cephalonetes-server-1 age13yyayp56jjnjk2qsk3380jcu82dftwgpsteyr7x0kaghzvdxvsrq2hwl4q
-  - &cephalonetes-server-2 age10nt49epgyctvee5lsq506cyczaykn58nlu3r3cpmjkrhjfje2ses7hgp85
-  - &cephalonetes-server-3 age1qqvgcagxzt5q02tweg7qwz3x40p0h3jguwqphfhpfkv0pxmg3y7qkwp0q5
-  - &cephalonetes-agent-1 age19l9at5nxnrf504vac3wd6hgdacl7m8cyvd7aqmq43tt48hz5k9tsjnfs9s
-  - &cephalonetes-agent-2 age1wzu8fm2zuwxu8sa6ldjxgtjalfvgy9wswpy79vwaw23ly9frl36smf4sme
-  - &cephalonetes-agent-3 age195ehdg77mrxpce8ma5fxn9tzrdka5zcrqvhcd6jg9ducq703ws0qs0fjxw
+  - &cephalonetes-server-1 age1w5s8lhtfq0f3hra069r4932pxj0uqr84mejjud3frht2r03qsqpqlc6hqj
+  - &cephalonetes-server-2 age1sc206pwurdjckhzu0wl8kjp0zjh5vjjzkkz3wdytwn7r6ewq4uxqssrhvk
+  - &cephalonetes-server-3 age1k24hzj7ex73eh9gjj06dknq820340p22kz0g8kvf6t3u78evtd2spvpla8
+  - &cephalonetes-agent-1 age1sasmztr0pdkrzxk3r52srute5f8urwe7arqw32cgqhx92rdlrs4s09nd6p
+  - &cephalonetes-agent-2 age1vpup0de9aa8au4cqe5jats30gkffhu4cev8wme92zmp7rujy7grscrq0u7
+  - &cephalonetes-agent-3 age1a0ermfdm9x7fu4hps6gft9k7hgl5nk8qenwlrlkqz36c0w4mcvvq63ue0d
 
 creation_rules:
   - path_regex: sops/[^/]+\.yaml$

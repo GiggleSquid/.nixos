@@ -10,19 +10,13 @@ in
       enable = true;
       allowedTCPPorts = [
         6443
-        9345
         2379
         2380
-        2381
-        9099
         10250
         80
         443
       ];
-      allowedUDPPorts = [
-        8472
-        51820
-      ];
+      allowedUDPPorts = [ 51820 ];
     };
   };
 
@@ -36,11 +30,6 @@ in
     };
     qemuGuest.enable = true;
   };
-
-  # Longhorn uses nsenter for entering host namesoace,
-  # and nsenter uses the path of the namespaces that called it
-  # see: https://github.com/longhorn/longhorn/issues/2166
-  systemd.tmpfiles.rules = [ "L+ /usr/local/bin - - - - /run/current-system/sw/bin/" ];
 
   systemd.network = {
     enable = true;
@@ -58,7 +47,6 @@ in
   };
 
   environment.systemPackages = with nixpkgs; [
-    rke2
     kubectl
     ipvsadm
     nfs-utils

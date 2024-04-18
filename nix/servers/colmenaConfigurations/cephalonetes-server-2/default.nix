@@ -9,7 +9,7 @@ in
   deployment = common.deployment // {
     targetHost = "10.10.4.32";
     tags = (common.deployment.tags) ++ [
-      "rke2"
+      "k3s"
       "cluster"
       "cluster-server"
       "cephalonetes"

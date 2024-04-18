@@ -1,7 +1,7 @@
 { inputs, cell }:
 let
   inherit (inputs) common nixpkgs self;
-  inherit (cell) hardwareProfiles rke2Suites;
+  inherit (cell) hardwareProfiles k3sSuites;
   inherit (inputs.cells.squid) nixosSuites homeSuites;
   lib = nixpkgs.lib // builtins;
 in
@@ -38,7 +38,7 @@ in
     let
       profiles = [ hardwareProfiles.cephalonetes ];
       suites =
-        with rke2Suites;
+        with k3sSuites;
         lib.concatLists [
           nixosSuites.server
           agent-suite

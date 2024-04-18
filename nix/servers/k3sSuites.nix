@@ -1,8 +1,8 @@
 { inputs, cell }:
 let
-  inherit (cell) rke2Profiles;
+  inherit (cell) k3sProfiles;
 in
-with rke2Profiles;
+with k3sProfiles;
 rec {
   base = [ common ];
 

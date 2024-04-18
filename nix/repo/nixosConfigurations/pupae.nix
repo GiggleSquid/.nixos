@@ -1,7 +1,7 @@
 { inputs }:
 let
   inherit (inputs) common nixpkgs;
-  inherit (inputs.cells.servers) hardwareProfiles rke2Profiles;
+  inherit (inputs.cells.servers) hardwareProfiles k3sProfiles;
   inherit (inputs.cells.squid) nixosSuites;
   lib = nixpkgs.lib // builtins;
   hostName = "nixos-vm";
@@ -16,7 +16,7 @@ in
     let
       profiles = [
         hardwareProfiles.cephalonetes
-        rke2Profiles.common
+        k3sProfiles.common
       ];
       suites = with nixosSuites; larva;
     in

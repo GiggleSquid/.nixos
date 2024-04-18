@@ -12,7 +12,7 @@
 [![Fluxcd](https://img.shields.io/badge/fluxcd-flux-f5a97f?style=for-the-badge&logo=flux&labelColor=363a4f)](https://fluxcd.io)
 
 My personal [NixOS](https://nixos.org) config.
-Also handles my [RKE2](https://docs.rke2.io/) cluster via [Fluxcd](https://fluxcd.io).
+Also handles my [K3s](https://docs.k3s.io/) cluster via [Fluxcd](https://fluxcd.io).
 
 Feel free to use this repo as inspiration, but be aware
 - I am still learning Nix
