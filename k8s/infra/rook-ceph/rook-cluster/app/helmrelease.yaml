@@ -25,10 +25,27 @@ spec:
     cephClusterSpec:
       dashboard:
         ssl: false
-    ingress:
-      dashboard:
-        annotations:
-          kubernetes.io/ingress.class: caddy
-          caddy.ingress.kubernetes.io/disable-ssl-redirect: "true"
-        host:
-          name: rook.cephalonetes.lan.gigglesquid.tech
+---
+# Because: https://github.com/caddyserver/ingress/issues/211
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: rook-ceph-dashboard
+  namespace: rook-ceph
+  annotations: 
+    caddy.ingress.kubernetes.io/disable-ssl-redirect: "true"
+    kubernetes.io/ingress.class: caddy
+    meta.helm.sh/release-name: rook-cluste
+    rmeta.helm.sh/release-namespace: rook-ceph
+spec:
+  rules:
+  - host: rook.cephalonetes.lan.gigglesquid.tech
+    http:
+      paths:
+      - backend:
+          service:
+            name: rook-ceph-mgr-dashboard
+            port:
+              number: 7000
+        path: /
+        pathType: Prefix
