@@ -25,6 +25,7 @@ spec:
     mode: enabled
   interval: 1m0s
   values:
+    enableDiscoveryDaemon: true
     csi:
       csiRBDPluginVolume:
        - name: lib-modules
