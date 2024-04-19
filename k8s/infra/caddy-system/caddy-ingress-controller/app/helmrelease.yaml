@@ -27,4 +27,8 @@ spec:
     loadBalancer:
       annotations:
         kube-vip.io/loadbalancerIPs: 10.10.4.10
+    ingressController:
+      config:
+        acmeCA: https://acme-staging-v02.api.letsencrypt.org/directory
+        email: jack.connors@protonmail.com
   interval: 10m0s
