@@ -23,6 +23,10 @@ spec:
       config:
         databaseSizeMB: "1024"
     cephClusterSpec:
+      mgr:
+        modules:
+          - name: rook
+            enabled: true
       dashboard:
         ssl: false
 ---
