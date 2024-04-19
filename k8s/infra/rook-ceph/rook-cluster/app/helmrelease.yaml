@@ -22,8 +22,9 @@ spec:
       deviceFilter: sda
       config:
         databaseSizeMB: "1024"
-    dashboard:
-      ssl: false
+    cephClusterSpec:
+      dashboard:
+        ssl: false
     ingress:
       dashboard:
         annotations:
