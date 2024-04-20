@@ -11,7 +11,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: rook-ceph
-      version: 1.14.0
+      version: 1.14.2
   driftDetection:
     mode: enabled
   interval: 10m0s
@@ -28,6 +28,7 @@ spec:
           - name: rook
             enabled: true
       dashboard:
+        enabled: true
         ssl: false
 ---
 # Because: https://github.com/caddyserver/ingress/issues/211
