@@ -33,7 +33,7 @@ in
     #https://github.com/NixOS/nixpkgs/issues/159267#issuecomment-1037372237
     (writeShellApplication {
       name = "discord";
-      text = "${pkgs.discord}/bin/discord --use-gl=desktop";
+      text = "${nixpkgs.discord}/bin/discord --use-gl=desktop";
     })
     (makeDesktopItem {
       name = "discord";
