@@ -18,6 +18,7 @@ in
     starsector
     bitwarden
     vorta
+    steam-run
     (writeShellApplication {
       name = "jellyfin-media-player";
       text = "${nixpkgs.jellyfin-media-player}/bin/jellyfinmediaplayer --disable-gpu";
