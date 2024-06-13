@@ -31,6 +31,7 @@ rec {
     userProfiles.squid
     pipewire
     networking
+    libreoffice
   ];
 
   desktop = pc ++ [

@@ -7,7 +7,6 @@ in
     kdePackages.filelight
     kdePackages.kcalc
     isoimagewriter
-    libreoffice
     prismlauncher
     prusa-slicer
     qbittorrent
