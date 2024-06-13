@@ -39,7 +39,7 @@ in
     enable = true;
     networks = {
       "10-lan" = {
-        matchConfig.Name = "enp6s18";
+        matchConfig.Name = "en*";
         networkConfig = {
           DHCP = "no";
         };
