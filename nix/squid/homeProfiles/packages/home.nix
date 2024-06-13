@@ -13,12 +13,20 @@ in
     gimp
     gridcoin-research
     inkscape
-    jellyfin-media-player
     monero-gui
     vintagestory
     starsector
     bitwarden
     vorta
+    (writeShellApplication {
+      name = "jellyfin-media-player";
+      text = "${nixpkgs.jellyfin-media-player}/bin/jellyfinmediaplayer --disable-gpu";
+    })
+    (makeDesktopItem {
+      name = "jellyfin-media-player";
+      exec = "jellyfin-media-player";
+      desktopName = "Jellyfin Media Player";
+    })
 
     #https://github.com/NixOS/nixpkgs/issues/159267#issuecomment-1037372237
     (writeShellApplication {
