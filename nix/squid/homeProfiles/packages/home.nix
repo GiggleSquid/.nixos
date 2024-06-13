@@ -19,6 +19,7 @@ in
     bitwarden
     vorta
     steam-run
+    vlc
     (writeShellApplication {
       name = "jellyfin-media-player";
       text = "${nixpkgs.jellyfin-media-player}/bin/jellyfinmediaplayer --disable-gpu";
