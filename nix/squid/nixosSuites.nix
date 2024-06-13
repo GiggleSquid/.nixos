@@ -32,6 +32,7 @@ rec {
     pipewire
     networking
     libreoffice
+    lazygit
   ];
 
   desktop = pc ++ [
