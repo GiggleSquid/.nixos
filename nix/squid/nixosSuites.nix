@@ -6,8 +6,6 @@ with nixosProfiles;
 rec {
   base = [
     core
-    fonts
-    gpg
     fish
     nixosModules.sops
     userProfiles.root
@@ -28,6 +26,8 @@ rec {
   plasma6 = [ nixosProfiles.plasma6 ];
 
   pc = base ++ [
+    fonts
+    gpg
     userProfiles.squid
     pipewire
     networking
