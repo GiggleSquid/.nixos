@@ -1,5 +1,10 @@
+{ inputs }:
+let
+  inherit (inputs) nixpkgs;
+in
 {
   services.k3s = {
+    package = nixpkgs.k3s_1_29;
     enable = true;
     clusterInit = true;
     role = "server";
