@@ -30,6 +30,7 @@ in
         "libvirtd"
         "boinc"
         "users"
+        "dialout"
       ];
       shell = nixpkgs.fish;
     };
