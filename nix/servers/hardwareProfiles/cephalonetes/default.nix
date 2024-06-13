@@ -28,6 +28,7 @@ in
       vmstatestorage = "cephalonas-vm-storage";
     };
     partitionTableType = "efi";
+    cloudInit.enable = false; # https://github.com/NixOS/nixpkgs/pull/307287/commits/fe35866a2e23e737ce9ae253bbb5c148ccf10778
   };
 
   inherit (common) hardware;
