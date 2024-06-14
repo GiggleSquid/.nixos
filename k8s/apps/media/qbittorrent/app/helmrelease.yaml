@@ -1,0 +1,127 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: qbittorrent
+  namespace: media
+spec:
+  interval: 10m
+  chart:
+    spec:
+      interval: 10m
+      chart: app-template
+      version: 3.2.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    controllers:
+      qbittorrent:
+        type: statefulset
+        pod:
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 568
+            runAsGroup: 1000
+            fsGroup: 1000
+            fsGroupChangePolicy: OnRootMismatch
+        containers:
+          app:
+            image:
+              repository: ghcr.io/onedr0p/qbittorrent
+              tag: "4.6.5"
+            env:
+              TZ: Europe/London
+              QBITTORRENT__PORT: &port 80
+              QBITTORRENT__BT_PORT: &bittorrentPort 61022
+              QBT_Application__MemoryWorkingSetLimit:
+                valueFrom:
+                  resourceFieldRef:
+                    resource: limits.memory
+                    containerName: app
+                    divisor: 1Mi
+              QBT_Preferences__WebUI__AlternativeUIEnabled: false
+              QBT_Preferences__WebUI__AuthSubnetWhitelistEnabled: true
+              QBT_Preferences__WebUI__AuthSubnetWhitelist: |-
+                10.10.10.0/24
+              QBT_Preferences__WebUI__LocalHostAuth: false
+              QBT_Preferences__WebUI__UseUPNP: false
+              QBT_BitTorrent__Session__Interface: eth0
+              QBT_BitTorrent__Session__InterfaceAddress:
+                valueFrom:
+                  fieldRef:
+                    fieldPath: status.podIP
+              QBT_BitTorrent__Session__InterfaceName: eth0
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: {drop: ["ALL"]}
+            resources:
+              requests:
+                cpu: 50m
+                memory: 500Mi
+              limits:
+                memory: 8152Mi
+        statefulset:
+          volumeClaimTemplates:
+            - name: config
+              accessMode: ReadWriteOnce
+              size: 10Gi
+              storageClass: ceph-block
+              globalMounts:
+                - path: /config
+    persistence:
+          downloads:
+            type: nfs
+            server: cephalonas.lan.gigglesquid.tech
+            path: /mnt/main/media/torrents/downloads
+            globalMounts:
+              - path: /torrents/downloads
+          torrents:
+            type: nfs
+            server: cephalonas.lan.gigglesquid.tech
+            path: /mnt/main/media/torrents
+            globalMounts:
+              - path: /torrents
+    service:
+      app:
+        controller: qbittorrent
+        ports:
+          http:
+            port: *port
+      bittorrent:
+        controller: qbittorrent
+        type: LoadBalancer
+        annotations:
+          kube-vip.io/loadbalancerIPs: 10.10.4.20
+        externalTrafficPolicy: Local
+        ports:
+          bittorrent-tcp:
+            enabled: true
+            port: *bittorrentPort
+            protocol: TCP
+          bittorrent-udp:
+            port: *bittorrentPort
+            protocol: UDP
+    ingress:
+      main:
+        enabled: true
+        annotations: 
+          caddy.ingress.kubernetes.io/disable-ssl-redirect: "true"
+          kubernetes.io/ingress.class: caddy
+        hosts:
+        - host: qbittorrent.cephalonetes.lan.gigglesquid.tech
+          paths:
+          - path: /
+            pathType: Prefix
+            service:
+              name: qbittorrent-app
+              port: *port
