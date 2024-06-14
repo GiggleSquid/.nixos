@@ -4,7 +4,7 @@ metadata:
   creationTimestamp: null
   labels:
     app.kubernetes.io/name: kube-vip-ds
-    app.kubernetes.io/version: v0.7.2
+    app.kubernetes.io/version: v0.8.0
   name: kube-vip-ds
   namespace: kube-system
 spec:
@@ -16,7 +16,7 @@ spec:
       creationTimestamp: null
       labels:
         app.kubernetes.io/name: kube-vip-ds
-        app.kubernetes.io/version: v0.7.2
+        app.kubernetes.io/version: v0.8.0
     spec:
       affinity:
         nodeAffinity:
@@ -36,6 +36,10 @@ spec:
           value: "true"
         - name: port
           value: "6443"
+        - name: vip_nodename
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
         - name: vip_interface
           value: enp6s18
         - name: vip_cidr
@@ -66,8 +70,8 @@ spec:
           value: 10.10.4.30
         - name: prometheus_server
           value: :2112
-        image: ghcr.io/kube-vip/kube-vip:v0.7.2
-        imagePullPolicy: Always
+        image: ghcr.io/kube-vip/kube-vip:v0.8.0
+        imagePullPolicy: IfNotPresent
         name: kube-vip
         resources: {}
         securityContext:
