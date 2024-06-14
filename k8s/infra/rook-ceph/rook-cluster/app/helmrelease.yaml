@@ -10,7 +10,7 @@ spec:
       reconcileStrategy: ChartVersion
       sourceRef:
         kind: HelmRepository
-        name: rook-ceph
+        name: rook-ceph-charts
       version: 1.14.6
   driftDetection:
     mode: enabled
