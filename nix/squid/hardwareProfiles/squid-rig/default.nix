@@ -16,6 +16,22 @@ in
   ];
 
   inherit (commonNvidia) hardware;
+  hardware = {
+    printers = {
+      ensureDefaultPrinter = "Brother_DCP-L2510D";
+      ensurePrinters = [
+        {
+          name = "Brother_DCP-L2510D";
+          location = "Home";
+          deviceUri = "usb://Brother/DCP-L2510D%20series?serial=E78299J7N136122";
+          model = "drv:///brlaser.drv/brl2520d.ppd";
+          ppdOptions = {
+            PageSize = "A4";
+          };
+        }
+      ];
+    };
+  };
 
   boot = {
     kernelPackages = nixpkgs.linuxPackages_latest;

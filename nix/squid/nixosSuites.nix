@@ -33,6 +33,7 @@ rec {
     networking
     libreoffice
     lazygit
+    printing
   ];
 
   desktop = pc ++ [
