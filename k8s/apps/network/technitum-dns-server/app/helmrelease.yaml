@@ -1,0 +1,119 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: technitum-dns-server
+  namespace: network
+spec:
+  interval: 10m
+  chart:
+    spec:
+      interval: 10m
+      chart: app-template
+      version: 3.2.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    controllers:
+      technitium-dns-server:
+        type: statefulset
+        replicas: 3
+        strategy: RollingUpdate
+        pod:
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 2000
+            runAsGroup: 2000
+            fsGroup: 2000
+            fsGroupChangePolicy: OnRootMismatch
+        containers:
+          app:
+            image:
+              repository: docker.io/technitium/dns-server
+              tag: "12.1"
+            env:
+              TZ: Europe/London
+              DNS_SERVER_WEB_SERVICE_HTTP_PORT: &port 80
+              DNS_SERVER_RECURSION: AllowOnlyForPrivateNetworks
+              
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: {drop: ["ALL"]}
+            resources:
+              requests:
+                cpu: 25m
+                memory: 400Mi
+              limits:
+                memory: 512Mi
+        statefulset:
+          volumeClaimTemplates:
+            - name: config
+              accessMode: ReadWriteOnce
+              size: 10Gi
+              storageClass: ceph-block
+              globalMounts:
+                - path: /etc/dns
+    service:
+      app:
+        controller: technitium-dns-server
+        ports:
+          http:
+            port: *port
+          technitium-dns-tcp:
+            enabled: true
+            port: 53
+            protocol: TCP
+          technitium-dns-udp:
+            port: 53
+            protocol: UDP
+      
+    ingress:
+      main-0:
+        enabled: true
+        annotations: 
+          caddy.ingress.kubernetes.io/disable-ssl-redirect: "true"
+          kubernetes.io/ingress.class: caddy
+        hosts:
+        - host: ns-root.dns.cephalonetes.lan.gigglesquid.tech
+          paths:
+          - path: /
+            pathType: Prefix
+            service:
+              name: technitium-dns-server-0
+              port: *port
+      main-1:
+        enabled: true
+        annotations: 
+          caddy.ingress.kubernetes.io/disable-ssl-redirect: "true"
+          kubernetes.io/ingress.class: caddy
+        hosts:
+        - host: ns-1.dns.cephalonetes.lan.gigglesquid.tech
+          paths:
+          - path: /
+            pathType: Prefix
+            service:
+              name: technitium-dns-server-1
+              port: *port
+      main-2:
+        enabled: true
+        annotations: 
+          caddy.ingress.kubernetes.io/disable-ssl-redirect: "true"
+          kubernetes.io/ingress.class: caddy
+        hosts:
+        - host: ns-2.dns.cephalonetes.lan.gigglesquid.tech
+          paths:
+          - path: /
+            pathType: Prefix
+            service:
+              name: technitium-dns-server-2
+              port: *port
