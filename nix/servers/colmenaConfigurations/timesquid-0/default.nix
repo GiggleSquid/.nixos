@@ -1,13 +1,16 @@
 { inputs, cell }:
 let
-  inherit (inputs) common;
+  inherit (inputs) rpi;
 in
 {
   imports = [ cell.nixosConfigurations.timesquid-0 ];
-  inherit (common) bee;
+  inherit (rpi) bee;
 
-  deployment = common.deployment // {
+  deployment = rpi.deployment // {
     targetHost = "10.10.3.5";
-    tags = (common.deployment.tags) ++ [ "ntp" ];
+    tags = (rpi.deployment.tags) ++ [
+      "ntp"
+      "timesquid-0"
+    ];
   };
 }

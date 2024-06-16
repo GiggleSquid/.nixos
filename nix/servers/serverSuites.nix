@@ -6,7 +6,10 @@ with nixosProfiles;
 rec {
   base = [ common ];
 
-  ntp-server = base ++ [ chrony ];
+  ntp-server = [
+    common-rpi
+    chrony
+  ];
 
   dns-server = [ technitium ];
 

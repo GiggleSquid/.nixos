@@ -1,22 +1,51 @@
-{ inputs, cell }:
+{
+  inputs,
+  cell,
+  config,
+}:
 let
-  inherit (inputs) common nixpkgs;
+  inherit (inputs) rpi nixpkgs self;
   inherit (cell) machineProfiles hardwareProfiles serverSuites;
   inherit (inputs.cells.squid) nixosSuites homeSuites;
   lib = nixpkgs.lib // builtins;
   hostName = "timesquid-0";
 in
 {
-  inherit (common) bee time;
+
+  sops.secrets.wifi_env = {
+    sopsFile = "${self}/sops/squid-rig.yaml";
+  };
+
+  inherit (rpi) bee time;
   networking = {
     inherit hostName;
     domain = "lan.gigglesquid.tech";
+    # wireless = {
+    #   enable = true;
+    #   environmentFile = config.sops.secrets.wifi_env.path;
+    #   networks = {
+    #     "@WIFI_SSID@" = {
+    #       psk = "@WIFI_PSK@";
+    #     };
+    #   };
+    # };
+  };
+
+  systemd.network = {
+    networks = {
+      "10-lan" = {
+        networkConfig = {
+          Address = "10.10.3.5/24";
+          Gateway = "10.10.3.1";
+        };
+      };
+    };
   };
 
   imports =
     let
       profiles = [
-        hardwareProfiles.servers
+        hardwareProfiles.servers-rpi
         machineProfiles.timesquid-0
       ];
       suites =
