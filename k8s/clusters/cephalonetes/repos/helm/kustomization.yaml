@@ -5,3 +5,4 @@ resources:
   - ./bjw-s-charts.yaml
   - ./caddy-ingress-controller-charts.yaml
   - ./rook-ceph-charts.yaml
+  - ./multus-charts.yaml
