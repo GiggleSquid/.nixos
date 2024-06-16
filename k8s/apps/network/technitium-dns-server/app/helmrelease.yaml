@@ -27,6 +27,14 @@ spec:
       server-root:
         type: statefulset
         pod:
+          annotations:
+            k8s.v1.cni.cncf.io/networks: |
+              [{
+                "name": "multus-services",
+                "namespace": "network",
+                "ips": ["10.10.5.10/24"],
+                "gateway": [ "10.10.5.1" ]
+              }]
           securityContext:
             runAsNonRoot: true
             runAsUser: 2000
@@ -64,6 +72,14 @@ spec:
       server-1:
         type: statefulset
         pod:
+          annotations:
+            k8s.v1.cni.cncf.io/networks: |
+              [{
+                "name": "multus-services",
+                "namespace": "network",
+                "ips": ["10.10.5.11/24"],
+                "gateway": [ "10.10.5.1" ]
+              }]
           securityContext:
             runAsNonRoot: true
             runAsUser: 2000
@@ -101,6 +117,14 @@ spec:
       server-2:
         type: statefulset
         pod:
+          annotations:
+            k8s.v1.cni.cncf.io/networks: |
+              [{
+                "name": "multus-services",
+                "namespace": "network",
+                "ips": ["10.10.5.12/24"],
+                "gateway": [ "10.10.5.1" ]
+              }]
           securityContext:
             runAsNonRoot: true
             runAsUser: 2000
