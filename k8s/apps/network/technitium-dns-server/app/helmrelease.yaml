@@ -138,10 +138,6 @@ spec:
     service:
       server-root:
         controller: server-root
-        type: LoadBalancer
-        annotations:
-          kube-vip.io/loadbalancerIPs: 10.10.5.10
-        externalTrafficPolicy: Local
         ports:
           http:
             port: *port
@@ -154,10 +150,6 @@ spec:
             protocol: UDP
       server-1:
         controller: server-1
-        type: LoadBalancer
-        annotations:
-          kube-vip.io/loadbalancerIPs: 10.10.5.11
-        externalTrafficPolicy: Local
         ports:
           http:
             port: *port
@@ -170,10 +162,6 @@ spec:
             protocol: UDP
       server-2:
         controller: server-2
-        type: LoadBalancer
-        annotations:
-          kube-vip.io/loadbalancerIPs: 10.10.5.12
-        externalTrafficPolicy: Local
         ports:
           http:
             port: *port
@@ -184,3 +172,44 @@ spec:
           technitium-dns-udp:
             port: 53
             protocol: UDP
+      
+    ingress:
+      server-root:
+        enabled: true
+        annotations: 
+          caddy.ingress.kubernetes.io/disable-ssl-redirect: "true"
+          kubernetes.io/ingress.class: caddy
+        hosts:
+        - host: ns-root.dns.cephalonetes.lan.gigglesquid.tech
+          paths:
+          - path: /
+            pathType: Prefix
+            service:
+              name: technitium-dns-server-server-root
+              port: *port
+      server-1:
+        enabled: true
+        annotations: 
+          caddy.ingress.kubernetes.io/disable-ssl-redirect: "true"
+          kubernetes.io/ingress.class: caddy
+        hosts:
+        - host: ns-1.dns.cephalonetes.lan.gigglesquid.tech
+          paths:
+          - path: /
+            pathType: Prefix
+            service:
+              name: technitium-dns-server-server-1
+              port: *port
+      server-2:
+        enabled: true
+        annotations: 
+          caddy.ingress.kubernetes.io/disable-ssl-redirect: "true"
+          kubernetes.io/ingress.class: caddy
+        hosts:
+        - host: ns-2.dns.cephalonetes.lan.gigglesquid.tech
+          paths:
+          - path: /
+            pathType: Prefix
+            service:
+              name: technitium-dns-server-server-2
+              port: *port
