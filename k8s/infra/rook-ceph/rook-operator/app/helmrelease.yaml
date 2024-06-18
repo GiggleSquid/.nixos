@@ -19,6 +19,7 @@ spec:
     enableDiscoveryDaemon: true
     discoveryDaemonInterval: 60m
     csi:
+      enableCephfsDriver: false
       csiRBDPluginVolume:
        - name: lib-modules
          hostPath:
