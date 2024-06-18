@@ -29,6 +29,7 @@ lib.mapAttrs (_: dev.mkShell) {
           { package = nixpkgs.sops; }
           { package = nixpkgs.ssh-to-age; }
           { package = nixpkgs.kubectl; }
+          { package = nixpkgs.kube-capacity; }
           { package = nixpkgs.fluxcd; }
           {
             name = "larva";
