@@ -33,6 +33,8 @@ in
     };
   };
 
+  services.printing.drivers = [ nixpkgs.brlaser ];
+
   boot = {
     kernelPackages = nixpkgs.linuxPackages_latest;
     extraModulePackages = [ nixpkgs.linuxPackages_latest.nvidia_x11 ];

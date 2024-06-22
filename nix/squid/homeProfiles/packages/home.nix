@@ -6,6 +6,7 @@ in
   packages = with nixpkgs; [
     kdePackages.filelight
     kdePackages.kcalc
+    kdePackages.skanpage
     isoimagewriter
     prismlauncher
     prusa-slicer

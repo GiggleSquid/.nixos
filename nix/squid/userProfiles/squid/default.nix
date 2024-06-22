@@ -31,6 +31,8 @@ in
         "boinc"
         "users"
         "dialout"
+        "scanner"
+        "lp"
       ];
       shell = nixpkgs.fish;
     };
