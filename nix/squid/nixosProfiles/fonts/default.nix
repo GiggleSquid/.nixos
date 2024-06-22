@@ -23,11 +23,11 @@ in
     fontconfig.defaultFonts = {
       serif = [
         "Iosevka Etoile"
-        "Sarasa"
+        "Sarasa Gothic CL"
       ];
       sansSerif = [
         "Iosevka Aile"
-        "Sarasa"
+        "Sarasa Gothic CL"
       ];
       monospace = [ "Iosevka SS14" ];
       emoji = [ "Noto Color Emoji" ];
