@@ -2,10 +2,6 @@
 let
   common = {
     hardware = {
-      opengl = {
-        driSupport = true;
-        driSupport32Bit = true;
-      };
       enableRedistributableFirmware = true;
     };
   };
@@ -15,11 +11,9 @@ let
         modesetting.enable = true;
         open = false;
         nvidiaSettings = true;
-        powerManagement.enable = true;
+        powerManagement.enable = false;
       };
-      opengl = {
-        driSupport = true;
-        driSupport32Bit = true;
+      graphics = {
         extraPackages = with inputs.nixpkgs; [
           nvidia-vaapi-driver
           libvdpau-va-gl
