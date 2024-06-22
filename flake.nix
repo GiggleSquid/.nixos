@@ -92,16 +92,6 @@
       inputs.home-manager.follows = "home-manager";
     };
 
-    # fenix = {
-    #   url = "github:nix-community/fenix";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
-
-    # rust-overlay = {
-    #   url = "github:oxalica/rust-overlay";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
-
     nixos-hardware = {
       url = "github:nixos/nixos-hardware";
     };

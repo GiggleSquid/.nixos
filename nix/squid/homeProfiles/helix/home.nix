@@ -10,7 +10,6 @@ in
     marksman
     taplo
     lua-language-server
-    # rust-analyzer
     yaml-language-server
   ];
 }
