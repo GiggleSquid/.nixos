@@ -1,28 +1,21 @@
 { inputs, cell }:
 let
-  inherit (inputs) nixpkgs;
+  inherit (inputs) nixpkgs nixos-hardware;
 in
 {
 
-  # Example usage with rke2 overlay
+  deviceTree = nixpkgs.callPackage nixos-hardware.apply-overlays-dtmerge { };
 
-  # rke2 = (
-  #   nixpkgs.callPackage "${nixpkgs.path}/pkgs/applications/networking/cluster/rke2" {
-  #     buildGoModule =
-  #       args:
-  #       nixpkgs.buildGo121Module (
-  #         args
-  #         // rec {
-  #           pname = "rke2";
-  #           version = "1.29.2+rke2r1";
-  #           src = nixpkgs.fetchFromGitHub {
-  #             owner = "rancher";
-  #             repo = pname;
-  #             rev = "v${version}";
-  #             hash = "sha256-rB4XqiFTW7y2CD2CRMkCGu3noHQZfibA7iKdXbAzqWY=";
-  #           };
-  #         }
-  #       );
-  #   }
-  # );
+  google-fonts = nixpkgs.google-fonts.overrideAttrs (
+    old: with nixpkgs; {
+      version = "unstable-2024-06-14";
+      src = fetchFromGitHub {
+        owner = "google";
+        repo = "fonts";
+        rev = "4d015b57411aa9dfddb89655670b3f2a2834419e";
+        hash = "sha256-5tKtUKIp9A8ipBhoaof+B28k8boppxnUm26uvi0k2UM=";
+      };
+    }
+  );
+
 }

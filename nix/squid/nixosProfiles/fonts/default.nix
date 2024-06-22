@@ -1,11 +1,12 @@
 { inputs, cell }:
 let
-  inherit (inputs) nixpkgs;
+  inherit (inputs.cells.toolchain) pkgs;
 in
 {
   fonts = {
     enableDefaultPackages = false;
-    packages = with nixpkgs; [
+    packages = with pkgs; [
+      google-fonts
       noto-fonts-emoji
       sarasa-gothic
       (iosevka-bin.override { variant = "Etoile"; })
@@ -15,6 +16,7 @@ in
         fonts = [
           "Iosevka"
           "IosevkaTerm"
+          "IosevkaTermSlab"
         ];
       })
     ];
