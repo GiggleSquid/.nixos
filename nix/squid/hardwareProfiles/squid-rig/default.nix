@@ -1,11 +1,10 @@
-{ inputs, cell }:
+{
+  inputs,
+  cell,
+  config,
+}:
 let
-  inherit (inputs)
-    commonNvidia
-    nixos-hardware
-    nixpkgs
-    self
-    ;
+  inherit (inputs) nixos-hardware nixpkgs;
 in
 {
   imports = with nixos-hardware.nixosModules; [
@@ -15,8 +14,15 @@ in
     common-gpu-nvidia-nonprime
   ];
 
-  inherit (commonNvidia) hardware;
   hardware = {
+    nvidia = {
+      modesetting.enable = true;
+      open = false;
+      nvidiaSettings = true;
+      powerManagement.enable = false;
+      # package = config.boot.kernelPackages.nvidiaPackages.beta;
+    };
+    enableRedistributableFirmware = true;
     printers = {
       ensureDefaultPrinter = "Brother_DCP-L2510D";
       ensurePrinters = [
@@ -37,16 +43,8 @@ in
 
   boot = {
     kernelPackages = nixpkgs.linuxPackages_latest;
-    extraModulePackages = [ nixpkgs.linuxPackages_latest.nvidia_x11 ];
     kernelModules = [ "kvm-intel" ];
-    loader = {
-      systemd-boot = {
-        enable = true;
-        consoleMode = "max";
-        configurationLimit = 10;
-      };
-      efi.canTouchEfiVariables = true;
-    };
+    extraModulePackages = [ config.boot.kernelPackages.nvidia_x11 ];
     initrd = {
       kernelModules = [
         "nvidia"
@@ -68,6 +66,17 @@ in
         "steam1".device = "/dev/disk/by-uuid/1841fb4d-de0c-4444-83ce-8401fff0311b";
       };
     };
+
+    loader = {
+      systemd-boot = {
+        enable = true;
+        consoleMode = "max";
+        configurationLimit = 10;
+      };
+      efi.canTouchEfiVariables = true;
+    };
+
+    binfmt.emulatedSystems = [ "aarch64-linux" ];
 
     plymouth = {
       enable = true;
