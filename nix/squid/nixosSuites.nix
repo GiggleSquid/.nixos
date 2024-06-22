@@ -34,6 +34,7 @@ rec {
     libreoffice
     lazygit
     printing
+    email
   ];
 
   desktop = pc ++ [
