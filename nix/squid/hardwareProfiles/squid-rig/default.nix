@@ -20,7 +20,7 @@ in
       open = false;
       nvidiaSettings = true;
       powerManagement.enable = false;
-      # package = config.boot.kernelPackages.nvidiaPackages.beta;
+      package = config.boot.kernelPackages.nvidiaPackages.beta;
     };
     enableRedistributableFirmware = true;
     printers = {
@@ -44,7 +44,7 @@ in
   boot = {
     kernelPackages = nixpkgs.linuxPackages_latest;
     kernelModules = [ "kvm-intel" ];
-    extraModulePackages = [ config.boot.kernelPackages.nvidia_x11 ];
+    extraModulePackages = [ config.boot.kernelPackages.nvidia_x11_beta ];
     initrd = {
       kernelModules = [
         "nvidia"
