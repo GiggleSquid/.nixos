@@ -15,10 +15,20 @@ in
   systemd.network = {
     networks = {
       "10-lan" = {
+        matchConfig.Name = lib.mkForce "en*18";
         networkConfig = {
           Address = "10.10.4.42/24";
           Gateway = "10.10.4.1";
         };
+      };
+      "20-lan" = {
+        matchConfig.Name = "en*19";
+        networkConfig = {
+          Address = "10.10.5.42/24";
+          Gateway = "10.10.5.1";
+          DHCP = "no";
+        };
+        dns = [ "10.10.5.1" ];
       };
     };
   };
