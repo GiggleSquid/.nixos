@@ -31,6 +31,6 @@ rec {
 
   plasma6 = gui ++ [
     homeModules.plasma-manager
-    plasma-manager
+    # plasma-manager
   ];
 }
