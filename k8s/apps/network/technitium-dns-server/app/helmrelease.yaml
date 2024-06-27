@@ -45,7 +45,7 @@ spec:
           app:
             image:
               repository: docker.io/technitium/dns-server
-              tag: "12.1"
+              tag: &image_version 12.1
             env:
               TZ: Europe/London
               DNS_SERVER_WEB_SERVICE_HTTP_PORT: &port 80
@@ -90,10 +90,10 @@ spec:
           app:
             image:
               repository: docker.io/technitium/dns-server
-              tag: "12.1"
+              tag: *image_version
             env:
               TZ: Europe/London
-              DNS_SERVER_WEB_SERVICE_HTTP_PORT: &port 80
+              DNS_SERVER_WEB_SERVICE_HTTP_PORT: *port
               DNS_SERVER_RECURSION: AllowOnlyForPrivateNetworks
               
             securityContext:
@@ -135,10 +135,10 @@ spec:
           app:
             image:
               repository: docker.io/technitium/dns-server
-              tag: "12.1"
+              tag: *image_version
             env:
               TZ: Europe/London
-              DNS_SERVER_WEB_SERVICE_HTTP_PORT: &port 80
+              DNS_SERVER_WEB_SERVICE_HTTP_PORT: *port
               DNS_SERVER_RECURSION: AllowOnlyForPrivateNetworks
               
             securityContext:
