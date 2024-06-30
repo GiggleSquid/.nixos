@@ -11,17 +11,11 @@ in
     common-pc
     common-pc-ssd
     common-cpu-intel-cpu-only
-    common-gpu-nvidia-nonprime
+    common-gpu-amd
   ];
 
   hardware = {
-    nvidia = {
-      modesetting.enable = true;
-      open = false;
-      nvidiaSettings = true;
-      powerManagement.enable = false;
-      package = config.boot.kernelPackages.nvidiaPackages.beta;
-    };
+    graphics.enable = true;
     enableRedistributableFirmware = true;
     printers = {
       ensureDefaultPrinter = "Brother_DCP-L2510D";
@@ -44,14 +38,7 @@ in
   boot = {
     kernelPackages = nixpkgs.linuxPackages_latest;
     kernelModules = [ "kvm-intel" ];
-    extraModulePackages = [ config.boot.kernelPackages.nvidia_x11_beta ];
     initrd = {
-      kernelModules = [
-        "nvidia"
-        "nvidia_modeset"
-        "nvidia_uvm"
-        "nvidia_drm"
-      ];
       availableKernelModules = [
         "ahci"
         "xhci_pci"

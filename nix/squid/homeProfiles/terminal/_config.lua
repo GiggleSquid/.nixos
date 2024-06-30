@@ -14,7 +14,11 @@ local gpus = wezterm.gui.enumerate_gpus()
     front_end = 'WebGpu',
     window_decorations = 'TITLE | RESIZE',
     enable_wayland =  true,
-    webgpu_preferred_adapter = gpus[2],
+    webgpu_preferred_adapter = {
+      backend = 'Vulkan',
+      device_type = 'DiscreteGpu',
+      name = 'AMD Radeon RX 7800 XT (RADV NAVI32)',
+    }
   }
   config.keys = {
    {
