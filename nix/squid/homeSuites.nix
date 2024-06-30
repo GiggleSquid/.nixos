@@ -29,8 +29,5 @@ rec {
     helix
   ];
 
-  plasma6 = gui ++ [
-    homeModules.plasma-manager
-    # plasma-manager
-  ];
+  plasma6 = gui ++ [ ];
 }
