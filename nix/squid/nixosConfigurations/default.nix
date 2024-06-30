@@ -3,7 +3,7 @@ let
   common = {
     bee = {
       system = "x86_64-linux";
-      pkgs = inputs.nixpkgs;
+      pkgs = inputs.cells.toolchain.pkgs;
       home = inputs.home-manager;
     };
     time.timeZone = "Europe/London";
