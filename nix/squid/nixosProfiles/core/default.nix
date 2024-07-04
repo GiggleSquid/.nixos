@@ -45,6 +45,8 @@ in
     direnv
     ripgrep
     unzip
+    rar
+    p7zip
     curl
     wget
   ];

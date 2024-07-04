@@ -60,6 +60,7 @@
             "discord"
             "vintagestory"
             "starsector"
+            "rar"
           ];
       }
       {
