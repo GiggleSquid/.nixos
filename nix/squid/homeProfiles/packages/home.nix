@@ -23,5 +23,6 @@ in
     vlc
     jellyfin-media-player
     discord
+    tidal-hifi
   ];
 }
