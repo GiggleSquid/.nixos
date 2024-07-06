@@ -35,6 +35,7 @@ rec {
     lazygit
     printing
     email
+    archiving-utils
   ];
 
   desktop = pc ++ [
