@@ -37,6 +37,10 @@ in
     udisks2 = {
       enable = true;
     };
+    xserver.xkb = {
+      layout = "us";
+      variant = "colemak_dh_wide_iso";
+    };
   };
 
   environment.systemPackages = with nixpkgs; [
@@ -69,7 +73,8 @@ in
 
   console = {
     earlySetup = true;
-    keyMap = "uk";
+    useXkbConfig = true;
+    # keyMap = "uk";
     colors = [
       "1e1e2e"
       "181825"
