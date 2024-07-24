@@ -9,7 +9,6 @@ in
     common-pc-laptop
     common-pc-laptop-acpi_call
     common-cpu-intel
-    common-cpu-intel-kaby-lake
   ];
 
   inherit (common) hardware;
