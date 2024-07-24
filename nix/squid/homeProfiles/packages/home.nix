@@ -10,15 +10,12 @@ in
     isoimagewriter
     prismlauncher
     prusa-slicer
-    qbittorrent
     gimp
     gridcoin-research
     inkscape
-    monero-gui
+    # monero-gui
     vintagestory
     starsector
-    bitwarden
-    vorta
     steam-run
     vlc
     jellyfin-media-player
