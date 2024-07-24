@@ -21,5 +21,6 @@ in
     jellyfin-media-player
     discord
     tidal-hifi
+    ladybird
   ];
 }
