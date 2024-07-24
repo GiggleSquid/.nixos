@@ -22,5 +22,6 @@ in
     discord
     tidal-hifi
     ladybird
+    lmms
   ];
 }
