@@ -50,7 +50,7 @@ lib.mapAttrs (_: dev.mkShell) {
             help = "Convert ssh ed25519 pub key (from ssh-keyscan) to age";
             command = ''
               read -p "Remote machine IP/domain: " remote
-              ssh-keyscan $remote | ssh-to-age $@
+              ssh-keyscan -qt ed25519 $remote | ssh-to-age $@
             '';
           }
         ])
