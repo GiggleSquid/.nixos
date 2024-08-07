@@ -28,6 +28,7 @@ in
 
   environment.systemPackages = with nixpkgs; [
     kdePackages.sddm-kcm
+    kdePackages.kio-admin
     (catppuccin.override {
       themeList = [ "k9s" ];
       variant = "mocha";
