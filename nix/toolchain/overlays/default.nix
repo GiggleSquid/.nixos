@@ -34,13 +34,13 @@ in
             args
             // rec {
               pname = "wezterm";
-              version = "552bb1d66b6d0102961974c0da22dc7c69b0cd30";
+              version = "7e8fdc118d2d7ceb51c720a966090f6cb65089b7";
               src = nixpkgs.fetchFromGitHub {
                 owner = "wez";
                 repo = pname;
                 rev = version;
                 fetchSubmodules = true;
-                hash = "sha256-dr/f/zEqgzJ26s2KkiX6/68IU986jAYpeerRMSqejjM=";
+                hash = "sha256-8j7044lN0w/uVQOvqq/GlDGATmI3zAk/GTndJEyb3Ws=";
               };
 
               cargoLock = {
