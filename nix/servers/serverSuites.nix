@@ -11,6 +11,8 @@ rec {
     chrony
   ];
 
+  rpi-server = [ common-rpi ];
+
   dns-server = [ technitium ];
 
   caddy-server = [ caddy ];

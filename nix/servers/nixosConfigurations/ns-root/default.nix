@@ -12,8 +12,8 @@ in
     inherit hostName;
     domain = "lan.gigglesquid.tech";
     nameservers = [
-      "10.10.3.11"
-      "10.10.3.12"
+      "10.3.0.11"
+      "10.3.0.12"
     ];
   };
 

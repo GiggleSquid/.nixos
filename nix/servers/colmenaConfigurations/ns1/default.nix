@@ -1,14 +1,14 @@
 { inputs, cell }:
 let
-  inherit (inputs) common;
+  inherit (inputs) rpi;
 in
 {
   imports = [ cell.nixosConfigurations.ns1 ];
-  inherit (common) bee;
+  inherit (rpi) bee;
 
-  deployment = common.deployment // {
-    targetHost = "10.10.3.11";
-    tags = (common.deployment.tags) ++ [
+  deployment = rpi.deployment // {
+    targetHost = "10.3.0.11";
+    tags = (rpi.deployment.tags) ++ [
       "dns"
       "ns"
     ];

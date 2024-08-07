@@ -4,10 +4,7 @@ let
 in
 {
   networking = {
-    nameservers = [
-      "10.10.3.11"
-      "10.10.3.12"
-    ];
+    nameservers = [ "10.3.0.1" ];
     firewall = {
       enable = false;
       allowedTCPPorts = [ ];

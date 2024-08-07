@@ -1,9 +1,11 @@
 { inputs }:
 let
   inherit (inputs) nixpkgs;
+  lib = nixpkgs.lib;
 in
 {
   networking = {
+    useNetworkd = true;
     firewall = {
       enable = false;
       allowedTCPPorts = [ ];
@@ -14,6 +16,10 @@ in
   services = {
     chrony = {
       enable = true;
+      initstepslew = lib.mkDefault {
+        enabled = true;
+        threshold = 120;
+      };
     };
     timesyncd.enable = false;
     resolved = {
@@ -29,7 +35,7 @@ in
         networkConfig = {
           DHCP = "no";
         };
-        dns = [ "10.10.3.1" ];
+        dns = [ "10.3.0.1" ];
         # make routing on this interface a dependency for network-online.target
         linkConfig.RequiredForOnline = "routable";
       };

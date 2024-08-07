@@ -7,7 +7,7 @@ in
   inherit (common) bee;
 
   deployment = common.deployment // {
-    targetHost = "10.10.3.4";
+    targetHost = "10.3.0.4";
     tags = (common.deployment.tags) ++ [
       "caddy"
       "webserver"

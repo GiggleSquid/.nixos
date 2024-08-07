@@ -5,7 +5,7 @@ in
 {
   networking = {
     useNetworkd = true;
-    timeServers = [ "10.10.3.5" ];
+    timeServers = [ "10.3.0.5" ];
     firewall = {
       enable = true;
       allowedTCPPorts = [

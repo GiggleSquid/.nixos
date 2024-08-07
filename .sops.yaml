@@ -14,7 +14,8 @@ keys:
 
   - &ns-root age17fhjh5pvuph39spz8d3x445gajfw4h0cq3t2mj29l83y6tlazg9sqpkdvu
   - &ns1 age1ukvapr6llvuw6yddkr3srcnpkhj4r0hyhup0yj0ft80lmutwcdeqyq7j7f
-    
+  - &ns2 age1s9faynudufelwa7k8n6e4mvygvq22eh2mcqskc554z9mc20xg5dqcrtg5a
+
   - &cephalonetes-server-1 age1w5s8lhtfq0f3hra069r4932pxj0uqr84mejjud3frht2r03qsqpqlc6hqj
   - &cephalonetes-server-2 age1sc206pwurdjckhzu0wl8kjp0zjh5vjjzkkz3wdytwn7r6ewq4uxqssrhvk
   - &cephalonetes-server-3 age1k24hzj7ex73eh9gjj06dknq820340p22kz0g8kvf6t3u78evtd2spvpla8
@@ -35,6 +36,7 @@ creation_rules:
       - *timesquid-0
       - *ns-root
       - *ns1
+      - *ns2
       - *cephalonetes-server-1
       - *cephalonetes-server-2
       - *cephalonetes-server-3

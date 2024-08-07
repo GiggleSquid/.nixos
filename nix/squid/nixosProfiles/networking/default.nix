@@ -2,7 +2,8 @@
   networking = {
     useNetworkd = true;
     wireguard.enable = true;
-    timeServers = [ "10.10.3.5" ];
+    timeServers = [ "10.3.0.5" ];
+    # firewall.allowedUDPPorts = [ 69 ];
   };
 
   services = {
@@ -19,8 +20,8 @@
         networkConfig = {
           DHCP = "no";
         };
-        gateway = [ "10.10.10.1" ];
-        dns = [ "10.10.10.1" ];
+        gateway = [ "10.10.0.1" ];
+        dns = [ "10.10.0.1" ];
         # make routing on this interface a dependency for network-online.target
         linkConfig.RequiredForOnline = "routable";
       };

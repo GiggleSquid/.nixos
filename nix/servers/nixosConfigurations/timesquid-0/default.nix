@@ -35,8 +35,8 @@ in
     networks = {
       "10-lan" = {
         networkConfig = {
-          Address = "10.10.3.5/24";
-          Gateway = "10.10.3.1";
+          Address = "10.3.0.5/23";
+          Gateway = "10.3.0.1";
         };
       };
     };

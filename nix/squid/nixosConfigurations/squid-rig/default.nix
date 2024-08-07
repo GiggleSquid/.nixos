@@ -9,7 +9,7 @@ let
     ;
   lib = nixpkgs.lib // builtins;
   hostName = "squid-rig";
-  ip = "10.10.10.10/24";
+  ip = "10.10.0.10/24";
 in
 {
   inherit (common) bee time;
