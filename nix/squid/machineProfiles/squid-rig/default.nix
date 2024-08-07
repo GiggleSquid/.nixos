@@ -7,45 +7,64 @@ in
     defaultSopsFile = "${self}/sops/squid-rig.yaml";
     secrets.borg_repo_pass = { };
   };
-  services.borgmatic = {
-    enable = true;
-    settings = {
-      encryption_passcommand = "${nixpkgs.coreutils}/bin/cat ${config.sops.secrets.borg_repo_pass.path}";
-      source_directories = [ "/home" ];
-      exclude_patterns = [ "*/.cache" ];
-      exclude_caches = true;
-      keep_within = "48H";
-      keep_daily = 7;
-      repositories = [
-        {
-          label = "local";
-          path = "/mnt/backups/squid-rig_borg";
-        }
-        {
-          label = "cephalonas";
-          path = "/mnt/cephalonas/backups/squid-rig/squid-rig_borg";
-        }
+
+  services.borgbackup.jobs = {
+    squid-rig_local = {
+      paths = [
+        "/home"
+        "/mnt/steam/"
       ];
-    };
-  };
-  systemd = {
-    timers.borgmatic = {
-      enable = true;
-      wantedBy = [ "timers.target" ];
-      timerConfig = {
-        Unit = "borgmatic.service";
-        OnCalendar = "0/6:00";
-        Persistent = true;
-        RandomizedDelaySec = "15m";
+      exclude = [
+        "*/.cache"
+        "*/baloo"
+        "*/.dbus"
+        "*/.Trash*"
+        "*/.local/share/Trash*"
+        "*/lost+found"
+      ];
+      readWritePaths = [ "/mnt/backups/squid-rig_borg" ];
+      repo = "/mnt/backups/squid-rig_borg";
+      encryption = {
+        mode = "repokey-blake2";
+        passCommand = "${nixpkgs.coreutils}/bin/cat ${config.sops.secrets.borg_repo_pass.path}";
+      };
+      compression = "lz4";
+      startAt = "0/6:00";
+      persistentTimer = true;
+      prune.keep = {
+        within = "2d";
+        daily = 7;
+        weekly = 4;
       };
     };
-    services.borgmatic = {
-      serviceConfig = {
-        ProtectSystem = "strict";
-        ReadWritePaths = "-/mnt/backups/squid-rig_borg -/mnt/cephalonas/backups/squid-rig/squid-rig_borg";
-        ReadOnlyPaths = "-/home";
-        ProtectHome = "tmpfs";
-        BindPaths = "-/root/.cache/borg -/root/.config/borg -/root/.borgmatic";
+    squid-rig_unimatrix = {
+      paths = [
+        "/home"
+        "/mnt/steam/"
+      ];
+      exclude = [
+        "*/.cache"
+        "*/baloo"
+        "*/.dbus"
+        "*/.Trash*"
+        "*/.local/share/Trash*"
+        "*/lost+found"
+      ];
+      repo = "borg@unimatrix.cephalonas.lan.gigglesquid.tech:.";
+      environment = {
+        BORG_RSH = "ssh -i /etc/ssh/ssh_host_ed25519_key";
+      };
+      encryption = {
+        mode = "repokey-blake2";
+        passCommand = "${nixpkgs.coreutils}/bin/cat ${config.sops.secrets.borg_repo_pass.path}";
+      };
+      compression = "lz4";
+      startAt = "0/6:00";
+      persistentTimer = true;
+      prune.keep = {
+        within = "2d";
+        daily = 7;
+        weekly = 4;
       };
     };
   };
