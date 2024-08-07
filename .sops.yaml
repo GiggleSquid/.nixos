@@ -22,6 +22,8 @@ keys:
   - &cephalonetes-agent-2 age1vpup0de9aa8au4cqe5jats30gkffhu4cev8wme92zmp7rujy7grscrq0u7
   - &cephalonetes-agent-3 age1a0ermfdm9x7fu4hps6gft9k7hgl5nk8qenwlrlkqz36c0w4mcvvq63ue0d
 
+  - &unimatrix age16ukaqtvg9h8hx757mx2d3yl8n28g9035gtyclejj49zj570g8prqq60mma
+
 creation_rules:
   - path_regex: sops/[^/]+\.yaml$
     key_groups:
@@ -39,3 +41,4 @@ creation_rules:
       - *cephalonetes-agent-1
       - *cephalonetes-agent-2
       - *cephalonetes-agent-3
+      - *unimatrix

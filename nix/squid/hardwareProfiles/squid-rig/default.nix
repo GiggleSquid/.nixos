@@ -95,12 +95,6 @@ in
       fsType = "ext4";
     };
 
-    "/mnt/cephalonas/backups/squid-rig" = {
-      device = "cephalonas.lan.gigglesquid.tech:/mnt/main/backups/squid-rig";
-      fsType = "nfs";
-      noCheck = true;
-    };
-
     "/mnt/cephalonas/media" = {
       device = "cephalonas.lan.gigglesquid.tech:/mnt/main/media";
       fsType = "nfs";
