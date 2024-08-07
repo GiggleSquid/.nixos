@@ -38,8 +38,7 @@ in
       enable = true;
     };
     xserver.xkb = {
-      layout = "us";
-      variant = "colemak_dh_wide_iso";
+      layout = "gb";
     };
   };
 
@@ -74,7 +73,6 @@ in
   console = {
     earlySetup = true;
     useXkbConfig = true;
-    # keyMap = "uk";
     colors = [
       "1e1e2e"
       "181825"

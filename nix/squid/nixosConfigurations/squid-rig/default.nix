@@ -26,6 +26,13 @@ in
     };
   };
 
+  services = {
+    xserver.xkb = lib.mkForce {
+      layout = "us";
+      variant = "colemak_dh_wide_iso";
+    };
+  };
+
   imports =
     let
       profiles = [
