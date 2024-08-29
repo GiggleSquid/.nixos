@@ -16,12 +16,6 @@ keys:
   - &ns1 age1ukvapr6llvuw6yddkr3srcnpkhj4r0hyhup0yj0ft80lmutwcdeqyq7j7f
   - &ns2 age1s9faynudufelwa7k8n6e4mvygvq22eh2mcqskc554z9mc20xg5dqcrtg5a
 
-  - &cephalonetes-server-1 age1w5s8lhtfq0f3hra069r4932pxj0uqr84mejjud3frht2r03qsqpqlc6hqj
-  - &cephalonetes-server-2 age1sc206pwurdjckhzu0wl8kjp0zjh5vjjzkkz3wdytwn7r6ewq4uxqssrhvk
-  - &cephalonetes-server-3 age1k24hzj7ex73eh9gjj06dknq820340p22kz0g8kvf6t3u78evtd2spvpla8
-  - &cephalonetes-agent-1 age1sasmztr0pdkrzxk3r52srute5f8urwe7arqw32cgqhx92rdlrs4s09nd6p
-  - &cephalonetes-agent-2 age1vpup0de9aa8au4cqe5jats30gkffhu4cev8wme92zmp7rujy7grscrq0u7
-  - &cephalonetes-agent-3 age1a0ermfdm9x7fu4hps6gft9k7hgl5nk8qenwlrlkqz36c0w4mcvvq63ue0d
 
   - &unimatrix age16ukaqtvg9h8hx757mx2d3yl8n28g9035gtyclejj49zj570g8prqq60mma
 
@@ -37,10 +31,4 @@ creation_rules:
       - *ns-root
       - *ns1
       - *ns2
-      - *cephalonetes-server-1
-      - *cephalonetes-server-2
-      - *cephalonetes-server-3
-      - *cephalonetes-agent-1
-      - *cephalonetes-agent-2
-      - *cephalonetes-agent-3
       - *unimatrix

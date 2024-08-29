@@ -1,8 +1,0 @@
-# yaml-language-server: $schema=https://json.schemastore.org/kustomization
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-resources:
-  - ./rook-operator/flux-kustomize.yaml
-  - ./rook-cluster/flux-kustomize.yaml
-  - ./namespace.yaml
- 

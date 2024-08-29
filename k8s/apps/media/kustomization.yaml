@@ -1,8 +1,0 @@
-# yaml-language-server: $schema=https://json.schemastore.org/kustomization
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-resources:
-  - ./namespace.yaml
-  - ./audiobookshelf/flux-kustomize.yaml
-  - ./jellyfin/flux-kustomize.yaml
-  - ./qbittorrent/flux-kustomize.yaml

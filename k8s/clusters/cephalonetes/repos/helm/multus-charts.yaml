@@ -1,8 +1,0 @@
-apiVersion: source.toolkit.fluxcd.io/v1
-kind: HelmRepository
-metadata:
-  name: multus-charts
-  namespace: kube-system
-spec:
-  interval: 10m
-  url: https://rke2-charts.rancher.io

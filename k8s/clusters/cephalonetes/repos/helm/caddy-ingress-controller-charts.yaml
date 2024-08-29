@@ -1,8 +1,0 @@
-apiVersion: source.toolkit.fluxcd.io/v1
-kind: HelmRepository
-metadata:
-  name: caddy-ingress-controller-charts
-  namespace: caddy-system
-spec:
-  interval: 10m0s
-  url: https://caddyserver.github.io/ingress

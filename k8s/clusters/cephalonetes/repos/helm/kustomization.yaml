@@ -1,8 +1,0 @@
-# yaml-language-server: $schema=https://json.schemastore.org/kustomization
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-resources:
-  - ./bjw-s-charts.yaml
-  - ./caddy-ingress-controller-charts.yaml
-  - ./rook-ceph-charts.yaml
-  - ./multus-charts.yaml
