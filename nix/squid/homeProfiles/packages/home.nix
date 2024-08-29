@@ -18,6 +18,8 @@ in
     starsector
     steam-run
     vlc
+    haruna
+    libopus
     jellyfin-media-player
     discord
     tidal-hifi
