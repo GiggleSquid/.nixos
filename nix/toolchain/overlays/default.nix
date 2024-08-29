@@ -8,6 +8,18 @@ in
 
   py-natpmp = packages.py-natpmp;
 
+  i2pd = nixpkgs.i2pd.overrideAttrs (old: rec {
+    pname = "i2pd";
+    version = "2.53.1";
+    src = nixpkgs.fetchFromGitHub {
+      owner = "PurpleI2P";
+      repo = pname;
+      rev = version;
+      sha256 = "sha256-dt1lem8i5wcoBJyEKSBjMkyUKUKvVSUpfyhDsoeea/A=";
+    };
+    patches = [ ];
+  });
+
   # wezterm 'nightly'
   wezterm = nixpkgs.wezterm.override (
     let
