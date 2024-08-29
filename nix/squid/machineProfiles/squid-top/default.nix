@@ -7,41 +7,33 @@ in
     defaultSopsFile = "${self}/sops/squid-rig.yaml";
     secrets.borg_repo_pass = { };
   };
-  services.borgmatic = {
-    enable = true;
-    settings = {
-      encryption_passcommand = "${nixpkgs.coreutils}/bin/cat ${config.sops.secrets.borg_repo_pass.path}";
-      source_directories = [ "/home" ];
-      exclude_patterns = [ "*/.cache" ];
-      exclude_caches = true;
-      keep_within = "24H";
-      keep_daily = 5;
-      repositories = [
-        {
-          label = "cephalonas";
-          path = "/mnt/cephalonas/backups/squid-top/squid-top_borg";
-        }
+
+  services.borgbackup.jobs = {
+    squid-top_unimatrix = {
+      paths = [ "/home" ];
+      exclude = [
+        "*/.cache"
+        "*/baloo"
+        "*/.dbus"
+        "*/.Trash*"
+        "*/.local/share/Trash*"
+        "*/lost+found"
       ];
-    };
-  };
-  systemd = {
-    timers.borgmatic = {
-      enable = true;
-      wantedBy = [ "timers.target" ];
-      timerConfig = {
-        Unit = "borgmatic.service";
-        OnCalendar = "0/3:00";
-        Persistent = true;
-        RandomizedDelaySec = "15m";
+      repo = "borg@unimatrix.cephalonas.lan.gigglesquid.tech:.";
+      environment = {
+        BORG_RSH = "ssh -i /etc/ssh/ssh_host_ed25519_key";
       };
-    };
-    services.borgmatic = {
-      serviceConfig = {
-        ProtectSystem = "strict";
-        ReadWritePaths = "-/mnt/cephalonas/backups/squid-top/squid-top_borg";
-        ReadOnlyPaths = "-/home";
-        ProtectHome = "tmpfs";
-        BindPaths = "-/root/.cache/borg -/root/.config/borg -/root/.borgmatic";
+      encryption = {
+        mode = "repokey-blake2";
+        passCommand = "${nixpkgs.coreutils}/bin/cat ${config.sops.secrets.borg_repo_pass.path}";
+      };
+      compression = "lz4";
+      startAt = "0/6:00";
+      persistentTimer = true;
+      prune.keep = {
+        within = "2d";
+        daily = 7;
+        weekly = 4;
       };
     };
   };
