@@ -1,11 +1,12 @@
 { inputs, cell }:
 let
-  inherit (inputs) nixpkgs nixos-hardware;
-  inherit (inputs.cells.toolchain) pkgs;
+  inherit (inputs) nixpkgs nixos-hardware nixpkgs-flaresolverr-chromium-126;
+  inherit (inputs.cells.toolchain) pkgs packages;
 in
 {
   deviceTree = nixpkgs.callPackage nixos-hardware.apply-overlays-dtmerge { };
 
+  py-natpmp = packages.py-natpmp;
 
   # wezterm 'nightly'
   wezterm = nixpkgs.wezterm.override (
