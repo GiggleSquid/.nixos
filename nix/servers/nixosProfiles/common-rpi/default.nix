@@ -20,6 +20,7 @@ in
         enabled = true;
         threshold = 120;
       };
+      extraFlags = [ "-s" ];
     };
     timesyncd.enable = false;
     resolved = {
