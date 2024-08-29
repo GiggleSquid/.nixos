@@ -30,6 +30,8 @@
             (pkgs "pkgs")
             (pkgs "overlays")
 
+            (installables "packages")
+
             (functions "nixosModules")
             (functions "homeModules")
 
