@@ -82,6 +82,10 @@
       url = "github:nixos/nixpkgs/nixos-unstable";
     };
 
+    nixpkgs-flaresolverr-chromium-126 = {
+      url = "github:nixos/nixpkgs/ebbc0409688869938bbcf630da1c1c13744d2a7b";
+    };
+
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
