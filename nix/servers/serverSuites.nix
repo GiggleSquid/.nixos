@@ -1,6 +1,6 @@
 { inputs, cell }:
 let
-  inherit (cell) nixosProfiles;
+  inherit (cell) nixosProfiles nixosModules;
 in
 with nixosProfiles;
 rec {
@@ -16,4 +16,6 @@ rec {
   dns-server = [ technitium ];
 
   caddy-server = [ caddy ];
+
+  squidbit = [ nixosModules.qbittorrent ];
 }

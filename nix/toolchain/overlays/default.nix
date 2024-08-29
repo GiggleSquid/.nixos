@@ -8,6 +8,11 @@ in
 
   py-natpmp = packages.py-natpmp;
 
+  # https://github.com/NixOS/nixpkgs/issues/332776
+  pkgs-flaresolverr-chromium-126 = import nixpkgs-flaresolverr-chromium-126 {
+    inherit (cell.pkgs) system;
+  };
+
   i2pd = nixpkgs.i2pd.overrideAttrs (old: rec {
     pname = "i2pd";
     version = "2.53.1";
