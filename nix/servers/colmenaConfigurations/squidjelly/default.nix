@@ -3,16 +3,14 @@ let
   inherit (inputs) common;
 in
 {
-  imports = [ cell.nixosConfigurations.cephalonetes-agent-3 ];
+  imports = [ cell.nixosConfigurations.squidjelly ];
   inherit (common) bee;
 
   deployment = common.deployment // {
-    targetHost = "10.10.4.43";
+    targetHost = "10.4.0.31";
     tags = (common.deployment.tags) ++ [
-      "k3s"
-      "cluster"
-      "cluster-agent"
-      "cephalonetes"
+      "media"
+      "squidjelly"
     ];
   };
 }
