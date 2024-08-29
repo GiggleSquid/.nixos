@@ -1,11 +1,11 @@
 { inputs, cell }:
 let
-  inherit (inputs.cells.toolchain) pkgs;
+  inherit (inputs) nixpkgs;
 in
 {
   fonts = {
     enableDefaultPackages = false;
-    packages = with pkgs; [
+    packages = with nixpkgs; [
       google-fonts
       noto-fonts-emoji
       sarasa-gothic
