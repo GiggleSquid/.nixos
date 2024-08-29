@@ -16,6 +16,11 @@ keys:
   - &ns1 age1ukvapr6llvuw6yddkr3srcnpkhj4r0hyhup0yj0ft80lmutwcdeqyq7j7f
   - &ns2 age1s9faynudufelwa7k8n6e4mvygvq22eh2mcqskc554z9mc20xg5dqcrtg5a
 
+  - &i2p age1naucvcsg7p4hjp3fz0y0dh2c6c6ue5wph2paza26r8qzryl87dzq48r9ck
+
+  - &torrent age1zswh4xxkyax7m527lx4slu45nfav57rs7frv2l3wuhhcvfm83yrqp27ezm
+  - &squidjelly age14w9jvwngg85ph6e7yal3t5xmpg20s393vndgmznzl2vdfqgcsv0qy2huzn
+  - &squidcasts age1tvesv74czg5uw9cce9gvzmda9xfdlk9g0ua6d37jkqyla6ayxv2sxfr5g4
 
   - &unimatrix age16ukaqtvg9h8hx757mx2d3yl8n28g9035gtyclejj49zj570g8prqq60mma
 
@@ -31,4 +36,8 @@ creation_rules:
       - *ns-root
       - *ns1
       - *ns2
+      - *i2p
+      - *torrent
+      - *squidjelly
+      - *squidcasts
       - *unimatrix
