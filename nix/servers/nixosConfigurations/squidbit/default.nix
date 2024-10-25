@@ -14,15 +14,79 @@ in
 {
   inherit (common) bee time;
 
-  sops.secrets."wg_priv_key/tentacle-0_squidbit" = {
-    sopsFile = "${self}/sops/squid-rig.yaml";
-    owner = "systemd-network";
+  sops = {
+    defaultSopsFile = "${self}/sops/squid-rig.yaml";
+    secrets = {
+      cloudflare_dns_api_token = { };
+      lego_pfx_pass = { };
+      "wg_priv_key/tentacle-0_squidbit" = {
+        owner = "systemd-network";
+      };
+    };
+  };
+
+  security.acme = {
+    acceptTerms = true;
+    defaults = {
+      server = "https://acme-v02.api.letsencrypt.org/directory";
+      email = "jack.connors@protonmail.com";
+      extraLegoFlags = [
+        "--dns.propagation-wait=300s"
+      ];
+      dnsResolver = "1.1.1.1:53";
+      dnsProvider = "cloudflare";
+      credentialFiles = {
+        "CF_DNS_API_TOKEN_FILE" = "${config.sops.secrets.cloudflare_dns_api_token.path}";
+        "CLOUDFLARE_PROPAGATION_TIMEOUT_FILE" = nixpkgs.writeText "CLOUDFLARE_PROPAGATION_TIMEOUT" ''360'';
+      };
+    };
+    certs = {
+      "qbittorrent.squidbit.lan.gigglesquid.tech" = {
+        postRun = # bash
+          ''
+            cp -v key.pem /var/lib/qbittorrent/
+            chown -v qbittorrent:qbittorrent /var/lib/qbittorrent/key.pem
+            chmod -v 640 /var/lib/qbittorrent/key.pem
+
+            cp -v fullchain.pem /var/lib/qbittorrent/
+            chown -v qbittorrent:qbittorrent /var/lib/qbittorrent/fullchain.pem
+            chmod -v 640 /var/lib/qbittorrent/fullchain.pem
+          '';
+      };
+      "prowlarr.squidbit.lan.gigglesquid.tech" = {
+        postRun = # bash
+          ''
+            openssl pkcs12 -export -out prowlarr.squidbit.lan.gigglesquid.tech.pfx -inkey key.pem -in cert.pem -certfile chain.pem -passout file:${config.sops.secrets.lego_pfx_pass.path}
+            chown -v prowlarr:prowlarr prowlarr.squidbit.lan.gigglesquid.tech.pfx
+            chmod -v 640 prowlarr.squidbit.lan.gigglesquid.tech.pfx
+            cp -vp prowlarr.squidbit.lan.gigglesquid.tech.pfx /var/lib/prowlarr/
+          '';
+      };
+      "radarr.squidbit.lan.gigglesquid.tech" = {
+        postRun = # bash
+          ''
+            openssl pkcs12 -export -out radarr.squidbit.lan.gigglesquid.tech.pfx -inkey key.pem -in cert.pem -certfile chain.pem -passout file:${config.sops.secrets.lego_pfx_pass.path}
+            chown -v radarr:radarr radarr.squidbit.lan.gigglesquid.tech.pfx
+            chmod -v 640 radarr.squidbit.lan.gigglesquid.tech.pfx
+            cp -vp radarr.squidbit.lan.gigglesquid.tech.pfx /var/lib/radarr/
+          '';
+      };
+      "sonarr.squidbit.lan.gigglesquid.tech" = {
+        postRun = # bash
+          ''
+            openssl pkcs12 -export -out sonarr.squidbit.lan.gigglesquid.tech.pfx -inkey key.pem -in cert.pem -certfile chain.pem -passout file:${config.sops.secrets.lego_pfx_pass.path}
+            chown -v sonarr:sonarr sonarr.squidbit.lan.gigglesquid.tech.pfx
+            chmod -v 640 sonarr.squidbit.lan.gigglesquid.tech.pfx
+            cp -vp sonarr.squidbit.lan.gigglesquid.tech.pfx /var/lib/sonarr/
+          '';
+      };
+    };
   };
 
   networking = {
     inherit hostName;
     domain = "lan.gigglesquid.tech";
-    nameservers = [ "10.4.0.1" ];
+    nameservers = [ "10.3.0.1" ];
     useNetworkd = true;
     firewall = {
       enable = false;
@@ -57,9 +121,9 @@ in
       "10-lan" = {
         matchConfig.Name = lib.mkForce "en*18";
         DHCP = "no";
-        address = [ "10.4.0.30/24" ];
-        gateway = [ "10.4.0.1" ];
-        dns = [ "10.4.0.1" ];
+        address = [ "10.3.1.30/23" ];
+        gateway = [ "10.3.0.1" ];
+        dns = [ "10.3.0.1" ];
         ntp = [ "10.3.0.5" ];
       };
 
@@ -68,7 +132,7 @@ in
         DHCP = "no";
         address = [ "10.2.0.2/32" ];
         gateway = [ "10.2.0.1" ];
-        dns = [ "10.4.0.1" ];
+        dns = [ "10.3.0.1" ];
         ntp = [ "10.3.0.5" ];
         routingPolicyRules = [
           {
@@ -108,7 +172,6 @@ in
     resolved = {
       fallbackDns = [ ];
     };
-    # openssh.listenAddresses = [ { addr = "10.4.0.30"; } ];
     prowlarr = {
       enable = true;
       openFirewall = true;

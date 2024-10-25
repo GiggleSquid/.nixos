@@ -3,7 +3,8 @@ let
   common = {
     bee = {
       system = "x86_64-linux";
-      pkgs = inputs.nixpkgs;
+      # pkgs = inputs.nixpkgs;
+      pkgs = inputs.cells.toolchain.pkgs;
     };
     deployment = {
       allowLocalDeployment = false;
@@ -17,7 +18,8 @@ let
   rpi = {
     bee = {
       system = "aarch64-linux";
-      pkgs = inputs.nixpkgs;
+      pkgs = inputs.cells.toolchain.pkgs;
+      # pkgs = inputs.nixpkgs;
     };
     deployment = {
       allowLocalDeployment = false;

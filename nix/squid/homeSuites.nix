@@ -4,12 +4,13 @@ let
 in
 with homeProfiles;
 rec {
-  base = [ core ];
+  base = [
+    core
+    shell
+  ];
 
   nixos = base ++ [
-    ssh
     git
-    shell
     k9s
     helix
   ];
@@ -17,14 +18,13 @@ rec {
   gui = [
     terminal
     browser
+    libreoffice
     packages
   ];
 
   squid = base ++ [
     gpg
-    ssh
     git
-    shell
     k9s
     helix
   ];

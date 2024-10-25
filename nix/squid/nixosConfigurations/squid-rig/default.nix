@@ -33,6 +33,8 @@ in
     };
   };
 
+  programs.ladybird.enable = false;
+
   imports =
     let
       profiles = [

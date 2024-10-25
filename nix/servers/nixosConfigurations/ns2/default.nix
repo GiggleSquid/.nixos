@@ -1,6 +1,10 @@
-{ inputs, cell }:
+{
+  inputs,
+  cell,
+  config,
+}:
 let
-  inherit (inputs) common nixpkgs;
+  inherit (inputs) common nixpkgs self;
   inherit (cell) machineProfiles hardwareProfiles serverSuites;
   inherit (inputs.cells.squid) nixosSuites homeSuites;
   lib = nixpkgs.lib // builtins;
@@ -12,6 +16,40 @@ in
     inherit hostName;
     domain = "lan.gigglesquid.tech";
     nameservers = [ "127.0.0.1" ];
+  };
+
+  sops = {
+    defaultSopsFile = "${self}/sops/squid-rig.yaml";
+    secrets = {
+      cloudflare_dns_api_token = { };
+      lego_pfx_pass = { };
+    };
+  };
+
+  security.acme = {
+    acceptTerms = true;
+    defaults = {
+      server = "https://acme-v02.api.letsencrypt.org/directory";
+      email = "jack.connors@protonmail.com";
+    };
+    certs."ns2.dns.lan.gigglesquid.tech" = {
+      extraLegoFlags = [
+        "--dns.propagation-wait=300s"
+      ];
+      dnsResolver = "1.1.1.1:53";
+      dnsProvider = "cloudflare";
+      credentialFiles = {
+        "CF_DNS_API_TOKEN_FILE" = "${config.sops.secrets.cloudflare_dns_api_token.path}";
+        "CLOUDFLARE_PROPAGATION_TIMEOUT_FILE" = nixpkgs.writeText "CLOUDFLARE_PROPAGATION_TIMEOUT" ''360'';
+      };
+      postRun = # bash
+        ''
+          openssl pkcs12 -export -out ns2.dns.lan.gigglesquid.tech.pfx -inkey key.pem -in cert.pem -certfile chain.pem -passout file:${config.sops.secrets.lego_pfx_pass.path}
+          chown -v technitium-dns-server:technitium-dns-server ns2.dns.lan.gigglesquid.tech.pfx
+          chmod -v 644 ns2.dns.lan.gigglesquid.tech.pfx
+          cp -vp ns2.dns.lan.gigglesquid.tech.pfx /var/lib/technitium-dns-server/
+        '';
+    };
   };
 
   imports =

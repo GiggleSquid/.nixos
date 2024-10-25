@@ -57,12 +57,14 @@
             "steam"
             "steam-run"
             "steam-original"
+            "steam-unwrapped"
             "nvidia-x11"
             "nvidia-settings"
             "discord"
             "vintagestory"
             "starsector"
             "rar"
+            "minecraft-server"
           ];
       }
       {
@@ -86,6 +88,16 @@
 
     nixpkgs-flaresolverr-chromium-126 = {
       url = "github:nixos/nixpkgs/ebbc0409688869938bbcf630da1c1c13744d2a7b";
+    };
+
+    nixos-caddy-with-plugins = {
+      url = "github:crabdancing/nixos-caddy-with-plugins";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    nix-minecraft = {
+      url = "github:Infinidoge/nix-minecraft";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     home-manager = {

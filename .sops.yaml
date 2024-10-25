@@ -22,7 +22,12 @@ keys:
   - &squidjelly age14w9jvwngg85ph6e7yal3t5xmpg20s393vndgmznzl2vdfqgcsv0qy2huzn
   - &squidcasts age1tvesv74czg5uw9cce9gvzmda9xfdlk9g0ua6d37jkqyla6ayxv2sxfr5g4
 
+  - &minesquid-velocity age1w2ehy9jxjktra2gfm4yz2ah92z3eedfjh9z4hd32293r2pzas5tst9995h
+  - &minesquid age1r04g2t3ttcafjghfurvshqrtdepev2qt062lzvevk9txnzw2f4yswdunew
+
   - &unimatrix age16ukaqtvg9h8hx757mx2d3yl8n28g9035gtyclejj49zj570g8prqq60mma
+
+  - &marciandfriends age1ukde72l2ekp5uq53gnc5cnmfag4qd0ew9r6j5gmpsldntcedjufqfnms5z
 
 creation_rules:
   - path_regex: sops/[^/]+\.yaml$
@@ -40,4 +45,7 @@ creation_rules:
       - *torrent
       - *squidjelly
       - *squidcasts
+      - *minesquid-velocity
+      - *minesquid
       - *unimatrix
+      - *marciandfriends

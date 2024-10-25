@@ -6,6 +6,7 @@ with nixosProfiles;
 rec {
   base = [
     core
+    ssh
     fish
     nixosModules.sops
     userProfiles.root
@@ -23,15 +24,12 @@ rec {
     userProfiles.squid
   ];
 
-  plasma6 = [ nixosProfiles.plasma6 ];
-
   pc = base ++ [
     fonts
     gpg
     userProfiles.squid
     pipewire
     networking
-    libreoffice
     lazygit
     printing
     email
@@ -41,8 +39,11 @@ rec {
   desktop = pc ++ [
     games
     boinc
-    virtualisation
+    openrgb
+    # virtualisation
   ];
 
   laptop = pc ++ [ games ];
+
+  plasma6 = [ nixosProfiles.plasma6 ];
 }

@@ -33,6 +33,8 @@ in
         "dialout"
         "scanner"
         "lp"
+        "minecraft"
+        "i2c"
       ];
       shell = nixpkgs.fish;
     };

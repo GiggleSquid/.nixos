@@ -1,7 +1,7 @@
 { inputs, cell }:
 let
   inherit (inputs) common nixpkgs;
-  inherit (cell) machineProfiles hardwareProfiles serverSuites;
+  inherit (cell) hardwareProfiles serverSuites;
   inherit (inputs.cells.squid) nixosSuites homeSuites;
   lib = nixpkgs.lib // builtins;
   hostName = "squidcasts";
@@ -11,7 +11,7 @@ in
   networking = {
     inherit hostName;
     domain = "lan.gigglesquid.tech";
-    nameservers = [ "10.4.0.1" ];
+    nameservers = [ "10.3.0.1" ];
     useNetworkd = true;
     firewall = {
       enable = false;
@@ -26,17 +26,10 @@ in
       "10-lan" = {
         matchConfig.Name = lib.mkForce "en*18";
         networkConfig = {
-          Address = "10.4.0.32/24";
-          Gateway = "10.4.0.1";
+          Address = "10.3.1.32/23";
+          Gateway = "10.3.0.1";
         };
-        dns = [ "10.4.0.1" ];
-      };
-      "20-lan" = {
-        matchConfig.Name = lib.mkForce "en*19";
-        networkConfig = {
-          Address = "10.5.0.32/24";
-          Gateway = "10.5.0.1";
-        };
+        dns = [ "10.3.0.1" ];
       };
     };
   };
@@ -53,11 +46,10 @@ in
     resolved = {
       fallbackDns = [ ];
     };
-    # openssh.listenAddresses = [ { addr = "10.4.0.31"; } ];
     audiobookshelf = {
       enable = true;
       port = 8000;
-      host = "10.4.0.32";
+      host = "10.3.1.32";
       openFirewall = true;
     };
   };

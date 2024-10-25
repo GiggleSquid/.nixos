@@ -1,7 +1,11 @@
-{ inputs, cell }:
+{
+  inputs,
+  cell,
+  config,
+}:
 let
-  inherit (inputs) common nixpkgs;
-  inherit (cell) machineProfiles hardwareProfiles serverSuites;
+  inherit (inputs) common nixpkgs self;
+  inherit (cell) hardwareProfiles serverSuites;
   inherit (inputs.cells.squid) nixosSuites homeSuites;
   lib = nixpkgs.lib // builtins;
   hostName = "squidjelly";
@@ -11,14 +15,47 @@ in
   networking = {
     inherit hostName;
     domain = "lan.gigglesquid.tech";
-    nameservers = [ "10.4.0.1" ];
+    nameservers = [ "10.3.0.1" ];
     useNetworkd = true;
     firewall = {
       enable = false;
       allowedTCPPorts = [ ];
       allowedUDPPorts = [ ];
     };
+  };
 
+  sops = {
+    defaultSopsFile = "${self}/sops/squid-rig.yaml";
+    secrets = {
+      cloudflare_dns_api_token = { };
+      lego_pfx_pass = { };
+    };
+  };
+
+  security.acme = {
+    acceptTerms = true;
+    defaults = {
+      server = "https://acme-v02.api.letsencrypt.org/directory";
+      email = "jack.connors@protonmail.com";
+    };
+    certs."squidjelly.lan.gigglesquid.tech" = {
+      extraLegoFlags = [
+        "--dns.propagation-wait=300s"
+      ];
+      dnsResolver = "1.1.1.1:53";
+      dnsProvider = "cloudflare";
+      credentialFiles = {
+        "CF_DNS_API_TOKEN_FILE" = "${config.sops.secrets.cloudflare_dns_api_token.path}";
+        "CLOUDFLARE_PROPAGATION_TIMEOUT_FILE" = nixpkgs.writeText "CLOUDFLARE_PROPAGATION_TIMEOUT" ''360'';
+      };
+      postRun = # bash
+        ''
+          openssl pkcs12 -export -out squidjelly.lan.gigglesquid.tech.pfx -inkey key.pem -in cert.pem -certfile chain.pem -passout file:${config.sops.secrets.lego_pfx_pass.path}
+          chown -v jellyfin:jellyfin squidjelly.lan.gigglesquid.tech.pfx
+          chmod -v 644 squidjelly.lan.gigglesquid.tech.pfx
+          cp -vp squidjelly.lan.gigglesquid.tech.pfx /var/lib/jellyfin/
+        '';
+    };
   };
 
   systemd.network = {
@@ -26,17 +63,10 @@ in
       "10-lan" = {
         matchConfig.Name = lib.mkForce "en*18";
         networkConfig = {
-          Address = "10.4.0.31/24";
-          Gateway = "10.4.0.1";
+          Address = "10.3.1.31/23";
+          Gateway = "10.3.0.1";
         };
-        dns = [ "10.4.0.1" ];
-      };
-      "20-lan" = {
-        matchConfig.Name = lib.mkForce "en*19";
-        networkConfig = {
-          Address = "10.5.0.31/24";
-          Gateway = "10.5.0.1";
-        };
+        dns = [ "10.3.0.1" ];
       };
     };
   };
@@ -53,7 +83,6 @@ in
     resolved = {
       fallbackDns = [ ];
     };
-    # openssh.listenAddresses = [ { addr = "10.4.0.31"; } ];
     jellyfin = {
       enable = true;
       openFirewall = true;

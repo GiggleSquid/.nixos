@@ -1,6 +1,16 @@
 { inputs, cell }:
 let
   inherit (inputs) nixpkgs;
+
+  prismlauncher = nixpkgs.prismlauncher.override {
+    jdks = with nixpkgs; [
+      jdk22
+      jdk21
+      jdk17
+      jdk8
+    ];
+    # withWaylandGLFW = true;
+  };
 in
 {
   packages = with nixpkgs; [
@@ -23,7 +33,9 @@ in
     jellyfin-media-player
     discord
     tidal-hifi
-    ladybird
     lmms
+    packwiz
+    framesh
+    storj-uplink
   ];
 }

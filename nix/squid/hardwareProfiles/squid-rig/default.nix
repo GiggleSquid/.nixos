@@ -37,6 +37,10 @@ in
 
   boot = {
     kernelPackages = nixpkgs.linuxPackages_latest;
+    kernelParams = [
+      "video=DP-2:3440:1440@120"
+      "video=HDMI-A-1:1920:1080@60"
+    ];
     kernelModules = [ "kvm-intel" ];
     initrd = {
       availableKernelModules = [
@@ -69,7 +73,7 @@ in
       enable = true;
       themePackages = [ (nixpkgs.catppuccin-plymouth.override { variant = "mocha"; }) ];
       theme = "catppuccin-mocha";
-      logo = "${self}/artwork/SquidNix.png";
+      # logo = "${self}/artwork/SquidNixPlymouth.png";
     };
   };
 
@@ -101,32 +105,10 @@ in
       noCheck = true;
     };
 
-    "/mnt/cephalonas/media/torrents" = {
-      device = "cephalonas.lan.gigglesquid.tech:/mnt/main/media/torrents";
+    "/mnt/cephalonas/media/torrent-downloads" = {
+      device = "cephalonas.lan.gigglesquid.tech:/mnt/main/media/torrent-downloads";
       fsType = "nfs";
       noCheck = true;
-      depends = [ "/mnt/cephalonas/media" ];
-    };
-
-    "/mnt/cephalonas/media/torrents/downloads" = {
-      device = "cephalonas.lan.gigglesquid.tech:/mnt/main/media/torrents/downloads";
-      fsType = "nfs";
-      noCheck = true;
-      depends = [ "/mnt/cephalonas/media" ];
-    };
-
-    "/mnt/cephalonas/media/squidjelly" = {
-      device = "cephalonas.lan.gigglesquid.tech:/mnt/main/media/squidjelly";
-      fsType = "nfs";
-      noCheck = true;
-      depends = [ "/mnt/cephalonas/media" ];
-    };
-
-    "/mnt/cephalonas/media/audiobookshelf" = {
-      device = "cephalonas.lan.gigglesquid.tech:/mnt/main/media/audiobookshelf";
-      fsType = "nfs";
-      noCheck = true;
-      depends = [ "/mnt/cephalonas/media" ];
     };
   };
 }

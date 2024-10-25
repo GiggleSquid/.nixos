@@ -33,7 +33,6 @@ in
     settings = {
       k9s = {
         liveViewAutoRefresh = false;
-        screenDumpDir = /home/squid/.local/state/k9s/screen-dumps;
         refreshRate = 2;
         maxConnRetry = 5;
         readOnly = false;

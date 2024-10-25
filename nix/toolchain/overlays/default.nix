@@ -1,6 +1,11 @@
 { inputs, cell }:
 let
-  inherit (inputs) nixpkgs nixos-hardware nixpkgs-flaresolverr-chromium-126;
+  inherit (inputs)
+    nixpkgs
+    nixos-hardware
+    nixpkgs-flaresolverr-chromium-126
+    nixos-caddy-with-plugins
+    ;
   inherit (inputs.cells.toolchain) pkgs packages;
 in
 {
@@ -8,10 +13,78 @@ in
 
   py-natpmp = packages.py-natpmp;
 
+  odoo = packages.odoo;
+
+  website_maf = packages.website_maf;
+  product_brand_sale = packages.product_brand_sale;
+  product_brand_ecommerce = packages.product_brand_ecommerce;
+
+  caddy = nixos-caddy-with-plugins.packages.default;
+
+  ladybird = nixpkgs.ladybird.overrideAttrs (old: {
+    version = "0-unstable-2024-08-30";
+    src = nixpkgs.fetchFromGitHub {
+      owner = "LadybirdWebBrowser";
+      repo = "ladybird";
+      rev = "92a37b3b1a62cf8ed6bc942229cb77bce01ec815";
+      hash = "sha256-IU48PBOe9mNtPNVVq+XfUVeh/nKmULSZBkaPld/510w=";
+    };
+  });
+
+  lego = nixpkgs.lego.overrideAttrs (old: {
+    version = "unstable-2024-09-07";
+    src = nixpkgs.fetchFromGitHub {
+      owner = "go-acme";
+      repo = "lego";
+      rev = "75b910b296eb9ba97032e4ccc87fb032901c8c6e";
+      sha256 = "sha256-1wu0L99hIix5kC9bZwN2R4rj7w7a0VP3cOMN1x216xU=";
+    };
+    vendorHash = "sha256-eI8VmGXlBwISyBDUbgHPdZw12e7a1SlxXthHcaOPYsU=";
+  });
+
   # https://github.com/NixOS/nixpkgs/issues/332776
   pkgs-flaresolverr-chromium-126 = import nixpkgs-flaresolverr-chromium-126 {
     inherit (cell.pkgs) system;
   };
+
+  # selenium-manager = nixpkgs.selenium-manager.override (old: {
+  #   rustPlatform = old.rustPlatform // {
+  #     buildRustPackage =
+  #       args:
+  #       old.rustPlatform.buildRustPackage (
+  #         args
+  #         // rec {
+  #           version = "4.24.0";
+  #           src = nixpkgs.fetchFromGitHub {
+  #             owner = "SeleniumHQ";
+  #             repo = "selenium";
+  #             rev = "selenium-${version}";
+  #             hash = "sha256-AsQr9kGv2dxkiFzptDA0D27OXZjYj7oDKz2oEQ2qW7s=";
+  #           };
+  #           cargoHash = "sha256-mirEeOi6CfKjb8ZuqardJeYy9EGnpsw5fkUw7umhkro=";
+  #         }
+  #       );
+  #   };
+  # });
+
+  # pythonPackagesExtensions = nixpkgs.pythonPackagesExtensions ++ [
+  #   (python-final: python-prev: {
+  #     selenium = python-prev.selenium.overridePythonAttrs (old: rec {
+  #       pname = "selenium";
+  #       version = "4.24.0";
+  #       src = nixpkgs.fetchFromGitHub {
+  #         owner = "SeleniumHQ";
+  #         repo = "selenium";
+  #         # check if there is a newer tag with or without -python suffix
+  #         rev = "refs/tags/selenium-${version}";
+  #         hash = "sha256-AsQr9kGv2dxkiFzptDA0D27OXZjYj7oDKz2oEQ2qW7s=";
+  #       };
+  #       patches = [
+  #         (./. + "/selenium/remove-rust-bindings.patch")
+  #       ];
+  #     });
+  #   })
+  # ];
 
   i2pd = nixpkgs.i2pd.overrideAttrs (old: rec {
     pname = "i2pd";
@@ -41,13 +114,13 @@ in
             args
             // rec {
               pname = "wezterm";
-              version = "30345b36d8a00fed347e4df5dadd83915a7693fb";
+              version = "2b76c63bb618d26609434c06282c8755229c4099";
               src = nixpkgs.fetchFromGitHub {
                 owner = "wez";
                 repo = pname;
                 rev = version;
                 fetchSubmodules = true;
-                hash = "sha256-By7g1yImmuVba/MTcB6ajNSHeWDRn4gO+p0UOWcCEgE=";
+                hash = "sha256-mX6Jg29G5UpgItW7zGdR5lxKfAWFX1+eVq2yByyGx9c=";
               };
 
               postPatch = ''

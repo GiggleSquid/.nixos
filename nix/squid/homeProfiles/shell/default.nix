@@ -78,6 +78,10 @@ in
       enable = true;
     };
 
+    tmux = {
+      enable = true;
+    };
+
     starship = {
       enable = true;
       enableTransience = true;
