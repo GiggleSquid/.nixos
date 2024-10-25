@@ -8,7 +8,7 @@ in
   inherit (common) bee;
 
   deployment = deployment // {
-    targetHost = "10.10.10.211";
+    targetHost = "10.10.0.211";
     tags = (common.deployment.tags) ++ [
       "laptop"
       "squid-top"
