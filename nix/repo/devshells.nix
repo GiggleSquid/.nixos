@@ -77,8 +77,8 @@ lib.mapAttrs (_: dev.mkShell) {
           }
           {
             name = "update";
-            help = "Update inputs";
-            command = "sudo nix-channel --update && nix flake update $PRJ_ROOT $@";
+            help = "Update flake";
+            command = "sudo nix-channel --update && nix flake update --flake $PRJ_ROOT $@";
           }
           {
             name = "check";
@@ -88,7 +88,7 @@ lib.mapAttrs (_: dev.mkShell) {
           {
             name = "gc";
             help = "Garbage collection";
-            command = "sudo nix-collect-garbage $@";
+            command = "sudo nix store gc -v $@";
           }
         ])
         (builtins.map util [
