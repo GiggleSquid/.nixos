@@ -18,4 +18,6 @@ rec {
   caddy-server = [ caddy ];
 
   squidbit = [ nixosModules.qbittorrent ];
+
+  i2pd = [ nixosModules.i2pd ];
 }

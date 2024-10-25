@@ -14,15 +14,13 @@ in
     domain = "lan.gigglesquid.tech";
     firewall = {
       allowedTCPPorts = [
-        19169
+        19168
         7070
         4444
         7656
       ];
       allowedUDPPorts = [
         19169
-        7070
-        4444
         7656
       ];
     };
@@ -32,9 +30,22 @@ in
     i2pd = {
       package = pkgs.i2pd;
       enable = true;
-      logLevel = "info";
-      bandwidth = 5000;
+      logLevel = "error";
+      bandwidth = 8192;
       port = 19169;
+      limits.transittunnels = 10000;
+      floodfill = true;
+      ntcp = true;
+      ntcp2 = {
+        enable = true;
+        port = 19168;
+        published = true;
+      };
+      ssu2 = {
+        enable = true;
+        port = 0;
+        published = true;
+      };
       addressbook.subscriptions = [
         "http://inr.i2p/export/alive-hosts.txt"
         "http://i2p-projekt.i2p/hosts.txt"
@@ -64,10 +75,17 @@ in
     };
   };
 
+  systemd.services.i2pd.serviceConfig.LimitNOFILE = 8192;
+
   imports =
     let
       profiles = [ hardwareProfiles.servers ];
-      suites = with serverSuites; lib.concatLists [ nixosSuites.server ];
+      suites =
+        with serverSuites;
+        lib.concatLists [
+          nixosSuites.server
+          i2pd
+        ];
     in
     lib.concatLists [
       profiles
