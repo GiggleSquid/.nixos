@@ -22,7 +22,7 @@ in
   sops = {
     defaultSopsFile = "${self}/sops/squid-rig.yaml";
     secrets = {
-      cloudflare_dns_api_token = { };
+      bunny_dns_api_key = { };
       lego_pfx_pass = { };
     };
   };
@@ -37,11 +37,11 @@ in
       extraLegoFlags = [
         "--dns.propagation-wait=300s"
       ];
-      dnsResolver = "1.1.1.1:53";
-      dnsProvider = "cloudflare";
+      dnsResolver = "9.9.9.9";
+      dnsProvider = "bunny";
       credentialFiles = {
-        "CF_DNS_API_TOKEN_FILE" = "${config.sops.secrets.cloudflare_dns_api_token.path}";
-        "CLOUDFLARE_PROPAGATION_TIMEOUT_FILE" = nixpkgs.writeText "CLOUDFLARE_PROPAGATION_TIMEOUT" ''360'';
+        "BUNNY_API_KEY_FILE" = "${config.sops.secrets.bunny_dns_api_key.path}";
+        "BUNNY_PROPAGATION_TIMEOUT_FILE" = nixpkgs.writeText "BUNNY_PROPAGATION_TIMEOUT" ''360'';
       };
       postRun = # bash
         ''

@@ -32,7 +32,7 @@ in
   security.acme = {
     acceptTerms = true;
     defaults = {
-      server = "https://acme-staging-v02.api.letsencrypt.org/directory";
+      server = "https://acme-v02.api.letsencrypt.org/directory";
       email = "jack.connors@protonmail.com";
     };
     certs."ns-root.dns.lan.gigglesquid.tech" = {

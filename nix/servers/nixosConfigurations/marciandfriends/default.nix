@@ -28,7 +28,7 @@ in
   sops = {
     defaultSopsFile = "${self}/sops/squid-rig.yaml";
     secrets = {
-      cloudflare_dns_api_token = { };
+      bunny_dns_api_key = { };
       lego_pfx_pass = { };
     };
   };
