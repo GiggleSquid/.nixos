@@ -16,6 +16,13 @@ in
       allowedTCPPorts = [
         80
         443
+        25565
+        25566
+        28967
+      ];
+      allowedUDPPorts = [
+        25566
+        28967
       ];
     };
   };
