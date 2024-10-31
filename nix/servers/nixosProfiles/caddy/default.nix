@@ -144,6 +144,18 @@ in
             }
           '';
       };
+      "storj-node.cephalonas.lan.gigglesquid.tech" = {
+        extraConfig = # caddyfile
+          ''
+            import bunny_acme_settings_gigglesquid_tech
+            import deny_non_local
+            handle {
+              reverse_proxy http://10.3.0.25:20909 {
+                header_up Host {upstream_hostport}
+              }
+            }
+          '';
+      };
       "www.marciandfriends.co.uk" = {
         extraConfig = # caddyfile
           ''
