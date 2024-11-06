@@ -4,7 +4,7 @@ let
 
   prismlauncher = nixpkgs.prismlauncher.override {
     jdks = with nixpkgs; [
-      jdk22
+      jdk23
       jdk21
       jdk17
       jdk8
