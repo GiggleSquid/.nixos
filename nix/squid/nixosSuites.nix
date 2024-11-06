@@ -40,7 +40,7 @@ rec {
     games
     boinc
     openrgb
-    # virtualisation
+    virtualisation
   ];
 
   laptop = pc ++ [ games ];
