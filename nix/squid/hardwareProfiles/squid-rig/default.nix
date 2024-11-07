@@ -15,7 +15,10 @@ in
   ];
 
   hardware = {
-    graphics.enable = true;
+    graphics = {
+      enable = true;
+      extraPackages = with nixpkgs; [ rocmPackages.clr.icd ];
+    };
     enableRedistributableFirmware = true;
     printers = {
       ensureDefaultPrinter = "Brother_DCP-L2510D";
