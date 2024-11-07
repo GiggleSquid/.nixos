@@ -6,6 +6,8 @@ in
   services.boinc = {
     enable = true;
     extraEnvPackages = with nixpkgs; [
+      libglvnd
+      brotli
       ocl-icd
     ];
   };
