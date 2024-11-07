@@ -41,6 +41,7 @@ rec {
     boinc
     openrgb
     virtualisation
+    nix-ld
   ];
 
   laptop = pc ++ [ games ];
