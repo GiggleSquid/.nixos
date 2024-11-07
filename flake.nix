@@ -65,6 +65,7 @@
             "starsector"
             "rar"
             "minecraft-server"
+            "Oracle_VM_VirtualBox_Extension_Pack"
           ];
       }
       {
