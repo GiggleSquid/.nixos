@@ -8,6 +8,7 @@
         "privacy.clearOnShutdown.downloads" = false;
         "middlemouse.paste" = false;
         "general.autoScroll" = true;
+        "webgl.disabled" = false;
       };
     };
   };
