@@ -13,6 +13,7 @@
       host = {
         enable = true;
         enableExtensionPack = true;
+        enableHardening = false;
       };
     };
   };
