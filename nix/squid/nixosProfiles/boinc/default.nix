@@ -16,7 +16,7 @@ in
     foldingathome = {
       enable = true;
       team = 226804;
-      user = null;
+      user = "GiggleSquid_GRC_71c3092ca4536ee0f0e351e98bf57b31";
       extraArgs = [ ];
     };
   };
