@@ -6,6 +6,7 @@ in
   services.boinc = {
     enable = true;
     extraEnvPackages = with nixpkgs; [
+      virtualbox
       libglvnd
       brotli
       ocl-icd
