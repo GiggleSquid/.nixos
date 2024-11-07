@@ -10,9 +10,14 @@
     # };
     # docker.enable = true;
     virtualbox = {
-      host.enable = true;
+      host = {
+        enable = true;
+        enableExtensionPack = true;
+      };
     };
   };
+
+  users.extraGroups.vboxusers.members = [ "boinc" ];
 
   boot = {
     kernelParams = [
