@@ -17,7 +17,10 @@ in
   hardware = {
     graphics = {
       enable = true;
-      extraPackages = with nixpkgs; [ rocmPackages.clr.icd ];
+      extraPackages = with nixpkgs; [
+        rocmPackages.clr.icd
+        rocmPackages.rocm-runtime
+      ];
     };
     enableRedistributableFirmware = true;
     printers = {
