@@ -84,7 +84,7 @@ in
             };
             "plugins/floodgate.jar" = pkgs.fetchurl {
               url = "https://download.geysermc.org/v2/projects/floodgate/versions/latest/builds/latest/downloads/spigot";
-              hash = "sha256-xHKOvGbnBFaaTWq+7KR35FVaBHrw+Lzk6oJhOrvD/ro=";
+              hash = "sha256-aMrZ5yrqy6LWfYYEeh3mR3nIDS4g5SOTPJNSdgWieOY=";
             };
 
             "plugins/stargate-rewitten.jar" = ././Stargate-1.0.0.16-ALPHA.jar;
