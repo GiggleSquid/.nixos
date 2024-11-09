@@ -29,6 +29,8 @@ keys:
 
   - &marciandfriends age1ukde72l2ekp5uq53gnc5cnmfag4qd0ew9r6j5gmpsldntcedjufqfnms5z
 
+  - &boinc-tentacle0 age13mk5pue6mlr3rjkrppxafcc2wz8wsygdhnt4jx335wxwaph5yads057hej
+
 creation_rules:
   - path_regex: sops/[^/]+\.yaml$
     key_groups:
@@ -49,3 +51,4 @@ creation_rules:
       - *minesquid
       - *unimatrix
       - *marciandfriends
+      - *boinc-tentacle0
