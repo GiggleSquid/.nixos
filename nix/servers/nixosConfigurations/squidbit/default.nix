@@ -190,6 +190,7 @@ in
     };
     qbittorrent = {
       enable = true;
+      package = pkgs.qbittorrent-enhanced-nox;
       openFirewall = true;
       waitForMounts = [
         "mnt-media.mount"

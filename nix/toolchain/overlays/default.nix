@@ -11,6 +11,8 @@ in
 {
   deviceTree = nixpkgs.callPackage nixos-hardware.apply-overlays-dtmerge { };
 
+  qbittorrent-enhanced-nox = packages.qbittorrent-enhanced.override { guiSupport = false; };
+
   py-natpmp = packages.py-natpmp;
 
   odoo = packages.odoo;
