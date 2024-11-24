@@ -108,11 +108,17 @@ in
         }
       '';
     virtualHosts = {
+      "http://squidjelly.gigglesquid.tech" = {
+        extraConfig = # caddyfile
+          ''
+            import bunny_acme_settings_gigglesquid_tech
+            redir https://squidjelly.gigglesquid.tech{uri} permanent
+          '';
+      };
       "squidjelly.gigglesquid.tech" = {
         extraConfig = # caddyfile
           ''
             import bunny_acme_settings_gigglesquid_tech
-            import deny_non_local
             handle {
               reverse_proxy https://squidjelly.lan.gigglesquid.tech:8920 {
                 header_up Host {upstream_hostport}
