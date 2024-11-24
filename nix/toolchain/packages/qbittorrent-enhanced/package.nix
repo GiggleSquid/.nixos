@@ -21,13 +21,13 @@
 
 stdenv.mkDerivation rec {
   pname = "qbittorrent-enhanced" + lib.optionalString (!guiSupport) "-nox";
-  version = "5.0.0.10";
+  version = "5.0.2.10";
 
   src = fetchFromGitHub {
     owner = "c0re100";
     repo = "qBittorrent-Enhanced-Edition";
     rev = "release-${version}";
-    hash = "sha256-MQo5z0OKwCw5kVQKyonrZxhgAvDdevuA+RNNFf1yj10=";
+    hash = "sha256-9RCG530zWQ+qzP0Y+y69NFlBWVA8GT29dY8aC1cvq7o=";
   };
 
   nativeBuildInputs = [
