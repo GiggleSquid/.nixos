@@ -37,5 +37,6 @@ in
     packwiz
     framesh
     storj-uplink
+    path-of-building
   ];
 }
