@@ -31,6 +31,8 @@ keys:
 
   - &boinc-tentacle0 age13mk5pue6mlr3rjkrppxafcc2wz8wsygdhnt4jx335wxwaph5yads057hej
 
+  - &searxng age1uzsyvn7arkk5xs6tagcn3leu2zn52equl3f66yhq2shdx3pzj3msgr77lx
+
 creation_rules:
   - path_regex: sops/[^/]+\.yaml$
     key_groups:
@@ -52,3 +54,4 @@ creation_rules:
       - *unimatrix
       - *marciandfriends
       - *boinc-tentacle0
+      - *searxng

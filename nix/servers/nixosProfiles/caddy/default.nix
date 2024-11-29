@@ -162,6 +162,18 @@ in
             }
           '';
       };
+      "search.gigglesquid.tech" = {
+        extraConfig = # caddyfile
+          ''
+            import bunny_acme_settings_gigglesquid_tech
+            import deny_non_local
+            handle {
+              reverse_proxy http://search.lan.gigglesquid.tech:8080 {
+                header_up Host {upstream_hostport}
+              }
+            }
+          '';
+      };
       "www.marciandfriends.co.uk" = {
         extraConfig = # caddyfile
           ''
