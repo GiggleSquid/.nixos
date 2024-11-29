@@ -6,3 +6,7 @@ result
 .data
 .direnv
 .run
+.gcroots
+artwork/wallpapers
+uboot
+nix/toolchain/packages/odoo-website-maf
