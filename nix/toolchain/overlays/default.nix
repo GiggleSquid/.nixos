@@ -116,13 +116,13 @@ in
             args
             // rec {
               pname = "wezterm";
-              version = "2b76c63bb618d26609434c06282c8755229c4099";
+              version = "a7ff718c7c182d62d7c848187da1655e58b8ecd8";
               src = nixpkgs.fetchFromGitHub {
                 owner = "wez";
                 repo = pname;
                 rev = version;
                 fetchSubmodules = true;
-                hash = "sha256-mX6Jg29G5UpgItW7zGdR5lxKfAWFX1+eVq2yByyGx9c=";
+                hash = "sha256-+m2bZlhi0wx4KTqEikcKL7+YN+t8FLfrb5aeiQOQtGM=";
               };
 
               postPatch = ''
