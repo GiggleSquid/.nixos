@@ -51,22 +51,28 @@
             colmenaConfigurations
           ];
 
-        nixpkgsConfig.allowUnfreePredicate =
-          pkg:
-          lib.elem (lib.getName pkg) [
-            "steam"
-            "steam-run"
-            "steam-original"
-            "steam-unwrapped"
-            "nvidia-x11"
-            "nvidia-settings"
-            "discord"
-            "vintagestory"
-            "starsector"
-            "rar"
-            "minecraft-server"
-            "Oracle_VM_VirtualBox_Extension_Pack"
+        nixpkgsConfig = {
+          allowUnfreePredicate =
+            pkg:
+            lib.elem (lib.getName pkg) [
+              "steam"
+              "steam-run"
+              "steam-original"
+              "steam-unwrapped"
+              "nvidia-x11"
+              "nvidia-settings"
+              "discord"
+              "vintagestory"
+              "starsector"
+              "rar"
+              "minecraft-server"
+              "Oracle_VM_VirtualBox_Extension_Pack"
+            ];
+          permittedInsecurePackages = [
+            "dotnet-runtime-wrapped-7.0.20"
+            "dotnet-runtime-7.0.20"
           ];
+        };
       }
       {
         devShells = hive.harvest self [
