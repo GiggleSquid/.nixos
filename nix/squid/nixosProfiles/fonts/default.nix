@@ -12,13 +12,9 @@ in
       (iosevka-bin.override { variant = "Etoile"; })
       (iosevka-bin.override { variant = "Aile"; })
       (iosevka-bin.override { variant = "SS14"; })
-      (nerdfonts.override {
-        fonts = [
-          "Iosevka"
-          "IosevkaTerm"
-          "IosevkaTermSlab"
-        ];
-      })
+      nerd-fonts.iosevka
+      nerd-fonts.iosevka-term
+      nerd-fonts.iosevka-term-slab
     ];
     fontconfig.defaultFonts = {
       serif = [
