@@ -38,5 +38,6 @@ in
     framesh
     storj-uplink
     path-of-building
+    scribus
   ];
 }
