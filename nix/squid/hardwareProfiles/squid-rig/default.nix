@@ -57,6 +57,14 @@ in
       "video=HDMI-A-1:1920:1080@60"
     ];
     kernelModules = [ "kvm-intel" ];
+    kernel.sysctl = {
+      # Watch https://github.com/NixOS/nixpkgs/pull/351002
+      # will be redundant when merged
+      "vm.swappiness" = 180;
+      "vm.watermark_boost_scale_factor" = 0;
+      "vm.watermark_scale_factor" = 125;
+      "vm.page-cluster" = 0;
+    };
     initrd = {
       kernelModules = [ "dm-snapshot" ];
       availableKernelModules = [
