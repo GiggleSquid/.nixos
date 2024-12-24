@@ -21,20 +21,37 @@ in
     extraConfig = {
       pipewire = {
         "92-latency" = {
-          context.properties = {
-            default.clock = {
-              rate = 48000;
-              allowed-rates = [
-                44100
-                48000
-                96000
-                192000
-              ];
-              quantum = 1024;
-              min-quantum = 512;
-              max-quantum = 1024;
-            };
+          "context.properties" = {
+            "default.clock.rate" = 48000;
+            "default.clock.allowed-rates" = [
+              44100
+              48000
+              96000
+              192000
+            ];
+            "default.clock.quantum" = 128;
+            "default.clock.min-quantum" = 128;
+            "default.clock.max-quantum" = 128;
           };
+        };
+      };
+      pipewire-pulse."92-low-latency" = {
+        "context.properties" = [
+          {
+            name = "libpipewire-module-protocol-pulse";
+            args = { };
+          }
+        ];
+        "pulse.properties" = {
+          "pulse.min.req" = "128/48000";
+          "pulse.default.req" = "128/48000";
+          "pulse.max.req" = "128/48000";
+          "pulse.min.quantum" = "128/48000";
+          "pulse.max.quantum" = "128/48000";
+        };
+        "stream.properties" = {
+          "node.latency" = "128/48000";
+          "resample.quality" = 1;
         };
       };
     };
