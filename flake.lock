@@ -237,6 +237,27 @@
         "type": "github"
       }
     },
+    "flake-parts": {
+      "inputs": {
+        "nixpkgs-lib": [
+          "nur",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1733312601,
+        "narHash": "sha256-4pDvzqnegAfRkPwO3wmwBhVi/Sye1mzps0zHWYnP88c=",
+        "owner": "hercules-ci",
+        "repo": "flake-parts",
+        "rev": "205b12d8b7cd4802fbcb8e8ef6a0f1408781a4f9",
+        "type": "github"
+      },
+      "original": {
+        "owner": "hercules-ci",
+        "repo": "flake-parts",
+        "type": "github"
+      }
+    },
     "flake-utils": {
       "locked": {
         "lastModified": 1659877975,
@@ -787,22 +808,6 @@
         "type": "github"
       }
     },
-    "nixpkgs-flaresolverr-chromium-126": {
-      "locked": {
-        "lastModified": 1721411720,
-        "narHash": "sha256-74Y9UdhWyT3lo94SnwZTKpzE6hBA1o7aOjCq4mqAYng=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "ebbc0409688869938bbcf630da1c1c13744d2a7b",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "ebbc0409688869938bbcf630da1c1c13744d2a7b",
-        "type": "github"
-      }
-    },
     "nosys": {
       "locked": {
         "lastModified": 1668010795,
@@ -830,6 +835,28 @@
       "original": {
         "owner": "divnix",
         "repo": "nosys",
+        "type": "github"
+      }
+    },
+    "nur": {
+      "inputs": {
+        "flake-parts": "flake-parts",
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "treefmt-nix": "treefmt-nix"
+      },
+      "locked": {
+        "lastModified": 1735403874,
+        "narHash": "sha256-CkytEulg/IsnW1iWmM4/hygqX2vKuF9eHAMRxCemtpk=",
+        "owner": "nix-community",
+        "repo": "NUR",
+        "rev": "1fba85eb2f9d7a57a09e5b88b8d1aad407b50998",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "NUR",
         "type": "github"
       }
     },
@@ -937,7 +964,7 @@
         "nixos-generators": "nixos-generators",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs",
-        "nixpkgs-flaresolverr-chromium-126": "nixpkgs-flaresolverr-chromium-126",
+        "nur": "nur",
         "rust-overlay": "rust-overlay",
         "sops-nix": "sops-nix",
         "std": "std_2"
@@ -1187,6 +1214,27 @@
         "owner": "numtide",
         "repo": "treefmt-nix",
         "rev": "df3f32b0cc253dfc7009b7317e8f0e7ccd70b1cf",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "treefmt-nix",
+        "type": "github"
+      }
+    },
+    "treefmt-nix": {
+      "inputs": {
+        "nixpkgs": [
+          "nur",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1733222881,
+        "narHash": "sha256-JIPcz1PrpXUCbaccEnrcUS8jjEb/1vJbZz5KkobyFdM=",
+        "owner": "numtide",
+        "repo": "treefmt-nix",
+        "rev": "49717b5af6f80172275d47a418c9719a31a78b53",
         "type": "github"
       },
       "original": {
