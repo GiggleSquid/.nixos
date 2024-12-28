@@ -178,7 +178,7 @@ in
     };
     flaresolverr = {
       enable = true;
-      package = pkgs.pkgs-flaresolverr-chromium-126.flaresolverr;
+      package = pkgs.nur.repos.xddxdd.flaresolverr-21hsmw;
     };
     radarr = {
       enable = true;
