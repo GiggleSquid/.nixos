@@ -108,11 +108,6 @@
       url = "github:nixos/nixpkgs/ebbc0409688869938bbcf630da1c1c13744d2a7b";
     };
 
-    nixos-caddy-with-plugins = {
-      url = "github:crabdancing/nixos-caddy-with-plugins";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     nix-minecraft = {
       url = "github:Infinidoge/nix-minecraft";
       inputs.nixpkgs.follows = "nixpkgs";

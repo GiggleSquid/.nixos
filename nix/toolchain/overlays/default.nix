@@ -4,7 +4,6 @@ let
     nixpkgs
     nixos-hardware
     nixpkgs-flaresolverr-chromium-126
-    nixos-caddy-with-plugins
     ;
   inherit (inputs.cells.toolchain) pkgs packages;
 in
@@ -20,8 +19,6 @@ in
   website_maf = packages.website_maf;
   product_brand_sale = packages.product_brand_sale;
   product_brand_ecommerce = packages.product_brand_ecommerce;
-
-  caddy = nixos-caddy-with-plugins.packages.default;
 
   ladybird = nixpkgs.ladybird.overrideAttrs (old: {
     version = "0-unstable-2024-08-30";

@@ -1,7 +1,6 @@
 { inputs, config }:
 let
   inherit (inputs) nixpkgs self;
-  inherit (inputs.cells.toolchain) pkgs;
 in
 {
 
@@ -29,25 +28,13 @@ in
 
   services.caddy = {
     enable = true;
-    package = pkgs.caddy.withPlugins {
-      caddyModules = [
-        {
-          name = "dns-providers-bunny";
-          repo = "lab.zugriff.eu/caddy/bunny";
-          version = "5f07933028e209571f85e833a5b18e49d79fd600";
-        }
-        {
-          name = "dynamic-dns";
-          repo = "github.com/mholt/caddy-dynamicdns";
-          version = "d8dab1bbf3fc592032f71dacc14510475b4e3e9a";
-        }
-        {
-          name = "caddy-l4";
-          repo = "github.com/mholt/caddy-l4";
-          version = "3d22d6da412883875f573ee4ecca3dbb3fdf0fd0";
-        }
+    package = nixpkgs.caddy.withPlugins {
+      plugins = [
+        "github.com/GiggleSquid/caddy-bunny-mirror@v1.5.2-mirror"
+        "github.com/mholt/caddy-dynamicdns@v0.0.0-20241025234131-7c818ab3fc34"
+        "github.com/mholt/caddy-l4@v0.0.0-20241111225910-3c6cc2c0ee08"
       ];
-      vendorHash = "sha256-/OR+paTwlc87NcBPMP8ddtO+ZWN1sgcE5UI6igkv+mQ=";
+      hash = "sha256-Mvga6/FpQa4YQ89TyXKwpzNERtVB3gUxz14MH0gpU88=";
     };
     logFormat = ''
       level DEBUG
