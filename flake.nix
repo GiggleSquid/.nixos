@@ -66,7 +66,7 @@
               "starsector"
               "rar"
               "minecraft-server"
-              "Oracle_VM_VirtualBox_Extension_Pack"
+              "Oracle_VirtualBox_Extension_Pack"
             ];
           permittedInsecurePackages = [
             # vintagestory
