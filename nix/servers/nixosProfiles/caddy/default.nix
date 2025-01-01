@@ -50,6 +50,7 @@ in
           domains {
             gigglesquid.tech ddns
             marciandfriends.co.uk @
+            thatferret.blog @
           }
           ip_source simple_http https://icanhazip.com
           ip_source simple_http https://api64.ipify.org
@@ -83,6 +84,15 @@ in
             dns bunny {
               access_key {env.BUNNY_API_KEY}
               zone marciandfriends.co.uk
+            }
+            propagation_timeout -1
+          }
+        }
+        (bunny_acme_settings_thatferret_blog) {
+          tls {
+            dns bunny {
+              access_key {env.BUNNY_API_KEY}
+              zone thatferret.blog
             }
             propagation_timeout -1
           }
@@ -201,6 +211,31 @@ in
               rewrite * /503.html
               respond * 503
               file_server
+            }
+          '';
+      };
+      "www.thatferret.blog" = {
+        extraConfig = # caddyfile
+          ''
+            import bunny_acme_settings_thatferret_blog
+            redir https://thatferret.blog{uri} permanent
+          '';
+      };
+      "http://www.thatferret.blog" = {
+        extraConfig = # caddyfile
+          ''
+            import bunny_acme_settings_thatferret_blog
+            redir https://thatferret.blog{uri} permanent
+          '';
+      };
+      "thatferret.blog" = {
+        extraConfig = # caddyfile
+          ''
+            import bunny_acme_settings_thatferret_blog
+            handle {
+              reverse_proxy https://thatferret.blog.lan.gigglesquid.tech {
+                header_up Host {upstream_hostport}
+              }
             }
           '';
       };

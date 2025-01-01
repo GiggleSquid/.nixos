@@ -11,6 +11,8 @@ in
 
   qbittorrent-enhanced-nox = packages.qbittorrent-enhanced.override { guiSupport = false; };
 
+  hugo-website-thatferretblog = packages.hugo-website-thatferretblog;
+
   py-natpmp = packages.py-natpmp;
 
   odoo = packages.odoo;

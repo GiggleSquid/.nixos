@@ -28,6 +28,7 @@ keys:
   - &unimatrix age16ukaqtvg9h8hx757mx2d3yl8n28g9035gtyclejj49zj570g8prqq60mma
 
   - &marciandfriends age1ukde72l2ekp5uq53gnc5cnmfag4qd0ew9r6j5gmpsldntcedjufqfnms5z
+  - &thatferretblog age1vghjsjt0rnqw8spwdgqesaqjs8kg725wkvvmhua94j3uaryg0c9snj6u67
 
   - &boinc-tentacle0 age13mk5pue6mlr3rjkrppxafcc2wz8wsygdhnt4jx335wxwaph5yads057hej
 
@@ -53,5 +54,6 @@ creation_rules:
       - *minesquid
       - *unimatrix
       - *marciandfriends
+      - *thatferretblog
       - *boinc-tentacle0
       - *searxng
