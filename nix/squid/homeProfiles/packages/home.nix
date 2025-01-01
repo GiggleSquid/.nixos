@@ -39,5 +39,6 @@ in
     storj-uplink
     path-of-building
     scribus
+    hugo
   ];
 }
