@@ -232,10 +232,8 @@ in
         extraConfig = # caddyfile
           ''
             import bunny_acme_settings_thatferret_blog
-            handle {
-              reverse_proxy https://thatferret.blog.lan.gigglesquid.tech {
-                header_up Host {upstream_hostport}
-              }
+            reverse_proxy https://thatferret.blog.lan.gigglesquid.tech {
+              header_up Host {upstream_hostport}
             }
           '';
       };
