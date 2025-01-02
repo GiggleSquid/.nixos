@@ -9,8 +9,8 @@ stdenv.mkDerivation {
     fetchSubmodules = true;
     owner = "GiggleSquid";
     repo = "thatferretblog";
-    rev = "76d88773e2445b1c6750771bf064cc2cfa355110";
-    hash = "sha256-QrJxgALJct9AVWxxML3G29TAeI4MLWDf18Tb3rhT/ik=";
+    rev = "468bb6a9fe74fad93cef83b0b4c0d8d605d974d9";
+    hash = "sha256-1oidZOvD8InHDgduzyHVLfGg6Pjm7GRzn3dIVp1pzqA=";
   };
   nativeBuildInputs = [ hugo ];
   phases = [
