@@ -93,6 +93,11 @@ in
             import deny_non_local
             root * "${pkgs.hugo-website-thatferretblog}"
             file_server
+            encode zstd gzip
+            @cache-images path_regexp \/.*\.(jpg|jpeg|png|gif|webp|ico)$
+            @cache-assets path_regexp \/assets\/(js\/.*\.js|css\/.*\.css)$
+            header @cache-images Cache-Control max-age=604800
+            header @cache-assets Cache-Control max-age=345600
           '';
       };
     };
