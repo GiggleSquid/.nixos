@@ -18,6 +18,6 @@ stdenv.mkDerivation {
     "buildPhase"
   ];
   buildPhase = ''
-    hugo build -s . -d "$out"
+    hugo build --minify -s . -d "$out"
   '';
 }
