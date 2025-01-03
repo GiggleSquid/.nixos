@@ -11,8 +11,8 @@ stdenv.mkDerivation {
     deepClone = true;
     owner = "GiggleSquid";
     repo = "thatferretblog";
-    rev = "23a064c5a0d584f51a8c5142416b9fd86a1dfb43";
-    hash = "sha256-US4h4QIcqk42sPSwHfii17s+71/b9EeLsWrd4NujOxI=";
+    rev = "960bfc17adda99f90dcec6728e73a886f704e0b0";
+    hash = "sha256-tVqNAW3g8zAXVo412vbI/k9ID6XeTskVCIQEd76PO8E=";
   };
   nativeBuildInputs = [
     hugo
