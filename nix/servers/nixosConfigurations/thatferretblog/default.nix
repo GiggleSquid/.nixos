@@ -93,7 +93,7 @@ in
             import deny_non_local
             encode zstd gzip
             @cache-default path_regexp \/.*$
-            @cache-images path_regexp \/.*\.(jpg|jpeg|png|gif|webp|ico)$
+            @cache-images path_regexp \/.*\.(jpg|jpeg|png|gif|webp|ico|svg)$
             @cache-assets path_regexp \/assets\/(js\/.*\.js|css\/.*\.css)$
             header @cache-default Cache-Control max-age=3600
             header @cache-images Cache-Control max-age=604800
