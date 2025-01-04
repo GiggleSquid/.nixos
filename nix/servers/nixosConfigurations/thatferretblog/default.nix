@@ -97,7 +97,7 @@ in
             @cache-assets path_regexp \/assets\/(js\/.*\.js|css\/.*\.css)$
             header @cache-default Cache-Control max-age=3600
             header @cache-images Cache-Control max-age=604800
-            header @cache-assets Cache-Control max-age=345600
+            header @cache-assets Cache-Control max-age=604800
             handle {
               root * "${pkgs.hugo-website-thatferretblog}"
               file_server
