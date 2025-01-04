@@ -91,8 +91,6 @@ in
           ''
             import bunny_acme_settings_gigglesquid_tech
             import deny_non_local
-            root * "${pkgs.hugo-website-thatferretblog}"
-            file_server
             encode zstd gzip
             @cache-default path_regexp \/.*$
             @cache-images path_regexp \/.*\.(jpg|jpeg|png|gif|webp|ico)$
@@ -100,6 +98,16 @@ in
             header @cache-default Cache-Control max-age=3600
             header @cache-images Cache-Control max-age=604800
             header @cache-assets Cache-Control max-age=345600
+            handle {
+              root * "${pkgs.hugo-website-thatferretblog}"
+              file_server
+            }
+            handle /umami_analytics.js {
+              rewrite * /script.js
+              reverse_proxy https://cloud.umami.is {
+                header_up Host {upstream_hostport}
+              }
+            }
           '';
       };
     };
