@@ -12,7 +12,7 @@ stdenv.mkDerivation {
     owner = "GiggleSquid";
     repo = "thatferretblog";
     rev = "147021390e0b982227a3e6f4d6d9bf9b2165e6d1";
-    hash = "sha256-+q9XKEjauyjviPfsuPukruYe5/e4oLQiCqVR1J2Psug=";
+    hash = "sha256-s+4iHdIrJ5X0SaVZ8xNV8GZ8JVMtxP+RT3qEiegga5I=";
   };
   nativeBuildInputs = [
     hugo
