@@ -21,7 +21,6 @@ lib.mapAttrs (_: dev.mkShell) {
         mkCategory = category: attrset: attrset // { inherit category; };
         hexagon = mkCategory "hexagon";
         nix = mkCategory "nix";
-        util = mkCategory "util";
       in
       lib.concatLists [
         (builtins.map hexagon [
@@ -89,13 +88,6 @@ lib.mapAttrs (_: dev.mkShell) {
             name = "gc";
             help = "Garbage collection";
             command = "sudo nix store gc -v $@";
-          }
-        ])
-        (builtins.map util [
-          {
-            name = "lg";
-            help = "lazygit";
-            command = "lazygit";
           }
         ])
       ];

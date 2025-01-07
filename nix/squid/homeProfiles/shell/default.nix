@@ -13,6 +13,7 @@ in
       l = "lsd -Al";
       cat = "bat";
       mkdir = "mkdir -p";
+      lg = "lazygit";
     };
   };
 
