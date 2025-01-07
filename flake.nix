@@ -128,11 +128,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    kubenix = {
-      url = "github:hall/kubenix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     flake-utils.url = "github:numtide/flake-utils";
 
     nur = {
