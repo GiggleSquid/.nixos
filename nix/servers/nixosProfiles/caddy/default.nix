@@ -214,6 +214,12 @@ in
             }
           '';
       };
+      "http://www.thatferret.blog" = {
+        extraConfig = # caddyfile
+          ''
+            redir https://thatferret.blog{uri} permanent
+          '';
+      };
       "www.thatferret.blog" = {
         extraConfig = # caddyfile
           ''
@@ -221,10 +227,9 @@ in
             redir https://thatferret.blog{uri} permanent
           '';
       };
-      "http://www.thatferret.blog" = {
+      "http://thatferret.blog" = {
         extraConfig = # caddyfile
           ''
-            import bunny_acme_settings_thatferret_blog
             redir https://thatferret.blog{uri} permanent
           '';
       };

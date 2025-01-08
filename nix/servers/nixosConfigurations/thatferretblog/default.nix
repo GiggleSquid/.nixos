@@ -78,14 +78,6 @@ in
         }
       '';
     virtualHosts = {
-      "http://thatferret.blog.lan.gigglesquid.tech" = {
-        extraConfig = # caddyfile
-          ''
-            import bunny_acme_settings_gigglesquid_tech
-            import deny_non_local
-            redir https://thatferret.blog.lan.gigglesquid.tech{uri} permanent
-          '';
-      };
       "thatferret.blog.lan.gigglesquid.tech" = {
         extraConfig = # caddyfile
           ''
