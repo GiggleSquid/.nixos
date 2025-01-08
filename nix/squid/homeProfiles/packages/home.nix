@@ -38,7 +38,6 @@ in
     storj-uplink
     path-of-building
     scribus
-    hugo
     # See: https://github.com/NixOS/nixpkgs/issues/370715
     # https://bugzilla.redhat.com/show_bug.cgi?id=2248131
     # lmms
