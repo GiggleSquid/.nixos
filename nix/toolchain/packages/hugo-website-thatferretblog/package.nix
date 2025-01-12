@@ -13,8 +13,8 @@ buildNpmPackage {
     deepClone = true;
     owner = "GiggleSquid";
     repo = "thatferretblog";
-    rev = "b3918f67846baea3f6ec4e914e3bf1e71a8c4781";
-    hash = "sha256-r6cFsdcCJP0hZn67kAGe65v3TvKTvwKLo6vSzHpBLN8=";
+    rev = "5ad9b8231c3a0170b6e437c54ff712b9c33ec885";
+    hash = "sha256-2VxKCbz+EA8WBDvX//eyacSPNeiycirt1f6CjtNYJ+M=";
   };
 
   npmDepsHash = "sha256-7K1Exxu6C3C9IImW9W+Kd1MrHEElF6/Tt5dF/2ndAVY=";
