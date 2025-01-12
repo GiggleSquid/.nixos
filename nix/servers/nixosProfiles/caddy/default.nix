@@ -127,7 +127,6 @@ in
         extraConfig = # caddyfile
           ''
             import bunny_acme_settings_gigglesquid_tech
-            import deny_non_local
             handle {
               reverse_proxy http://squidjelly.lan.gigglesquid.tech:5055 {
                 header_up Host {upstream_hostport}
