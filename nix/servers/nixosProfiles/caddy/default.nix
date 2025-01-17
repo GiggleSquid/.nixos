@@ -241,6 +241,17 @@ in
             }
           '';
       };
+      "http://thatferret.local.lan.gigglesquid.tech" = {
+        extraConfig = # caddyfile
+          ''
+            import deny_non_local
+            handle {
+              reverse_proxy http://10.10.0.10:1313 {
+                header_up Host {upstream_hostport}
+              }
+            }
+          '';
+      };
     };
   };
 }

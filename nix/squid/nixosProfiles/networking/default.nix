@@ -3,7 +3,12 @@
     useNetworkd = true;
     wireguard.enable = true;
     timeServers = [ "10.3.0.5" ];
-    # firewall.allowedUDPPorts = [ 69 ];
+    firewall = {
+      allowedTCPPorts = [
+        1313 # hugo
+      ];
+      allowedUDPPorts = [ ];
+    };
   };
 
   services = {
