@@ -50,7 +50,7 @@ in
       plugins = [
         "github.com/GiggleSquid/caddy-bunny-mirror@v1.5.2-mirror"
       ];
-      hash = "sha256-qRikTqxbkdg7ABX9rWNwWo2dGyeGVlDStoh2mRFnOP8=";
+      hash = "sha256-nICqwtU5Zv/o2CsbrP11mTGA8tqywDrhKIzSiYBwjtg=";
     };
     logFormat = ''
       level DEBUG
