@@ -34,7 +34,7 @@ in
         "github.com/mholt/caddy-dynamicdns@v0.0.0-20241025234131-7c818ab3fc34"
         "github.com/mholt/caddy-l4@v0.0.0-20241111225910-3c6cc2c0ee08"
       ];
-      hash = "sha256-p3Bjzx/q+EbCQhNRtfQ2rI8hG/mFk7ORTtrhtKOTCnU=";
+      hash = "sha256-P+Tt55yGIcuqHft8UBK+J9sD1I0u3kgzAENKrVkaOkQ=";
     };
     logFormat = ''
       level DEBUG
