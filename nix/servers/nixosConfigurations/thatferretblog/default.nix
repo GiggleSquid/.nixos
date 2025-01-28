@@ -88,7 +88,7 @@ in
             @cache-images path_regexp \/.*\.(jpg|jpeg|png|gif|webp|ico|svg)$
             @cache-assets path_regexp \/assets\/(js\/.*\.js|css\/.*\.css)$
             @cache-fonts path_regexp \/fonts\/.*\.(ttf|otf|woff|woff2)$
-            header @cache-default Cache-Control max-age=3600
+            header @cache-default Cache-Control no-cache
             header @cache-images Cache-Control max-age=604800
             header @cache-assets Cache-Control max-age=604800
             header @cache-fonts Cache-Control max-age=2592000
