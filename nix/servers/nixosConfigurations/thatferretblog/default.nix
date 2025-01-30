@@ -61,7 +61,7 @@ in
     globalConfig = # caddyfile
       ''
         filesystem thatferretblog git https://github.com/GiggleSquid/thatferretblog {
-          ref 87943e73d0ee5d55457e602f52e9bf958ebb7d2a
+          ref 41feb541c4ee50953d742f3b24159c3758e27ca3
         }
       '';
     extraConfig = # caddyfile
