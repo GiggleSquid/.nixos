@@ -97,8 +97,6 @@ in
             header @cache-images Cache-Control max-age=604800
             header @cache-assets Cache-Control max-age=604800
             header @cache-fonts Cache-Control max-age=2592000
-            header -Last-Modified
-            header ETag `"b3dc0bc16e75662635691eea74e2ccb2cb07f0d7"`
             handle {
               root public_html
               file_server {
