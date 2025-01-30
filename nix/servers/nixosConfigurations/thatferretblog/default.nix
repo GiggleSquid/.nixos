@@ -59,7 +59,11 @@ in
     email = "jack.connors@protonmail.com";
     acmeCA = "https://acme-v02.api.letsencrypt.org/directory";
     globalConfig = # caddyfile
-      '''';
+      ''
+        filesystem thatferretblog git https://github.com/GiggleSquid/thatferretblog {
+          ref 87943e73d0ee5d55457e602f52e9bf958ebb7d2a
+        }
+      '';
     extraConfig = # caddyfile
       ''
         (bunny_acme_settings_gigglesquid_tech) {
@@ -96,8 +100,10 @@ in
             header -Last-Modified
             header ETag `"b3dc0bc16e75662635691eea74e2ccb2cb07f0d7"`
             handle {
-              root * "${pkgs.hugo-website-thatferretblog}"
-              file_server
+              root public_html
+              file_server {
+                fs thatferretblog
+              }
             }
             handle /umami_analytics.js {
               rewrite * /script.js
