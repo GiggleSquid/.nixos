@@ -5,9 +5,8 @@
 }:
 let
   inherit (inputs) common nixpkgs self;
-  inherit (cell) machineProfiles hardwareProfiles serverSuites;
+  inherit (cell) hardwareProfiles serverSuites;
   inherit (inputs.cells.squid) nixosSuites homeSuites;
-  inherit (inputs.cells.toolchain) pkgs;
   lib = nixpkgs.lib // builtins;
   hostName = "thatferretblog";
 in
@@ -24,11 +23,6 @@ in
       ];
       allowedUDPPorts = [ ];
     };
-  };
-
-  boot.kernel.sysctl = {
-    "net.core.rmem_max" = 7500000;
-    "net.core.wmem_max" = 7500000;
   };
 
   sops.secrets = {
@@ -118,12 +112,12 @@ in
     let
       profiles = [
         hardwareProfiles.servers
-        machineProfiles.caddy-squid
       ];
       suites =
         with serverSuites;
         lib.concatLists [
           nixosSuites.server
+          caddy-server
         ];
     in
     lib.concatLists [
