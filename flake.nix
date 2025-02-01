@@ -45,7 +45,6 @@
             (functions "nixosProfiles")
             (functions "userProfiles")
             (functions "homeProfiles")
-            (functions "k3sProfiles")
 
             nixosConfigurations
             colmenaConfigurations
