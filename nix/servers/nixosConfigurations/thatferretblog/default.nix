@@ -88,9 +88,9 @@ in
             @cache-assets path_regexp \/assets\/(js\/.*\.js|css\/.*\.css)$
             @cache-fonts path_regexp \/fonts\/.*\.(ttf|otf|woff|woff2)$
             header @cache-default Cache-Control no-cache
-            header @cache-images Cache-Control max-age=604800
-            header @cache-assets Cache-Control max-age=604800
-            header @cache-fonts Cache-Control max-age=2592000
+            header @cache-images Cache-Control max-age=2628000
+            header @cache-assets Cache-Control max-age=2628000
+            header @cache-fonts Cache-Control max-age=15768000
             handle {
               root public_html
               file_server {
