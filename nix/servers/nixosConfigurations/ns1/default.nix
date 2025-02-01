@@ -5,7 +5,7 @@
 }:
 let
   inherit (inputs) rpi nixpkgs self;
-  inherit (cell) machineProfiles hardwareProfiles serverSuites;
+  inherit (cell) hardwareProfiles serverSuites;
   inherit (inputs.cells.squid) nixosSuites homeSuites;
   lib = nixpkgs.lib // builtins;
   hostName = "ns1";
@@ -72,7 +72,6 @@ in
     let
       profiles = [
         hardwareProfiles.ns1
-        machineProfiles.ns1
       ];
       suites =
         with serverSuites;
