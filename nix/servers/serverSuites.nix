@@ -22,4 +22,6 @@ rec {
   i2pd = [ nixosModules.i2pd ];
 
   minesquid = [ nixosModules.nix-minecraft ];
+
+  crowdsec = [ nixosModules.crowdsec ];
 }
