@@ -19,6 +19,7 @@ keys:
   - &i2p age1naucvcsg7p4hjp3fz0y0dh2c6c6ue5wph2paza26r8qzryl87dzq48r9ck
 
   - &crowdsec age1mr64tx3uurhdsca75u9fd9gtn0jr8rw578ejljw0q0c9zvu0eaas9l7vs0
+  - &otel age1nwqz2a2rgvaqcz7lmnjd5ryxyecv0h5h46lx88ma3gx2h4f28ahqe8rjrf
 
   - &torrent age1zswh4xxkyax7m527lx4slu45nfav57rs7frv2l3wuhhcvfm83yrqp27ezm
   - &squidjelly age14w9jvwngg85ph6e7yal3t5xmpg20s393vndgmznzl2vdfqgcsv0qy2huzn
@@ -50,6 +51,7 @@ creation_rules:
       - *ns2
       - *i2p
       - *crowdsec
+      - *otel
       - *torrent
       - *squidjelly
       - *squidcasts
