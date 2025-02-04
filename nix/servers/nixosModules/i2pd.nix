@@ -5,18 +5,33 @@
   ...
 }:
 
-with lib;
-
 let
+  inherit (lib)
+    mkIf
+    mkOption
+    mkDefault
+    mkEnableOption
+    types
+    optional
+    optionals
+    ;
+  inherit (lib.types)
+    nullOr
+    bool
+    listOf
+    str
+    attrsOf
+    submodule
+    ;
 
   cfg = config.services.i2pd;
 
   homeDir = "/var/lib/i2pd";
 
   strOpt = k: v: k + " = " + v;
-  boolOpt = k: v: k + " = " + boolToString v;
+  boolOpt = k: v: k + " = " + lib.boolToString v;
   intOpt = k: v: k + " = " + toString v;
-  lstOpt = k: xs: k + " = " + concatStringsSep "," xs;
+  lstOpt = k: xs: k + " = " + lib.concatStringsSep "," xs;
   optionalNullString = o: s: optional (s != null) (strOpt o s);
   optionalNullBool = o: b: optional (b != null) (boolOpt o b);
   optionalNullInt = o: i: optional (i != null) (intOpt o i);
@@ -61,7 +76,7 @@ let
     (mkEndpointOpt name addr port)
     // {
       keys = mkOption {
-        type = with types; nullOr str;
+        type = nullOr str;
         default = keyloc;
         description = ''
           File to persist ${lib.toUpper name} keys.
@@ -189,7 +204,7 @@ let
           (boolOpt "yggdrasil" cfg.yggdrasil.enable)
         ]
         ++ (optionalNullString "yggaddress" cfg.yggdrasil.address)
-        ++ (flip map (collect (proto: proto ? port && proto ? address) cfg.proto) (
+        ++ (lib.flip map (lib.collect (proto: proto ? port && proto ? address) cfg.proto) (
           proto:
           let
             protoOpts =
@@ -209,10 +224,10 @@ let
               ++ (optionals (proto ? outproxyPort) (optionalNullInt "outproxyport" proto.outproxyPort))
               ++ (optionals (proto ? outproxyEnable) (optionalNullBool "outproxy.enabled" proto.outproxyEnable));
           in
-          (concatStringsSep "\n" protoOpts)
+          (lib.concatStringsSep "\n" protoOpts)
         ));
     in
-    pkgs.writeText "i2pd.conf" (concatStringsSep "\n" opts);
+    pkgs.writeText "i2pd.conf" (lib.concatStringsSep "\n" opts);
 
   tunnelConf =
     let
@@ -237,7 +252,7 @@ let
               optionalNullInt "crypto.tagstosend" tun.crypto.tagsToSend
             ));
         in
-        concatStringsSep "\n" outTunOpts;
+        lib.concatStringsSep "\n" outTunOpts;
 
       mkInTunnel =
         tun:
@@ -254,16 +269,16 @@ let
             ++ (optionals (tun ? inPort) (optionalNullInt "inport" tun.inPort))
             ++ (optionals (tun ? accessList) (optionalEmptyList "accesslist" tun.accessList));
         in
-        concatStringsSep "\n" inTunOpts;
+        lib.concatStringsSep "\n" inTunOpts;
 
-      allOutTunnels = collect (tun: tun ? port && tun ? destination) cfg.outTunnels;
-      allInTunnels = collect (tun: tun ? port && tun ? address) cfg.inTunnels;
+      allOutTunnels = lib.collect (tun: tun ? port && tun ? destination) cfg.outTunnels;
+      allInTunnels = lib.collect (tun: tun ? port && tun ? address) cfg.inTunnels;
 
       opts = [ notice ] ++ (map mkOutTunnel allOutTunnels) ++ (map mkInTunnel allInTunnels);
     in
-    pkgs.writeText "i2pd-tunnels.conf" (concatStringsSep "\n" opts);
+    pkgs.writeText "i2pd-tunnels.conf" (lib.concatStringsSep "\n" opts);
 
-  i2pdFlags = concatStringsSep " " (
+  i2pdFlags = lib.concatStringsSep " " (
     optional (cfg.address != null) ("--host=" + cfg.address)
     ++ [
       "--service"
@@ -278,7 +293,7 @@ in
   disabledModules = [ "services/networking/i2pd.nix" ];
 
   imports = [
-    (mkRenamedOptionModule
+    (lib.mkRenamedOptionModule
       [
         "services"
         "i2pd"
@@ -306,7 +321,7 @@ in
         '';
       };
 
-      package = mkPackageOption pkgs "i2pd" { };
+      package = lib.mkPackageOption pkgs "i2pd" { };
 
       logLevel = mkOption {
         type = types.enum [
@@ -328,7 +343,7 @@ in
       logCLFTime = mkEnableOption "full CLF-formatted date and time to log";
 
       address = mkOption {
-        type = with types; nullOr str;
+        type = nullOr str;
         default = null;
         description = ''
           Your external IP or hostname.
@@ -336,7 +351,7 @@ in
       };
 
       family = mkOption {
-        type = with types; nullOr str;
+        type = nullOr str;
         default = null;
         description = ''
           Specify a family the router belongs to.
@@ -344,7 +359,7 @@ in
       };
 
       dataDir = mkOption {
-        type = with types; nullOr str;
+        type = nullOr str;
         default = null;
         description = ''
           Alternative path to storage of i2pd data (RI, keys, peer profiles, ...)
@@ -360,7 +375,7 @@ in
       };
 
       ifname = mkOption {
-        type = with types; nullOr str;
+        type = nullOr str;
         default = null;
         description = ''
           Network interface to bind to.
@@ -368,7 +383,7 @@ in
       };
 
       ifname4 = mkOption {
-        type = with types; nullOr str;
+        type = nullOr str;
         default = null;
         description = ''
           IPv4 interface to bind to.
@@ -376,7 +391,7 @@ in
       };
 
       ifname6 = mkOption {
-        type = with types; nullOr str;
+        type = nullOr str;
         default = null;
         description = ''
           IPv6 interface to bind to.
@@ -384,7 +399,7 @@ in
       };
 
       ntcpProxy = mkOption {
-        type = with types; nullOr str;
+        type = nullOr str;
         default = null;
         description = ''
           Proxy URL for NTCP transport.
@@ -458,7 +473,7 @@ in
       reseed.verify = mkEnableOption "SU3 signature verification";
 
       reseed.file = mkOption {
-        type = with types; nullOr str;
+        type = nullOr str;
         default = null;
         description = ''
           Full path to SU3 file to reseed from.
@@ -466,7 +481,7 @@ in
       };
 
       reseed.urls = mkOption {
-        type = with types; listOf str;
+        type = listOf str;
         default = [ ];
         description = ''
           Reseed URLs.
@@ -474,7 +489,7 @@ in
       };
 
       reseed.floodfill = mkOption {
-        type = with types; nullOr str;
+        type = nullOr str;
         default = null;
         description = ''
           Path to router info of floodfill to reseed from.
@@ -482,7 +497,7 @@ in
       };
 
       reseed.zipfile = mkOption {
-        type = with types; nullOr str;
+        type = nullOr str;
         default = null;
         description = ''
           Path to local .zip file to reseed from.
@@ -490,7 +505,7 @@ in
       };
 
       reseed.proxy = mkOption {
-        type = with types; nullOr str;
+        type = nullOr str;
         default = null;
         description = ''
           URL for reseed proxy, supports http/socks.
@@ -505,7 +520,7 @@ in
         '';
       };
       addressbook.subscriptions = mkOption {
-        type = with types; listOf str;
+        type = listOf str;
         default = [
           "http://inr.i2p/export/alive-hosts.txt"
           "http://i2p-projekt.i2p/hosts.txt"
@@ -519,7 +534,7 @@ in
       trust.enable = mkEnableOption "explicit trust options";
 
       trust.family = mkOption {
-        type = with types; nullOr str;
+        type = nullOr str;
         default = null;
         description = ''
           Router Family to trust for first hops.
@@ -527,7 +542,7 @@ in
       };
 
       trust.routers = mkOption {
-        type = with types; listOf str;
+        type = listOf str;
         default = [ ];
         description = ''
           Only connect to the listed routers.
@@ -551,7 +566,7 @@ in
         '';
       };
       ntcp2.proxy = mkOption {
-        type = with types; nullOr str;
+        type = nullOr str;
         default = null;
         description = ''
           Specify proxy server for NTCP2. Should be http://address:port or socks://address:port
@@ -568,7 +583,7 @@ in
         '';
       };
       ssu2.proxy = mkOption {
-        type = with types; nullOr str;
+        type = nullOr str;
         default = null;
         description = ''
           Specify UDP socks5 proxy server for NTCP2. Should be socks://address:port
@@ -626,7 +641,7 @@ in
       yggdrasil.enable = mkEnableOption "Yggdrasil";
 
       yggdrasil.address = mkOption {
-        type = with types; nullOr str;
+        type = nullOr str;
         default = null;
         description = ''
           Your local yggdrasil address. Specify it if you want to bind your router to a
@@ -655,7 +670,7 @@ in
         };
 
         strictHeaders = mkOption {
-          type = with types; nullOr bool;
+          type = nullOr bool;
           default = null;
           description = ''
             Enable strict host checking on WebUI.
@@ -663,7 +678,7 @@ in
         };
 
         hostname = mkOption {
-          type = with types; nullOr str;
+          type = nullOr str;
           default = null;
           description = ''
             Expected hostname for WebUI.
@@ -673,7 +688,7 @@ in
 
       proto.httpProxy = (mkKeyedEndpointOpt "httpproxy" "127.0.0.1" 4444 "httpproxy-keys.dat") // {
         outproxy = mkOption {
-          type = with types; nullOr str;
+          type = nullOr str;
           default = null;
           description = "Upstream outproxy bind address.";
         };
@@ -699,25 +714,23 @@ in
 
       outTunnels = mkOption {
         default = { };
-        type =
-          with types;
-          attrsOf (
-            submodule (
-              { name, ... }:
-              {
-                options = {
-                  destinationPort = mkOption {
-                    type = with types; nullOr int;
-                    default = null;
-                    description = "Connect to particular port at destination.";
-                  };
-                } // commonTunOpts name;
-                config = {
-                  name = mkDefault name;
+        type = attrsOf (
+          submodule (
+            { name, ... }:
+            {
+              options = {
+                destinationPort = mkOption {
+                  type = with types; nullOr int;
+                  default = null;
+                  description = "Connect to particular port at destination.";
                 };
-              }
-            )
-          );
+              } // commonTunOpts name;
+              config = {
+                name = mkDefault name;
+              };
+            }
+          )
+        );
         description = ''
           Connect to someone as a client and establish a local accept endpoint
         '';
@@ -725,30 +738,28 @@ in
 
       inTunnels = mkOption {
         default = { };
-        type =
-          with types;
-          attrsOf (
-            submodule (
-              { name, ... }:
-              {
-                options = {
-                  inPort = mkOption {
-                    type = types.int;
-                    default = 0;
-                    description = "Service port. Default to the tunnel's listen port.";
-                  };
-                  accessList = mkOption {
-                    type = with types; listOf str;
-                    default = [ ];
-                    description = "I2P nodes that are allowed to connect to this service.";
-                  };
-                } // commonTunOpts name;
-                config = {
-                  name = mkDefault name;
+        type = attrsOf (
+          submodule (
+            { name, ... }:
+            {
+              options = {
+                inPort = mkOption {
+                  type = types.int;
+                  default = 0;
+                  description = "Service port. Default to the tunnel's listen port.";
                 };
-              }
-            )
-          );
+                accessList = mkOption {
+                  type = listOf str;
+                  default = [ ];
+                  description = "I2P nodes that are allowed to connect to this service.";
+                };
+              } // commonTunOpts name;
+              config = {
+                name = mkDefault name;
+              };
+            }
+          )
+        );
         description = ''
           Serve something on I2P network at port and delegate requests to address inPort.
         '';
