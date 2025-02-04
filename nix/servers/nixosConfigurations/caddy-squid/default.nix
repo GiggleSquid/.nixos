@@ -366,25 +366,11 @@ in
       }
     }
 
-    local.file_match "journal" {
-      path_targets = [
-        {"__path__" = "/var/log/journal/*"},
-      ]
-      sync_period = "15s"
-    }
-     
-    loki.source.file "journal_scrape" {
-      targets    = local.file_match.journal.targets
+    loki.source.journal "journal" {
       forward_to = [loki.process.filter_journal.receiver]
-      tail_from_end = true
     }
      
     loki.process "filter_journal" {
-      stage.drop {
-        source = ""
-        expression  = ".*Connection closed by authenticating user root"
-        drop_counter_reason = "noisy"
-      }
       forward_to = [loki.write.grafana_loki.receiver]
     }
 
