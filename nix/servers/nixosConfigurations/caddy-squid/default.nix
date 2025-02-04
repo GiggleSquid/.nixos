@@ -47,7 +47,9 @@ in
       bunny_dns_api_key_caddy = {
         owner = "caddy";
       };
-      crowdsec_caddy-squid_api_key = { };
+      crowdsec_caddy-squid_api_key_env = {
+        owner = "caddy";
+      };
       prometheus_basic_auth = {
         mode = "0440";
         owner = "alloy";
@@ -59,7 +61,7 @@ in
     caddy.serviceConfig = {
       EnvironmentFile = [
         "${config.sops.secrets.bunny_dns_api_key_caddy.path}"
-        "${config.sops.secrets.crowdsec_caddy-squid_api_key.path}"
+        "${config.sops.secrets.crowdsec_caddy-squid_api_key_env.path}"
       ];
     };
     alloy.serviceConfig = {
