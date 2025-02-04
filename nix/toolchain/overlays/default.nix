@@ -1,9 +1,6 @@
 { inputs, cell }:
 let
-  inherit (inputs)
-    nixpkgs
-    nixos-hardware
-    ;
+  inherit (inputs) nixpkgs nixos-hardware;
   inherit (inputs.cells.toolchain) pkgs packages;
 in
 {
