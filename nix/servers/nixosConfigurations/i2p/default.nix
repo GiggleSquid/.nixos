@@ -28,7 +28,7 @@ in
 
   services = {
     i2pd = {
-      package = pkgs.i2pd;
+      package = pkgs.i2pd.override { upnpSupport = false; };
       enable = true;
       logLevel = "error";
       bandwidth = 8192;
