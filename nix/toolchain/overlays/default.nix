@@ -29,17 +29,6 @@ in
     };
   });
 
-  lego = nixpkgs.lego.overrideAttrs (old: {
-    version = "unstable-2024-09-07";
-    src = nixpkgs.fetchFromGitHub {
-      owner = "go-acme";
-      repo = "lego";
-      rev = "75b910b296eb9ba97032e4ccc87fb032901c8c6e";
-      sha256 = "sha256-1wu0L99hIix5kC9bZwN2R4rj7w7a0VP3cOMN1x216xU=";
-    };
-    vendorHash = "sha256-eI8VmGXlBwISyBDUbgHPdZw12e7a1SlxXthHcaOPYsU=";
-  });
-
   i2pd = nixpkgs.i2pd.overrideAttrs (old: rec {
     pname = "i2pd";
     version = "unstable-2025-02-03";
