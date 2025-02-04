@@ -28,7 +28,39 @@ in
       crowdsec_enroll_key = {
         owner = "crowdsec";
       };
+      crowdsec_caddy-squid_api_key_env = { };
     };
+  };
+
+  systemd.services.crowdsec.serviceConfig = {
+    EnvironmentFile = [
+      "${config.sops.secrets.crowdsec_caddy-squid_api_key_env.path}"
+    ];
+    ExecStartPre =
+      let
+        register-bouncer = nixpkgs.writeScriptBin "register-bouncer" ''
+          #!${nixpkgs.runtimeShell}
+          set -eu
+          set -o pipefail
+
+          if ! cscli bouncers list | grep -q "caddy-squid"; then
+            cscli bouncers add "caddy-squid" --key $CROWDSEC_API_KEY
+          fi
+        '';
+        install-collection-caddy = nixpkgs.writeScriptBin "install-collection-caddy" ''
+          #!${nixpkgs.runtimeShell}
+          set -eu
+          set -o pipefail
+
+          if ! cscli collections list | grep -q "crowdsecurity/caddy"; then
+            cscli collections install crowdsecurity/caddy
+          fi
+        '';
+      in
+      [
+        "${register-bouncer}/bin/register-bouncer"
+        "${install-collection-caddy}/bin/install-collection-caddy"
+      ];
   };
 
   services.crowdsec = {
