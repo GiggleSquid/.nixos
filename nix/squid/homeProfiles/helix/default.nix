@@ -108,9 +108,7 @@
             hover = true;
             completion = true;
             schemaStore.enable = true;
-            # schemas = {
-
-            # };
+            # schemas = { };
           };
         };
       };
