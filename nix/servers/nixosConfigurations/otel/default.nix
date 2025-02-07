@@ -242,7 +242,7 @@ in
       enable = true;
       extraFlags = [
         "--disable-reporting"
-        "--server.http.listen-addr=10.3.1.10:12345"
+        "--server.http.listen-addr=10.3.0.60:12345"
       ];
     };
   };
