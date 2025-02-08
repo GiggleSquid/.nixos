@@ -59,7 +59,7 @@ in
         plugins = [
           "github.com/GiggleSquid/caddy-bunny-mirror@v1.5.2-mirror"
         ];
-        hash = "sha256-nICqwtU5Zv/o2CsbrP11mTGA8tqywDrhKIzSiYBwjtg=";
+        hash = "sha256-1SgPt430Bd5ROMwnFgXzo8WYzOnyciR5/m9tUKvz4Ao=";
       };
       email = "jack.connors@protonmail.com";
       acmeCA = "https://acme-v02.api.letsencrypt.org/directory";
