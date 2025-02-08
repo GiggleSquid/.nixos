@@ -28,23 +28,35 @@ in
       crowdsec_enroll_key = {
         owner = "crowdsec";
       };
-      crowdsec_caddy-squid_api_key_env = { };
+      crowdsec_caddy-internal_api_key_env = { };
+      crowdsec_caddy-dmz_api_key_env = { };
     };
   };
 
   systemd.services.crowdsec.serviceConfig = {
     EnvironmentFile = [
-      "${config.sops.secrets.crowdsec_caddy-squid_api_key_env.path}"
+      "${config.sops.secrets.crowdsec_caddy-internal_api_key_env.path}"
+      "${config.sops.secrets.crowdsec_caddy-dmz_api_key_env.path}"
     ];
+
     ExecStartPre =
       let
-        register-bouncer = nixpkgs.writeScriptBin "register-bouncer" ''
+        register-bouncer-caddy-internal = nixpkgs.writeScriptBin "register-bouncer-caddy-internal" ''
           #!${nixpkgs.runtimeShell}
           set -eu
           set -o pipefail
 
-          if ! cscli bouncers list | grep -q "caddy-squid"; then
-            cscli bouncers add "caddy-squid" --key $CROWDSEC_API_KEY
+          if ! cscli bouncers list | grep -q "caddy-internal"; then
+            cscli bouncers add "caddy-internal" --key $CROWDSEC_CADDY_INTERNAL_API_KEY
+          fi
+        '';
+        register-bouncer-caddy-dmz = nixpkgs.writeScriptBin "register-bouncer-caddy-dmz" ''
+          #!${nixpkgs.runtimeShell}
+          set -eu
+          set -o pipefail
+
+          if ! cscli bouncers list | grep -q "caddy-dmz"; then
+            cscli bouncers add "caddy-dmz" --key $CROWDSEC_CADDY_DMZ_API_KEY
           fi
         '';
         install-collection-caddy = nixpkgs.writeScriptBin "install-collection-caddy" ''
@@ -58,7 +70,8 @@ in
         '';
       in
       [
-        "${register-bouncer}/bin/register-bouncer"
+        "${register-bouncer-caddy-internal}/bin/register-bouncer-caddy-internal"
+        "${register-bouncer-caddy-dmz}/bin/register-bouncer-caddy-dmz"
         "${install-collection-caddy}/bin/install-collection-caddy"
       ];
   };

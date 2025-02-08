@@ -8,14 +8,14 @@ let
   inherit (cell) hardwareProfiles serverSuites;
   inherit (inputs.cells.squid) nixosSuites homeSuites;
   lib = nixpkgs.lib // builtins;
-  hostName = "caddy-squid";
+  hostName = "dmz";
 in
 {
   inherit (common) bee time;
   networking = {
     inherit hostName;
-    domain = "lan.gigglesquid.tech";
-    nameservers = [ "10.3.0.1" ];
+    domain = "caddy.lan.gigglesquid.tech";
+    nameservers = [ "10.100.0.1" ];
     firewall = {
       allowedTCPPorts = [
         80
@@ -47,7 +47,7 @@ in
       bunny_dns_api_key_caddy = {
         owner = "caddy";
       };
-      crowdsec_caddy-squid_api_key_env = {
+      crowdsec_caddy-dmz_api_key_env = {
         owner = "caddy";
       };
       prometheus_basic_auth = {
@@ -61,7 +61,7 @@ in
     caddy.serviceConfig = {
       EnvironmentFile = [
         "${config.sops.secrets.bunny_dns_api_key_caddy.path}"
-        "${config.sops.secrets.crowdsec_caddy-squid_api_key_env.path}"
+        "${config.sops.secrets.crowdsec_caddy-dmz_api_key_env.path}"
       ];
     };
     alloy.serviceConfig = {
@@ -114,7 +114,7 @@ in
           }
           crowdsec {
             api_url http://crowdsec.lan.gigglesquid.tech:8080
-            api_key {env.CROWDSEC_API_KEY}
+            api_key {env.CROWDSEC_CADDY_DMZ_API_KEY}
             ticker_interval 15s
           }
           # layer4 {
@@ -164,23 +164,13 @@ in
           }
         '';
       virtualHosts = {
-        "http://squidjelly.gigglesquid.tech" = {
-          extraConfig = # caddyfile
-            ''
-              import bunny_acme_settings_gigglesquid_tech
-              route {
-                crowdsec
-                redir https://squidjelly.gigglesquid.tech{uri} permanent
-              }
-            '';
-        };
         "squidjelly.gigglesquid.tech" = {
           extraConfig = # caddyfile
             ''
               import bunny_acme_settings_gigglesquid_tech
               route {
                 crowdsec
-                reverse_proxy https://squidjelly.lan.gigglesquid.tech:8920 {
+                reverse_proxy https://squidjelly.internal.caddy.lan.gigglesquid.tech {
                   header_up Host {upstream_hostport}
                 }
               }
@@ -192,46 +182,7 @@ in
               import bunny_acme_settings_gigglesquid_tech
               route {
                 crowdsec
-                reverse_proxy http://squidjelly.lan.gigglesquid.tech:5055 {
-                  header_up Host {upstream_hostport}
-                }
-              }
-            '';
-        };
-        "squidcasts.gigglesquid.tech" = {
-          extraConfig = # caddyfile
-            ''
-              import bunny_acme_settings_gigglesquid_tech
-              import deny_non_local
-              route {
-                crowdsec
-                reverse_proxy http://squidcasts.lan.gigglesquid.tech:8000 {
-                  header_up Host {upstream_hostport}
-                }
-              }
-            '';
-        };
-        "storj-node.cephalonas.lan.gigglesquid.tech" = {
-          extraConfig = # caddyfile
-            ''
-              import bunny_acme_settings_gigglesquid_tech
-              import deny_non_local
-              route {
-                crowdsec
-                reverse_proxy http://10.3.0.25:20909 {
-                  header_up Host {upstream_hostport}
-                }
-              }
-            '';
-        };
-        "search.gigglesquid.tech" = {
-          extraConfig = # caddyfile
-            ''
-              import bunny_acme_settings_gigglesquid_tech
-              import deny_non_local
-              route {
-                crowdsec
-                reverse_proxy http://search.lan.gigglesquid.tech:8080 {
+                reverse_proxy https://squidseerr.internal.caddy.lan.gigglesquid.tech {
                   header_up Host {upstream_hostport}
                 }
               }
@@ -247,47 +198,15 @@ in
               }
             '';
         };
-        "http://www.marciandfriends.co.uk" = {
-          extraConfig = # caddyfile
-            ''
-              import bunny_acme_settings_marciandfriends_co_uk
-              route {
-                crowdsec
-                redir https://marciandfriends.co.uk{uri} permanent
-              }
-            '';
-        };
         "marciandfriends.co.uk" = {
           extraConfig = # caddyfile
             ''
               import bunny_acme_settings_marciandfriends_co_uk
-              handle_path /errors* {
-                root * /etc/caddy/marciandfriends.co.uk/http/errors
-                file_server
-              }
-              # odoochat
-              @websocket {
-                header Connection *Upgrade*
-                header Upgrade websocket
-              }
-              route @websocket {
-                crowdsec
-                reverse_proxy marciandfriends.lan.gigglesquid.tech:8072
-              }
               route {
                 crowdsec
-                reverse_proxy marciandfriends.lan.gigglesquid.tech:8069 {
+                reverse_proxy https://marciandfriends.co.uk.internal.caddy.lan.gigglesquid.tech {
                   header_up Host {upstream_hostport}
                 }
-              }
-            '';
-        };
-        "http://www.thatferret.blog" = {
-          extraConfig = # caddyfile
-            ''
-              route {
-                crowdsec
-                redir https://thatferret.blog{uri} permanent
               }
             '';
         };
@@ -301,33 +220,13 @@ in
               }
             '';
         };
-        "http://thatferret.blog" = {
-          extraConfig = # caddyfile
-            ''
-              route {
-                crowdsec
-                redir https://thatferret.blog{uri} permanent
-              }
-            '';
-        };
         "thatferret.blog" = {
           extraConfig = # caddyfile
             ''
               import bunny_acme_settings_thatferret_blog
               route {
                 crowdsec
-                reverse_proxy https://thatferret.blog.lan.gigglesquid.tech {
-                  header_up Host {upstream_hostport}
-                }
-              }
-            '';
-        };
-        "http://thatferret.local.lan.gigglesquid.tech" = {
-          extraConfig = # caddyfile
-            ''
-              import deny_non_local
-              route {
-                reverse_proxy http://10.10.0.10:1313 {
+                reverse_proxy https://thatferret.blog.internal.caddy.lan.gigglesquid.tech {
                   header_up Host {upstream_hostport}
                 }
               }
@@ -340,7 +239,7 @@ in
       enable = true;
       extraFlags = [
         "--disable-reporting"
-        "--server.http.listen-addr=10.3.1.10:12345"
+        "--server.http.listen-addr=10.100.0.10:12345"
       ];
     };
   };
@@ -414,7 +313,7 @@ in
       stage.static_labels {
         values = {
           job = "caddy_access_log",
-          service_name = "caddy-squid",
+          service_name = "caddy-dmz",
         }
       }
 
@@ -470,14 +369,14 @@ in
             profiles
             suites
           ];
-        home.stateVersion = "24.05";
+        home.stateVersion = "25.05";
       };
       nixos = {
         imports = with homeSuites; nixos;
-        home.stateVersion = "24.05";
+        home.stateVersion = "25.05";
       };
     };
   };
 
-  system.stateVersion = "24.05";
+  system.stateVersion = "25.05";
 }
