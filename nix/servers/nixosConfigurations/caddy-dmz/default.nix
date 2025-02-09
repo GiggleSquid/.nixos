@@ -33,14 +33,6 @@ in
     };
   };
 
-  users = {
-    users.alloy = {
-      group = "alloy";
-      isSystemUser = true;
-    };
-    groups.alloy = { };
-  };
-
   sops = {
     defaultSopsFile = "${self}/sops/squid-rig.yaml";
     secrets = {
@@ -50,10 +42,6 @@ in
       crowdsec_caddy-dmz_api_key_env = {
         owner = "caddy";
       };
-      prometheus_basic_auth = {
-        mode = "0440";
-        owner = "alloy";
-      };
     };
   };
 
@@ -62,12 +50,6 @@ in
       EnvironmentFile = [
         "${config.sops.secrets.bunny_dns_api_key_caddy.path}"
         "${config.sops.secrets.crowdsec_caddy-dmz_api_key_env.path}"
-      ];
-    };
-    alloy.serviceConfig = {
-      SupplementaryGroups = [
-        "alloy"
-        "caddy"
       ];
     };
   };
@@ -82,7 +64,7 @@ in
           "github.com/mholt/caddy-l4@v0.0.0-20241111225910-3c6cc2c0ee08"
           "github.com/hslatman/caddy-crowdsec-bouncer@v0.8.1"
         ];
-        hash = "sha256-ZIKxEGAz2KU/N1TUOVdyyxnFfVMlMEL/ZDw4J1U2PUA=";
+        hash = "sha256-IRWdIhzhl4qflewd9MGAt0Y+SJWuyzWqLZJWGMXzcwI=";
       };
       email = "jack.connors@protonmail.com";
       acmeCA = "https://acme-v02.api.letsencrypt.org/directory";
@@ -235,106 +217,62 @@ in
       };
     };
 
-    alloy = {
+    alloy-squid = {
       enable = true;
-      extraFlags = [
-        "--disable-reporting"
-        "--server.http.listen-addr=10.100.0.10:12345"
-      ];
+      alloyConfig = # river
+        ''
+          local.file_match "caddy_access_log" {
+            path_targets = [
+              {"__path__" = "/var/log/caddy/access.log"},
+            ]
+            sync_period = "15s"
+          }
+           
+          loki.source.file "caddy_scrape" {
+            targets    = local.file_match.caddy_access_log.targets
+            forward_to = [loki.process.caddy_add_labels.receiver]
+            tail_from_end = true
+          }
+
+          loki.process "caddy_add_labels" {
+            stage.json {
+              expressions = {
+                level = "",
+                logger = "",
+                host = "request.host",
+                method = "request.method",
+                proto = "request.proto",
+                ts = "",
+              }
+            }
+
+            stage.labels {
+              values = {
+                level = "",
+                logger = "",
+                host = "",
+                method = "",
+                proto = "",
+              }
+            }
+
+            stage.static_labels {
+              values = {
+                job = "caddy_access_log",
+                service_name = "caddy-dmz",
+              }
+            }
+
+            stage.timestamp {
+              source = "ts"
+              format = "unix"
+            }
+           
+            forward_to = [loki.write.grafana_loki.receiver]
+          }
+        '';
     };
   };
-
-  environment.etc."alloy/config.alloy".text = ''
-    prometheus.exporter.unix "local_system" { }
-
-    prometheus.scrape "scrape_metrics" {
-      targets         = prometheus.exporter.unix.local_system.targets
-      forward_to      = [prometheus.relabel.filter_metrics.receiver]
-      scrape_interval = "15s"
-    }
-
-    prometheus.relabel "filter_metrics" {
-      forward_to = [prometheus.remote_write.metrics_service.receiver]
-    }
-
-    prometheus.remote_write "metrics_service" {
-      endpoint {
-        url = "https://prometheus.otel.lan.gigglesquid.tech/api/v1/write"
-        basic_auth {
-          username = "admin"
-          password_file = "${config.sops.secrets.prometheus_basic_auth.path}"
-        }
-      }
-    }
-
-    loki.source.journal "journal" {
-      forward_to = [loki.process.filter_journal.receiver]
-    }
-     
-    loki.process "filter_journal" {
-      forward_to = [loki.write.grafana_loki.receiver]
-    }
-
-    local.file_match "caddy_access_log" {
-      path_targets = [
-        {"__path__" = "/var/log/caddy/access.log"},
-      ]
-      sync_period = "15s"
-    }
-     
-    loki.source.file "caddy_scrape" {
-      targets    = local.file_match.caddy_access_log.targets
-      forward_to = [loki.process.caddy_add_labels.receiver]
-      tail_from_end = true
-    }
-
-    loki.process "caddy_add_labels" {
-      stage.json {
-        expressions = {
-          level = "",
-          logger = "",
-          host = "request.host",
-          method = "request.method",
-          proto = "request.proto",
-          ts = "",
-        }
-      }
-
-      stage.labels {
-        values = {
-          level = "",
-          logger = "",
-          host = "",
-          method = "",
-          proto = "",
-        }
-      }
-
-      stage.static_labels {
-        values = {
-          job = "caddy_access_log",
-          service_name = "caddy-dmz",
-        }
-      }
-
-      stage.timestamp {
-        source = "ts"
-        format = "unix"
-      }
-     
-      forward_to = [loki.write.grafana_loki.receiver]
-    }
-
-    loki.write "grafana_loki" {
-      endpoint {
-        url = "https://loki.otel.lan.gigglesquid.tech/loki/api/v1/push"
-        //basic_auth {
-        //  username = "admin"
-        //  password_file = ""
-        //}
-      }
-    }
-  '';
 
   imports =
     let

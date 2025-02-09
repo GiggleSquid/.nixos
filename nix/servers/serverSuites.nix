@@ -4,18 +4,27 @@ let
 in
 with nixosProfiles;
 rec {
-  base = [ common ];
+  base = [
+    common
+    nixosModules.alloy-squid
+  ];
 
-  ntp-server = [
+  base-rpi = [
     common-rpi
+    nixosModules.alloy-squid
+  ];
+
+  ntp-server = base-rpi ++ [
     chrony
   ];
 
-  rpi-server = [ common-rpi ];
+  rpi-server = base-rpi;
 
   dns-server = [ technitium ];
 
-  caddy-server = [ caddy ];
+  caddy-server = base ++ [
+    caddy
+  ];
 
   squidbit = [ nixosModules.qbittorrent ];
 
