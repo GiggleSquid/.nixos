@@ -28,7 +28,7 @@ in
 
   i2pd = nixpkgs.i2pd.overrideAttrs (old: rec {
     pname = "i2pd";
-    version = "unstable-2025-02-03";
+    version = "0-unstable-2025-02-03";
     src = nixpkgs.fetchFromGitHub {
       owner = "PurpleI2P";
       repo = pname;
