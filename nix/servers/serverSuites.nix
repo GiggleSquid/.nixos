@@ -26,6 +26,8 @@ rec {
     caddy
   ];
 
+  searxng = [ nixosModules.searx ];
+
   squidbit = [ nixosModules.qbittorrent ];
 
   i2pd = [ nixosModules.i2pd ];
