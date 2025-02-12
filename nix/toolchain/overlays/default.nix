@@ -10,6 +10,8 @@ in
 
   py-natpmp = packages.py-natpmp;
 
+  searxng = packages.searxng;
+
   odoo = packages.odoo;
 
   website_maf = packages.website_maf;
