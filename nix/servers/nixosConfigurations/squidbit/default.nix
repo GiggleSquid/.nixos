@@ -96,6 +96,7 @@ in
   };
 
   systemd.network = {
+    enable = true;
     netdevs = {
       "10-wg0" = {
         netdevConfig = {
@@ -104,15 +105,16 @@ in
           MTUBytes = "1300";
         };
         wireguardConfig = {
-          PrivateKeyFile = config.sops.secrets."wg_priv_key/tentacle-0_squidbit".path;
+          PrivateKeyFile = "${config.sops.secrets."wg_priv_key/tentacle-0_squidbit".path}";
           ListenPort = 51820;
           FirewallMark = 34952;
         };
         wireguardPeers = [
           {
-            PublicKey = "VJHNhHnzYw3UTJb6EDY+280TkNMtlz1SShJ7wMvGmkQ=";
+            PublicKey = "q8eGv8tYlyBb5OIaIfm6ddI4/XmDZxYvMjGVf9L1vGU=";
             AllowedIPs = [ "0.0.0.0/0" ];
-            Endpoint = "149.40.48.225:51820";
+            Endpoint = "149.40.48.106:51820";
+            PersistentKeepalive = 25;
           }
         ];
       };
@@ -142,7 +144,7 @@ in
             Priority = 10;
           }
           {
-            To = "149.40.48.255/32";
+            To = "149.40.48.106/32";
             Priority = 5;
           }
           {

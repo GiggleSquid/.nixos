@@ -7,7 +7,7 @@ bunny_dns_api_key: ENC[AES256_GCM,data:WSakEDLm8YwYAYoBkVwa5PGu1RaURm4XI0TxmJwIm
 lego_pfx_pass: ENC[AES256_GCM,data:CqE0WiintHG/w0AxiWYFY/5wdMUg8VyCrbvUFV/I/9BsqJR2YNy6cA1b,iv:O3oZxPu8TDF7Pn2mr+Dza6V7TpBxJL7oGUz1U/L+B1A=,tag:8zVAVz6NWXvduOCVY8JcZg==,type:str]
 wifi_env: ENC[AES256_GCM,data:aPb/GKTkokarvhd0lGUMr0Xhjovs2DjV5kIBSazP2GYgSrP9yPPyz653SvQ=,iv:bNVg51rfvmy+Idnz2y0s8hUU5107fCONPZDjTMFgTuM=,tag:qEMQ5X/FyCdkc5b80CbJMw==,type:str]
 wg_priv_key:
-    tentacle-0_squidbit: ENC[AES256_GCM,data:/jlSFxTP72xUkTk2Zjj/iZRthvHS5CfVuEcNh3Bz35GQ+yBM1xOiCGeKcsg=,iv:v4pd7jAupT+RbZk6MNSIY98SU0vWR4Q884wlhtxZf+0=,tag:lHM5RrtLHq0ZuA3OfW9Pgw==,type:str]
+    tentacle-0_squidbit: ENC[AES256_GCM,data:9z1fN1Oplb2o1Ld0kTyJ5EI5c9pImHYivCwn9gFizx9O6l6+BFlgbkfre1M=,iv:stTaU5LJvg7v0lPUUklTRRic7+PdEDHcvkTCLKeGvZ0=,tag:sot+dzFFcFZsLCJ4qPbIXA==,type:str]
 minesquid_env_vars: ENC[AES256_GCM,data:CdknIOnu/IWjvDoI9cnkMcP3O7oWbf09b8uhk7rUQyozhYMpHval4j/CDmU3GMSHvw==,iv:NyD8yuovd1CbhlOPOD9BpnfhzPYl8n1WeIMMmaxoAa0=,tag:HjD0dp3LZnM9Goz9ikhM4A==,type:str]
 searxng_env_vars: ENC[AES256_GCM,data:p3k/Va7FMtIJVnS8XOOh4tlbb9SGLBHea0sP0lYJ1FsFAdbhPb+8WgkRs9Lmg6Vrdfk=,iv:GmAynsssvRX2itvk/9OECVzBUKcDkBuUFi/9PGE522s=,tag:9F7+5Q32POXmbQoz5kXg1g==,type:str]
 crowdsec_enroll_key: ENC[AES256_GCM,data:uKtIxqIsfrYxEFMuRZTtRuSYNWfcOvSPsw==,iv:dvXdY+BRUinr59WbwodM4EFJJQJ5KzEnyJHKj5p5kX8=,tag:8p0FDMD4CTOs7cDyENA9dA==,type:str]
@@ -220,8 +220,8 @@ sops:
             akJyU1ZIRDZIejQ5bXdzT0h3U0xYRUkKjZo/V8rMogK28ofXYS7y3ItgUV/HCl5S
             DUPg147Q1s8aAEe3lTiZU5jJHGtSmDZIzdsuVEzo31bVhG/o3M040w==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2025-02-12T22:58:56Z"
-    mac: ENC[AES256_GCM,data:m71xN/rR/olsvJTjRugX/pLyAvuK34pEwkROh8YJ8WTl/5NLCc/QOlqXERJWxXwnEnDVb+zj38xpJiiT7rLXhM5tdH7il1s7HMvjYzTpky2sjeBJXh1p4X1coe/CGlTShHfe6tsv08l84jwTEXpyPTXwS/uoAcp7IzYYXPNaCCA=,iv:1TZzhu/p6n4TrA/TcupcxdguBKeSnwFtnNV3NhjGY6M=,tag:aW13tXMZIWShtAMnJ12ZQA==,type:str]
+    lastmodified: "2025-02-13T05:44:19Z"
+    mac: ENC[AES256_GCM,data:9DpSPAfpFl3uYsoeFCx/8KKZxCU1ThoMlqR0jc0wxBW31zwq01vOQP5NjuLf0amrFR9cjRJ7kcfVB0/vdWRHPASqtUgAZb9kaTeFNDEqE4cjCDt6hyCXVV/nomtxdIEPYBoeqS1PE1FHTU2RAZKcN/XYxi8adfeX7fzuhAUcikE=,iv:3TZ9yWuPZo0lLLMFcxw6rAqbUeSKT/WHnJdLQrV0LLk=,tag:lOnIC/8ON+3vni7Kbo44Qw==,type:str]
     pgp: []
     unencrypted_suffix: _unencrypted
     version: 3.9.4
