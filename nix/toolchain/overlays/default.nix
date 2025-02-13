@@ -8,8 +8,6 @@ in
 
   qbittorrent-enhanced-nox = packages.qbittorrent-enhanced.override { guiSupport = false; };
 
-  py-natpmp = packages.py-natpmp;
-
   searxng = packages.searxng;
 
   odoo = packages.odoo;

@@ -203,7 +203,6 @@ in
     recyclarr
     jdupes
     libnatpmp
-    pkgs.py-natpmp
   ];
 
   fileSystems = {
