@@ -11,5 +11,6 @@ in
     taplo
     lua-language-server
     yaml-language-server
+    bash-language-server
   ];
 }
