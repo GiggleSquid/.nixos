@@ -7,7 +7,6 @@ let
   inherit (inputs) common nixpkgs self;
   inherit (cell) hardwareProfiles serverSuites;
   inherit (inputs.cells.squid) nixosSuites homeSuites;
-  inherit (inputs.cells.toolchain) pkgs;
   lib = nixpkgs.lib // builtins;
   hostName = "search";
 in
@@ -32,7 +31,6 @@ in
   services = {
     searx = {
       enable = true;
-      package = pkgs.searxng;
       redisCreateLocally = true;
       environmentFile = config.sops.secrets."searxng_env_vars".path;
       runInUwsgi = true;
