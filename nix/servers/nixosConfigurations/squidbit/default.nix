@@ -111,9 +111,9 @@ in
         };
         wireguardPeers = [
           {
-            PublicKey = "q8eGv8tYlyBb5OIaIfm6ddI4/XmDZxYvMjGVf9L1vGU=";
+            PublicKey = "nPCWC0rx9ZXEkzh7dxMUTO5/HUqDaLaD827Yp1sJCQU=";
             AllowedIPs = [ "0.0.0.0/0" ];
-            Endpoint = "149.40.48.106:51820";
+            Endpoint = "103.69.224.2:51820";
             PersistentKeepalive = 25;
           }
         ];
@@ -144,7 +144,7 @@ in
             Priority = 10;
           }
           {
-            To = "149.40.48.106/32";
+            To = "103.69.224.2/32";
             Priority = 5;
           }
           {
@@ -205,6 +205,7 @@ in
     recyclarr
     jdupes
     libnatpmp
+    wireguard-tools
   ];
 
   fileSystems = {
