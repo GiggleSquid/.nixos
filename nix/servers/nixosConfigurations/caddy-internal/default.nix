@@ -78,6 +78,7 @@ in
       package = nixpkgs.caddy.withPlugins {
         plugins = [
           "github.com/GiggleSquid/caddy-bunny-mirror@v1.5.2-mirror"
+          "github.com/digilolnet/caddy-bunny-ip@v0.0.0-20250118080727-ef607b8e1644"
           "github.com/hslatman/caddy-crowdsec-bouncer@v0.8.1"
         ];
         hash = "sha256-ChxgcOzYajPOCwtQkYjpEhsjH0/6sol16qKsRaSLFII=";
@@ -92,8 +93,12 @@ in
       '';
       globalConfig = # caddyfile
         ''
+          metrics
           servers {
-            metrics
+            trusted_proxies bunny {
+              interval 6h
+              timeout 25s
+            }
           }
           crowdsec {
             api_url http://crowdsec.lan.gigglesquid.tech:8080
