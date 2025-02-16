@@ -76,11 +76,21 @@ in
         # river
         ''
           loki.source.journal "journal" {
-            forward_to = [loki.process.filter_journal.receiver]
+            forward_to = [loki.write.grafana_loki.receiver]
+            relabel_rules = loki.relabel.journal.rules
           }
 
-          loki.process "filter_journal" {
-            forward_to = [loki.write.grafana_loki.receiver]
+          loki.relabel "journal" {
+            forward_to = []
+
+            rule {
+              source_labels = ["__journal__systemd_unit"]
+              target_label  = "systemd_unit"
+            }
+            rule {
+              source_labels = ["__journal__hostname"]
+              target_label  = "hostname"
+            }
           }
 
           loki.write "grafana_loki" {

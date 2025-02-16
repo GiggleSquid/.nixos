@@ -229,7 +229,7 @@ in
             sync_period = "15s"
           }
            
-          loki.source.file "caddy_scrape" {
+          loki.source.file "caddy_access_log" {
             targets    = local.file_match.caddy_access_log.targets
             forward_to = [loki.process.caddy_add_labels.receiver]
             tail_from_end = true
@@ -259,8 +259,7 @@ in
 
             stage.static_labels {
               values = {
-                job = "caddy_access_log",
-                service_name = "caddy-dmz",
+                job = "loki.source.file.caddy_access_log",
               }
             }
 

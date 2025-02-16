@@ -41,38 +41,38 @@ in
 
     ExecStartPre =
       let
-        register-bouncer-caddy-internal = nixpkgs.writeScriptBin "register-bouncer-caddy-internal" ''
-          #!${nixpkgs.runtimeShell}
-          set -eu
-          set -o pipefail
+        register-bouncers = # bash
+          nixpkgs.writeScriptBin "register-bouncers" ''
+            #!${nixpkgs.runtimeShell}
+            set -eu
+            set -o pipefail
 
-          if ! cscli bouncers list | grep -q "caddy-internal"; then
-            cscli bouncers add "caddy-internal" --key $CROWDSEC_CADDY_INTERNAL_API_KEY
-          fi
-        '';
-        register-bouncer-caddy-dmz = nixpkgs.writeScriptBin "register-bouncer-caddy-dmz" ''
-          #!${nixpkgs.runtimeShell}
-          set -eu
-          set -o pipefail
+            if ! cscli bouncers list | grep -q "internal.caddy.lan.gigglesquid.tech"; then
+              cscli bouncers add "internal.caddy.lan.gigglesquid.tech" --key $CROWDSEC_CADDY_INTERNAL_API_KEY
+            fi
 
-          if ! cscli bouncers list | grep -q "caddy-dmz"; then
-            cscli bouncers add "caddy-dmz" --key $CROWDSEC_CADDY_DMZ_API_KEY
-          fi
-        '';
-        install-collection-caddy = nixpkgs.writeScriptBin "install-collection-caddy" ''
-          #!${nixpkgs.runtimeShell}
-          set -eu
-          set -o pipefail
+            if ! cscli bouncers list | grep -q "dmz.caddy.lan.gigglesquid.tech"; then
+              cscli bouncers add "dmz.caddy.lan.gigglesquid.tech" --key $CROWDSEC_CADDY_DMZ_API_KEY
+            fi
+          '';
+        install-collections = # bash
+          nixpkgs.writeScriptBin "install-collections" ''
+            #!${nixpkgs.runtimeShell}
+            set -eu
+            set -o pipefail
 
-          if ! cscli collections list | grep -q "crowdsecurity/caddy"; then
-            cscli collections install crowdsecurity/caddy
-          fi
-        '';
+            if ! cscli collections list | grep -q "crowdsecurity/caddy"; then
+              cscli collections install crowdsecurity/caddy
+            fi
+
+            if ! cscli collections list | grep -q "crowdsecurity/linux"; then
+              cscli collections install crowdsecurity/linux
+            fi
+          '';
       in
       [
-        "${register-bouncer-caddy-internal}/bin/register-bouncer-caddy-internal"
-        "${register-bouncer-caddy-dmz}/bin/register-bouncer-caddy-dmz"
-        "${install-collection-caddy}/bin/install-collection-caddy"
+        "${register-bouncers}/bin/register-bouncers"
+        "${install-collections}/bin/install-collections"
       ];
   };
 
@@ -95,10 +95,25 @@ in
         log_level = "info";
         limit = 1000;
         query = ''
-          {job="caddy_access_log"}
+          {job="loki.source.file.caddy_access_log"}
         '';
         labels = {
           type = "caddy";
+        };
+      }
+      {
+        source = "loki";
+        url = "https://loki.otel.lan.gigglesquid.tech";
+        # auth = {
+        #   username = "something";
+        #   password = "secret";
+        # };
+        limit = 1000;
+        query = ''
+          {job="loki.source.journal.journal", systemd_unit=~"sshd.*.service"}
+        '';
+        labels = {
+          type = "sshd";
         };
       }
     ];
