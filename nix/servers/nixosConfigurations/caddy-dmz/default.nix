@@ -62,9 +62,10 @@ in
           "github.com/GiggleSquid/caddy-bunny-mirror@v1.5.2-mirror"
           "github.com/mholt/caddy-dynamicdns@v0.0.0-20241025234131-7c818ab3fc34"
           "github.com/mholt/caddy-l4@v0.0.0-20241111225910-3c6cc2c0ee08"
+          "github.com/digilolnet/caddy-bunny-ip@v0.0.0-20250118080727-ef607b8e1644"
           "github.com/hslatman/caddy-crowdsec-bouncer@v0.8.1"
         ];
-        hash = "sha256-IRWdIhzhl4qflewd9MGAt0Y+SJWuyzWqLZJWGMXzcwI=";
+        hash = "sha256-0Q8VFJYVgWkuXu9Bq18Znq/IH6ukUzUPHoJ0N8ZJeE0=";
       };
       email = "jack.connors@protonmail.com";
       acmeCA = "https://acme-v02.api.letsencrypt.org/directory";
@@ -76,8 +77,12 @@ in
       '';
       globalConfig = # caddyfile
         ''
+          metrics
           servers {
-            metrics
+            trusted_proxies bunny {
+              interval 6h
+              timeout 25s
+            }
           }
           dynamic_dns {
             provider bunny {
@@ -176,7 +181,7 @@ in
               import bunny_acme_settings_marciandfriends_co_uk
               route {
                 crowdsec
-               redir https://marciandfriends.co.uk{uri} permanent
+                redir https://marciandfriends.co.uk{uri} permanent
               }
             '';
         };
