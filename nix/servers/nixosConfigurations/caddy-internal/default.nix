@@ -77,11 +77,11 @@ in
       enable = true;
       package = nixpkgs.caddy.withPlugins {
         plugins = [
-          "github.com/GiggleSquid/caddy-bunny-mirror@v1.5.2-mirror"
+          "github.com/caddy-dns/bunny@v1.1.3-0.20250204130652-0099cab6eaad"
           "github.com/digilolnet/caddy-bunny-ip@v0.0.0-20250118080727-ef607b8e1644"
           "github.com/hslatman/caddy-crowdsec-bouncer@v0.8.1"
         ];
-        hash = "sha256-ChxgcOzYajPOCwtQkYjpEhsjH0/6sol16qKsRaSLFII=";
+        hash = "sha256-+aLgsiIUbrXuFvKD2Z3jGBBiuHKV0OWNunDqkujhihs=";
       };
       email = "jack.connors@protonmail.com";
       acmeCA = "https://acme-v02.api.letsencrypt.org/directory";
@@ -108,31 +108,9 @@ in
         '';
       extraConfig = # caddyfile
         ''
-          (bunny_acme_settings_gigglesquid_tech) {
+          (bunny_acme_settings) {
             tls {
-              dns bunny {
-                access_key {env.BUNNY_API_KEY}
-                zone gigglesquid.tech
-              }
-              propagation_timeout -1
-            }
-          }
-          (bunny_acme_settings_marciandfriends_co_uk) {
-            tls {
-              dns bunny {
-                access_key {env.BUNNY_API_KEY}
-                zone marciandfriends.co.uk
-              }
-              propagation_timeout -1
-            }
-          }
-          (bunny_acme_settings_thatferret_blog) {
-            tls {
-              dns bunny {
-                access_key {env.BUNNY_API_KEY}
-                zone thatferret.blog
-              }
-              propagation_timeout -1
+              dns bunny {env.BUNNY_API_KEY}
             }
           }
           (deny_non_local) {
@@ -146,7 +124,7 @@ in
         "squidjelly.internal.caddy.lan.gigglesquid.tech" = {
           extraConfig = # caddyfile
             ''
-              import bunny_acme_settings_gigglesquid_tech
+              import bunny_acme_settings
               route {
                 crowdsec
                 reverse_proxy https://squidjelly.lan.gigglesquid.tech:8920 {
@@ -158,7 +136,7 @@ in
         "squidseerr.internal.caddy.lan.gigglesquid.tech" = {
           extraConfig = # caddyfile
             ''
-              import bunny_acme_settings_gigglesquid_tech
+              import bunny_acme_settings
               route {
                 crowdsec
                 reverse_proxy http://squidjelly.lan.gigglesquid.tech:5055 {
@@ -170,7 +148,7 @@ in
         "squidcasts.gigglesquid.tech" = {
           extraConfig = # caddyfile
             ''
-              import bunny_acme_settings_gigglesquid_tech
+              import bunny_acme_settings
               import deny_non_local
               route {
                 crowdsec
@@ -183,7 +161,7 @@ in
         "storj-node.cephalonas.lan.gigglesquid.tech" = {
           extraConfig = # caddyfile
             ''
-              import bunny_acme_settings_gigglesquid_tech
+              import bunny_acme_settings
               import deny_non_local
               route {
                 crowdsec
@@ -196,7 +174,7 @@ in
         "search.gigglesquid.tech" = {
           extraConfig = # caddyfile
             ''
-              import bunny_acme_settings_gigglesquid_tech
+              import bunny_acme_settings
               import deny_non_local
               route {
                 crowdsec
@@ -209,7 +187,7 @@ in
         "marciandfriends.co.uk.internal.caddy.lan.gigglesquid.tech" = {
           extraConfig = # caddyfile
             ''
-              import bunny_acme_settings_gigglesquid_tech
+              import bunny_acme_settings
               # odoochat
               @websocket {
                 header Connection *Upgrade*
@@ -232,7 +210,7 @@ in
         "thatferret.blog.internal.caddy.lan.gigglesquid.tech" = {
           extraConfig = # caddyfile
             ''
-              import bunny_acme_settings_gigglesquid_tech
+              import bunny_acme_settings
               route {
                 crowdsec
                 reverse_proxy https://thatferret.blog.lan.gigglesquid.tech {

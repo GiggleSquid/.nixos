@@ -59,13 +59,13 @@ in
       enable = true;
       package = nixpkgs.caddy.withPlugins {
         plugins = [
-          "github.com/GiggleSquid/caddy-bunny-mirror@v1.5.2-mirror"
+          "github.com/caddy-dns/bunny@v1.1.3-0.20250204130652-0099cab6eaad"
           "github.com/mholt/caddy-dynamicdns@v0.0.0-20241025234131-7c818ab3fc34"
           "github.com/mholt/caddy-l4@v0.0.0-20241111225910-3c6cc2c0ee08"
           "github.com/digilolnet/caddy-bunny-ip@v0.0.0-20250118080727-ef607b8e1644"
           "github.com/hslatman/caddy-crowdsec-bouncer@v0.8.1"
         ];
-        hash = "sha256-0Q8VFJYVgWkuXu9Bq18Znq/IH6ukUzUPHoJ0N8ZJeE0=";
+        hash = "sha256-nbu5RtJ0wfWjjGTRbQkxx10lFNwZ+LKy+BNsnhGr/co=";
       };
       email = "jack.connors@protonmail.com";
       acmeCA = "https://acme-v02.api.letsencrypt.org/directory";
@@ -116,31 +116,9 @@ in
         '';
       extraConfig = # caddyfile
         ''
-          (bunny_acme_settings_gigglesquid_tech) {
+          (bunny_acme_settings) {
             tls {
-              dns bunny {
-                access_key {env.BUNNY_API_KEY}
-                zone gigglesquid.tech
-              }
-              propagation_timeout -1
-            }
-          }
-          (bunny_acme_settings_marciandfriends_co_uk) {
-            tls {
-              dns bunny {
-                access_key {env.BUNNY_API_KEY}
-                zone marciandfriends.co.uk
-              }
-              propagation_timeout -1
-            }
-          }
-          (bunny_acme_settings_thatferret_blog) {
-            tls {
-              dns bunny {
-                access_key {env.BUNNY_API_KEY}
-                zone thatferret.blog
-              }
-              propagation_timeout -1
+              dns bunny {env.BUNNY_API_KEY}
             }
           }
           (deny_non_local) {
@@ -154,7 +132,7 @@ in
         "squidjelly.gigglesquid.tech" = {
           extraConfig = # caddyfile
             ''
-              import bunny_acme_settings_gigglesquid_tech
+              import bunny_acme_settings
               route {
                 crowdsec
                 reverse_proxy https://squidjelly.internal.caddy.lan.gigglesquid.tech {
@@ -166,7 +144,7 @@ in
         "squidseerr.gigglesquid.tech" = {
           extraConfig = # caddyfile
             ''
-              import bunny_acme_settings_gigglesquid_tech
+              import bunny_acme_settings
               route {
                 crowdsec
                 reverse_proxy https://squidseerr.internal.caddy.lan.gigglesquid.tech {
@@ -178,7 +156,7 @@ in
         "www.marciandfriends.co.uk" = {
           extraConfig = # caddyfile
             ''
-              import bunny_acme_settings_marciandfriends_co_uk
+              import bunny_acme_settings
               route {
                 crowdsec
                 redir https://marciandfriends.co.uk{uri} permanent
@@ -188,7 +166,7 @@ in
         "marciandfriends.co.uk" = {
           extraConfig = # caddyfile
             ''
-              import bunny_acme_settings_marciandfriends_co_uk
+              import bunny_acme_settings
               route {
                 crowdsec
                 reverse_proxy https://marciandfriends.co.uk.internal.caddy.lan.gigglesquid.tech {
@@ -200,7 +178,7 @@ in
         "www.thatferret.blog" = {
           extraConfig = # caddyfile
             ''
-              import bunny_acme_settings_thatferret_blog
+              import bunny_acme_settings
               route {
                 crowdsec
                 redir https://thatferret.blog{uri} permanent
@@ -210,7 +188,7 @@ in
         "thatferret.blog" = {
           extraConfig = # caddyfile
             ''
-              import bunny_acme_settings_thatferret_blog
+              import bunny_acme_settings
               route {
                 crowdsec
                 reverse_proxy https://thatferret.blog.internal.caddy.lan.gigglesquid.tech {
