@@ -4,6 +4,7 @@
     wireguard.enable = true;
     timeServers = [ "10.3.0.5" ];
     firewall = {
+      enable = true;
       allowedTCPPorts = [
         1313 # hugo
       ];
