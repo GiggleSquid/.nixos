@@ -15,6 +15,7 @@
 
       signing = {
         signByDefault = true;
+        format = "ssh";
         key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJuSKLhdONlRgnIeGcAbUUT+kZlIOOhJKs3jW/CUxYLT jack.connors@protonmail.com | signing";
       };
 
