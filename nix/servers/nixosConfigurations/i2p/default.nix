@@ -13,6 +13,7 @@ in
     inherit hostName;
     domain = "lan.gigglesquid.tech";
     firewall = {
+      enable = true;
       allowedTCPPorts = [
         19168
         7070
@@ -25,6 +26,8 @@ in
       ];
     };
   };
+
+  systemd.services.i2pd.serviceConfig.LimitNOFILE = 8192;
 
   services = {
     i2pd = {
@@ -73,9 +76,12 @@ in
         };
       };
     };
-  };
 
-  systemd.services.i2pd.serviceConfig.LimitNOFILE = 8192;
+    alloy-squid = {
+      enable = true;
+      listenAddr = "10.3.0.40";
+    };
+  };
 
   imports =
     let

@@ -30,7 +30,7 @@ rec {
 
   squidbit = [ nixosModules.qbittorrent ];
 
-  i2pd = [ nixosModules.i2pd ];
+  i2pd = base ++ [ nixosModules.i2pd ];
 
   minesquid = [ nixosModules.nix-minecraft ];
 
