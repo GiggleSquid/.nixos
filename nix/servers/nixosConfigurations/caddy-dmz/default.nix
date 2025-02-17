@@ -66,11 +66,11 @@ in
         plugins = [
           "github.com/caddy-dns/bunny@v1.1.3-0.20250204130652-0099cab6eaad"
           "github.com/mholt/caddy-dynamicdns@v0.0.0-20241025234131-7c818ab3fc34"
-          "github.com/mholt/caddy-l4@v0.0.0-20241111225910-3c6cc2c0ee08"
+          "github.com/mholt/caddy-l4@v0.0.0-20250124234235-87e3e5e2c7f9"
           "github.com/digilolnet/caddy-bunny-ip@v0.0.0-20250118080727-ef607b8e1644"
           "github.com/hslatman/caddy-crowdsec-bouncer@v0.8.1"
         ];
-        hash = "sha256-nbu5RtJ0wfWjjGTRbQkxx10lFNwZ+LKy+BNsnhGr/co=";
+        hash = "sha256-16KM+WrhriThYE+wbs1Qcl+0MNnGyf0pOXVO3LLWNiI=";
       };
       email = "jack.connors@protonmail.com";
       acmeCA = "https://acme-v02.api.letsencrypt.org/directory";
