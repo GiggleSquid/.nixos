@@ -90,9 +90,7 @@ in
             }
           }
           dynamic_dns {
-            provider bunny {
-              access_key {env.BUNNY_API_KEY}
-            }
+            provider bunny {env.BUNNY_API_KEY}
             domains {
               gigglesquid.tech ddns
               marciandfriends.co.uk @
