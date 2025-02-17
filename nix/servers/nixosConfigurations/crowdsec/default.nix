@@ -28,15 +28,17 @@ in
       crowdsec_enroll_key = {
         owner = "crowdsec";
       };
-      crowdsec_caddy-internal_api_key_env = { };
-      crowdsec_caddy-dmz_api_key_env = { };
+      crowdsec_caddy-internal_caddy_api_key_env = { };
+      crowdsec_caddy-dmz_caddy_api_key_env = { };
+      crowdsec_caddy-dmz_firewall_api_key_env = { };
     };
   };
 
   systemd.services.crowdsec.serviceConfig = {
     EnvironmentFile = [
-      "${config.sops.secrets.crowdsec_caddy-internal_api_key_env.path}"
-      "${config.sops.secrets.crowdsec_caddy-dmz_api_key_env.path}"
+      "${config.sops.secrets.crowdsec_caddy-internal_caddy_api_key_env.path}"
+      "${config.sops.secrets.crowdsec_caddy-dmz_caddy_api_key_env.path}"
+      "${config.sops.secrets.crowdsec_caddy-dmz_firewall_api_key_env.path}"
     ];
 
     ExecStartPre =
@@ -47,12 +49,16 @@ in
             set -eu
             set -o pipefail
 
-            if ! cscli bouncers list | grep -q "internal.caddy.lan.gigglesquid.tech"; then
-              cscli bouncers add "internal.caddy.lan.gigglesquid.tech" --key $CROWDSEC_CADDY_INTERNAL_API_KEY
+            if ! cscli bouncers list | grep -q "caddy_internal.caddy.lan.gigglesquid.tech"; then
+              cscli bouncers add "caddy_internal.caddy.lan.gigglesquid.tech" --key $CROWDSEC_CADDY_INTERNAL_CADDY_API_KEY
             fi
 
-            if ! cscli bouncers list | grep -q "dmz.caddy.lan.gigglesquid.tech"; then
-              cscli bouncers add "dmz.caddy.lan.gigglesquid.tech" --key $CROWDSEC_CADDY_DMZ_API_KEY
+            if ! cscli bouncers list | grep -q "caddy_dmz.caddy.lan.gigglesquid.tech"; then
+              cscli bouncers add "caddy_dmz.caddy.lan.gigglesquid.tech" --key $CROWDSEC_CADDY_DMZ_CADDY_API_KEY
+            fi
+
+            if ! cscli bouncers list | grep -q "firewall_dmz.caddy.lan.gigglesquid.tech"; then
+              cscli bouncers add "firewall_dmz.caddy.lan.gigglesquid.tech" --key $CROWDSEC_CADDY_DMZ_FIREWALL_API_KEY
             fi
           '';
         install-collections = # bash

@@ -17,6 +17,7 @@ in
     domain = "caddy.lan.gigglesquid.tech";
     nameservers = [ "10.100.0.1" ];
     firewall = {
+      enable = true;
       allowedTCPPorts = [
         80
         443
@@ -39,9 +40,10 @@ in
       bunny_dns_api_key_caddy = {
         owner = "caddy";
       };
-      crowdsec_caddy-dmz_api_key_env = {
+      crowdsec_caddy-dmz_caddy_api_key_env = {
         owner = "caddy";
       };
+      crowdsec_caddy-dmz_firewall_api_key_env = { };
     };
   };
 
@@ -49,7 +51,12 @@ in
     caddy.serviceConfig = {
       EnvironmentFile = [
         "${config.sops.secrets.bunny_dns_api_key_caddy.path}"
-        "${config.sops.secrets.crowdsec_caddy-dmz_api_key_env.path}"
+        "${config.sops.secrets.crowdsec_caddy-dmz_caddy_api_key_env.path}"
+      ];
+    };
+    crowdsec-firewall-bouncer.serviceConfig = {
+      EnvironmentFile = [
+        "${config.sops.secrets.crowdsec_caddy-dmz_firewall_api_key_env.path}"
       ];
     };
   };
@@ -101,7 +108,7 @@ in
           }
           crowdsec {
             api_url http://crowdsec.lan.gigglesquid.tech:8080
-            api_key {env.CROWDSEC_CADDY_DMZ_API_KEY}
+            api_key {env.CROWDSEC_CADDY_DMZ_CADDY_API_KEY}
             ticker_interval 15s
           }
           # layer4 {
@@ -255,6 +262,14 @@ in
           }
         '';
     };
+
+    crowdsec-firewall-bouncer = {
+      enable = true;
+      settings = {
+        api_key = ''''${CROWDSEC_CADDY_DMZ_FIREWALL_API_KEY}'';
+        api_url = "http://crowdsec.lan.gigglesquid.tech:8080";
+      };
+    };
   };
 
   imports =
@@ -267,6 +282,7 @@ in
         lib.concatLists [
           nixosSuites.server
           caddy-server
+          crowdsec
         ];
     in
     lib.concatLists [

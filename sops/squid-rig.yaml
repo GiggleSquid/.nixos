@@ -11,8 +11,9 @@ wg_priv_key:
 minesquid_env_vars: ENC[AES256_GCM,data:CdknIOnu/IWjvDoI9cnkMcP3O7oWbf09b8uhk7rUQyozhYMpHval4j/CDmU3GMSHvw==,iv:NyD8yuovd1CbhlOPOD9BpnfhzPYl8n1WeIMMmaxoAa0=,tag:HjD0dp3LZnM9Goz9ikhM4A==,type:str]
 searxng_env_vars: ENC[AES256_GCM,data:p3k/Va7FMtIJVnS8XOOh4tlbb9SGLBHea0sP0lYJ1FsFAdbhPb+8WgkRs9Lmg6Vrdfk=,iv:GmAynsssvRX2itvk/9OECVzBUKcDkBuUFi/9PGE522s=,tag:9F7+5Q32POXmbQoz5kXg1g==,type:str]
 crowdsec_enroll_key: ENC[AES256_GCM,data:uKtIxqIsfrYxEFMuRZTtRuSYNWfcOvSPsw==,iv:dvXdY+BRUinr59WbwodM4EFJJQJ5KzEnyJHKj5p5kX8=,tag:8p0FDMD4CTOs7cDyENA9dA==,type:str]
-crowdsec_caddy-internal_api_key_env: ENC[AES256_GCM,data:3tZ4hyaLRkjKfRnZOYl/RDN+TQ0D0mDI913wcwDOIQyYb3i8ja8vu3RkUNOnccWfGLifTHbJVibzCOYTfVp8plWpc9dHva3cIuTF,iv:97NTbcW4BnGRvECJJTDMvm76lP4vQet9xDCgzFduQXQ=,tag:grcYnFELOLX/FsrgehqHPQ==,type:str]
-crowdsec_caddy-dmz_api_key_env: ENC[AES256_GCM,data:4ndMPWStSBeh61gP5FD9ayHilDrhhm4jriojvPxho0s4qCLkDBrQJDJB9QaQUPA5Dj9kutraatLwRkoXaZuNlWTgxymcxA==,iv:XSFV+hhJLQZQ2RPzmldDI2txqvfpgELLPVp6QOJbYzg=,tag:9ubgOxgyTGywK0NYxHEcRw==,type:str]
+crowdsec_caddy-internal_caddy_api_key_env: ENC[AES256_GCM,data:EKhb198sQKu82gGgznw3woDbYKoHOkI/xwI9kjdocrlVeVyqq8DxdQ/GK1hV3bNAc0cWyFdqUP+n8r7bHL9fvW+nLROCbVNNPhfRlRoC01uy,iv:Qx/WeBeVaLPc2Bkg1LREPJBJpPAU53nDIV5l7ALdhms=,tag:rEAStlp4qcMGmWobUswHYw==,type:str]
+crowdsec_caddy-dmz_caddy_api_key_env: ENC[AES256_GCM,data:o5IGR5/bXEOcnNpsH/9K/r3qvJGsjR014lnGVsCif/weeKAhxqHDo4CoibhXGsDU1R+AXf22aAGCtnc/Nxl0s6IoMzrq/BTX+DqyJA==,iv:KIFUf6s4GMlhdEDwWEams5HIiYfvzzRRtYaOEAAot7U=,tag:5X1sl8HuuuRCF0D/DD/40A==,type:str]
+crowdsec_caddy-dmz_firewall_api_key_env: ENC[AES256_GCM,data:Wen1c4mp71dBbVFYUfmlFQqqLeV5+lKl0QQhHWyy56V85iatw7lZe59Z879G/53oCGH1697f36N5XPdOs/NrVWzPN1P++UMWU9Phg1Rfkg==,iv:Iu6dMnF7XwMUdRTZjErRbB51mDdYnwORsBe0w+c5aQ4=,tag:C3EEr4X1CZ+QQBLxw518ZA==,type:str]
 prometheus_basic_auth: ENC[AES256_GCM,data:BE59OMIYAjTh5NTXxQ4ERrwARxadV+eLB3flaiSOdEk=,iv:W0vdSwvunuget446Rcl4MQGB1C3AJOjcY8tow28zV00=,tag:K3FSluCTtGaqViYzevrncw==,type:str]
 prometheus_basic_auth_env_var: ENC[AES256_GCM,data:slbE2VKKk1Ycz29SWpG3+7GoOFHVegzEtzrQ558jeV6HtIVFkgL0Wu3oVK73ss2Xz+xXRhoi,iv:47wT7001vKmE/4qRaYt22yVsg7q9/O86b05MeNuZCZ8=,tag:eQnHZWrBLrjctHZJQD+F1A==,type:str]
 prometheus_web_config: ENC[AES256_GCM,data:kswqKHEcyZ+g0/F7i59OAFabkPmvcHpgp9WvEOLN41E9pWf7SS+iMvE2Diea9XsJ8Utos0Lxk8Dz3TGaqfMuViRyGUl6WUdJE02urKwBjDnqdaNI8aPKEQ==,iv:ac0CgYZHrllRvsNwlOdOazTzzbcNMdaZHSS0QCfe4hk=,tag:P6q8VQ4trXBJDS7H+z8Lig==,type:str]
@@ -220,8 +221,8 @@ sops:
             akJyU1ZIRDZIejQ5bXdzT0h3U0xYRUkKjZo/V8rMogK28ofXYS7y3ItgUV/HCl5S
             DUPg147Q1s8aAEe3lTiZU5jJHGtSmDZIzdsuVEzo31bVhG/o3M040w==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2025-02-16T00:54:56Z"
-    mac: ENC[AES256_GCM,data:5okXdbQnNP1feetOj56dUyHqkUcgxkMrxWNcYNjqXGOElxwMk4CaNvKbD7Q/eD8kx8uYRnMyMeWwjUyy4GCgYo6h50G0F4pzCAHSkR+8lFyRG88QAQNmzPexgqzmdMeyrSuOY7CNUJ48K/aBcdCiv3qLbEjs61hvsh+KaF3QCKg=,iv:CJXrFIjofY235J3EQOsJYWUpbeV2ORFxOiwpSn7qpsA=,tag:XUIaCDE65UhqUp8I/q8LHA==,type:str]
+    lastmodified: "2025-02-16T12:18:07Z"
+    mac: ENC[AES256_GCM,data:5g/vYrGwVCSmKYZBx+g7GM9h5MCiUGF5DKQwHu+jadHqMhpBQBOmXrzSoczfhmYysW5rZR1MGSB+HHKG3cljFsGO1xUqVYYntAZJcTNs2D3a9SuYC6bLeFSZsCKFg5qzIEVn/qDBHUkrj4t5Z6RVAHa+gA7LVBvaPFyHcwqCy/g=,iv:Ebo6tmLaIOrRnHIDDkH/H3tCKEj0bLQ5vy/ty52Vn1c=,tag:gu5Yc2eG0lj/qV6Jhd1Msw==,type:str]
     pgp: []
     unencrypted_suffix: _unencrypted
     version: 3.9.4

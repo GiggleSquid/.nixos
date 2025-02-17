@@ -47,7 +47,7 @@ in
       bunny_dns_api_key_caddy = {
         owner = "caddy";
       };
-      crowdsec_caddy-internal_api_key_env = {
+      crowdsec_caddy-internal_caddy_api_key_env = {
         owner = "caddy";
       };
       prometheus_basic_auth = {
@@ -61,7 +61,7 @@ in
     caddy.serviceConfig = {
       EnvironmentFile = [
         "${config.sops.secrets.bunny_dns_api_key_caddy.path}"
-        "${config.sops.secrets.crowdsec_caddy-internal_api_key_env.path}"
+        "${config.sops.secrets.crowdsec_caddy-internal_caddy_api_key_env.path}"
       ];
     };
     alloy.serviceConfig = {
@@ -102,7 +102,7 @@ in
           }
           crowdsec {
             api_url http://crowdsec.lan.gigglesquid.tech:8080
-            api_key {env.CROWDSEC_CADDY_INTERNAL_API_KEY}
+            api_key {env.CROWDSEC_CADDY_INTERNAL_CADDY_API_KEY}
             ticker_interval 15s
           }
         '';
