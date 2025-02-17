@@ -95,6 +95,7 @@ in
             rule {
               source_labels = ["__journal__hostname"]
               target_label  = "hostname"
+              replacement   = "${config.networking.fqdn}"
             }
           }
 
