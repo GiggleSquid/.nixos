@@ -31,6 +31,7 @@ in
       crowdsec_caddy-internal_caddy_api_key_env = { };
       crowdsec_caddy-dmz_caddy_api_key_env = { };
       crowdsec_caddy-dmz_firewall_api_key_env = { };
+      crowdsec_i2p_firewall_api_key_env = { };
     };
   };
 
@@ -39,6 +40,7 @@ in
       "${config.sops.secrets.crowdsec_caddy-internal_caddy_api_key_env.path}"
       "${config.sops.secrets.crowdsec_caddy-dmz_caddy_api_key_env.path}"
       "${config.sops.secrets.crowdsec_caddy-dmz_firewall_api_key_env.path}"
+      "${config.sops.secrets.crowdsec_i2p_firewall_api_key_env.path}"
     ];
 
     ExecStartPre =
@@ -59,6 +61,10 @@ in
 
             if ! cscli bouncers list | grep -q "firewall_dmz.caddy.lan.gigglesquid.tech"; then
               cscli bouncers add "firewall_dmz.caddy.lan.gigglesquid.tech" --key $CROWDSEC_CADDY_DMZ_FIREWALL_API_KEY
+            fi
+
+            if ! cscli bouncers list | grep -q "firewall_i2p.lan.gigglesquid.tech"; then
+              cscli bouncers add "firewall_i2p.lan.gigglesquid.tech" --key $CROWDSEC_I2P_FIREWALL_API_KEY
             fi
           '';
         install-collections = # bash

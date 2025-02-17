@@ -1,6 +1,10 @@
-{ inputs, cell }:
+{
+  inputs,
+  cell,
+  config,
+}:
 let
-  inherit (inputs) common nixpkgs;
+  inherit (inputs) common nixpkgs self;
   inherit (cell) hardwareProfiles serverSuites;
   inherit (inputs.cells.squid) nixosSuites homeSuites;
   inherit (inputs.cells.toolchain) pkgs;
@@ -23,6 +27,21 @@ in
       allowedUDPPorts = [
         19169
         7656
+      ];
+    };
+  };
+
+  sops = {
+    defaultSopsFile = "${self}/sops/squid-rig.yaml";
+    secrets = {
+      crowdsec_i2p_firewall_api_key_env = { };
+    };
+  };
+
+  systemd.services = {
+    crowdsec-firewall-bouncer.serviceConfig = {
+      EnvironmentFile = [
+        "${config.sops.secrets.crowdsec_i2p_firewall_api_key_env.path}"
       ];
     };
   };
@@ -80,6 +99,14 @@ in
     alloy-squid = {
       enable = true;
       listenAddr = "10.3.0.40";
+    };
+
+    crowdsec-firewall-bouncer = {
+      enable = true;
+      settings = {
+        api_key = ''''${CROWDSEC_I2P_FIREWALL_API_KEY}'';
+        api_url = "http://crowdsec.lan.gigglesquid.tech:8080";
+      };
     };
   };
 

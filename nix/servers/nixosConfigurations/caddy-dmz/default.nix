@@ -281,7 +281,6 @@ in
         lib.concatLists [
           nixosSuites.server
           caddy-server
-          crowdsec
         ];
     in
     lib.concatLists [

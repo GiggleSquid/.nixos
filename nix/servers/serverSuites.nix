@@ -14,6 +14,8 @@ rec {
     nixosModules.alloy-squid
   ];
 
+  crowdsec = [ nixosModules.crowdsec ];
+
   ntp-server = base-rpi ++ [
     chrony
   ];
@@ -24,15 +26,18 @@ rec {
 
   caddy-server = base ++ [
     caddy
+    nixosModules.crowdsec
   ];
 
   searxng = [ nixosModules.searx ];
 
   squidbit = [ nixosModules.qbittorrent ];
 
-  i2pd = base ++ [ nixosModules.i2pd ];
+  i2pd = base ++ [
+    nixosModules.i2pd
+    nixosModules.crowdsec
+  ];
 
   minesquid = [ nixosModules.nix-minecraft ];
 
-  crowdsec = [ nixosModules.crowdsec ];
 }
