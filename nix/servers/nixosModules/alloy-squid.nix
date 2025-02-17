@@ -38,6 +38,11 @@ in
       type = lib.types.lines;
       default = "";
     };
+
+    supplementaryGroups = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      default = [ ];
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -107,9 +112,8 @@ in
       + cfg.alloyConfig;
 
     systemd.services.alloy.serviceConfig = {
-      SupplementaryGroups = [
+      SupplementaryGroups = cfg.supplementaryGroups ++ [
         "alloy"
-        "caddy"
       ];
     };
 
