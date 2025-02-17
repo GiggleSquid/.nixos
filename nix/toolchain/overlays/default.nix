@@ -51,13 +51,13 @@ in
             args
             // rec {
               pname = "wezterm";
-              version = "a7ff718c7c182d62d7c848187da1655e58b8ecd8";
+              version = "ee0c04e735fb94cb5119681f704fb7fa6731e713";
               src = nixpkgs.fetchFromGitHub {
                 owner = "wez";
                 repo = pname;
                 rev = version;
                 fetchSubmodules = true;
-                hash = "sha256-+m2bZlhi0wx4KTqEikcKL7+YN+t8FLfrb5aeiQOQtGM=";
+                hash = "sha256-0jqnSzzfg8ecBaayJI8oP9X0FyijFFT3LA6GKfpAFwI=";
               };
 
               postPatch = ''
@@ -72,7 +72,6 @@ in
               cargoLock = {
                 lockFile = ./wezterm/Cargo.lock;
                 outputHashes = {
-                  "sqlite-cache-0.1.3" = "sha256-sBAC8MsQZgH+dcWpoxzq9iw5078vwzCijgyQnMOWIkk=";
                   "xcb-imdkit-0.3.0" = "sha256-77KaJO+QJWy3tJ9AF1TXKaQHpoVOfGIRqteyqpQaSWo=";
                 };
               };
