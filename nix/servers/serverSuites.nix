@@ -31,7 +31,10 @@ rec {
 
   searxng = [ nixosModules.searx ];
 
-  squidbit = [ nixosModules.qbittorrent ];
+  squidbit = [
+    nixosModules.qbittorrent
+    nixosModules.nix-pia-vpn
+  ];
 
   i2pd = base ++ [
     nixosModules.i2pd

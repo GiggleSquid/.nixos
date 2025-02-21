@@ -19,9 +19,8 @@ in
     secrets = {
       bunny_dns_api_key = { };
       lego_pfx_pass = { };
-      "wg_priv_key/tentacle-0_squidbit" = {
-        owner = "systemd-network";
-      };
+      "pia/pia_env" = { };
+      "pia/ca.rsa.4096.crt" = { };
     };
   };
 
@@ -88,28 +87,6 @@ in
 
   systemd.network = {
     enable = true;
-    netdevs = {
-      "10-wg0" = {
-        netdevConfig = {
-          Kind = "wireguard";
-          Name = "wg0";
-          MTUBytes = "1300";
-        };
-        wireguardConfig = {
-          PrivateKeyFile = "${config.sops.secrets."wg_priv_key/tentacle-0_squidbit".path}";
-          ListenPort = 51820;
-          FirewallMark = 34952;
-        };
-        wireguardPeers = [
-          {
-            PublicKey = "nPCWC0rx9ZXEkzh7dxMUTO5/HUqDaLaD827Yp1sJCQU=";
-            AllowedIPs = [ "0.0.0.0/0" ];
-            Endpoint = "103.69.224.2:51820";
-            PersistentKeepalive = 25;
-          }
-        ];
-      };
-    };
     networks = {
       "10-lan" = {
         matchConfig.Name = lib.mkForce "en*18";
@@ -118,37 +95,6 @@ in
         gateway = [ "10.3.0.1" ];
         dns = [ "10.3.0.1" ];
         ntp = [ "10.3.0.5" ];
-      };
-
-      "10-wg0" = {
-        matchConfig.Name = "wg0";
-        DHCP = "no";
-        address = [ "10.2.0.2/32" ];
-        gateway = [ "10.2.0.1" ];
-        dns = [ "10.3.0.1" ];
-        ntp = [ "10.3.0.5" ];
-        routingPolicyRules = [
-          {
-            FirewallMark = 34952;
-            InvertRule = true;
-            Table = 1000;
-            Priority = 10;
-          }
-          {
-            To = "103.69.224.2/32";
-            Priority = 5;
-          }
-          {
-            To = "10.0.0.0/8";
-            Priority = 9;
-          }
-        ];
-        routes = [
-          {
-            Destination = "0.0.0.0/0";
-            Table = 1000;
-          }
-        ];
       };
     };
   };
@@ -190,12 +136,71 @@ in
         "mnt-media-torrent\x2ddownloads.mount"
       ];
     };
+    pia-vpn = {
+      enable = true;
+      certificateFile = config.sops.secrets."pia/ca.rsa.4096.crt".path;
+      environmentFile = config.sops.secrets."pia/pia_env".path;
+      netdevConfig = ''
+        [NetDev]
+        Description=WireGuard PIA network device
+        Name=''${interface}
+        Kind=wireguard
+
+        [WireGuard]
+        FirewallMark=0x8888
+        PrivateKey=$privateKey
+
+        [WireGuardPeer]
+        PublicKey=$(echo "$json" | jq -r '.server_key')
+        AllowedIPs=0.0.0.0/0, ::/0
+        Endpoint=''${wg_ip}:$(echo "$json" | jq -r '.server_port')
+        PersistentKeepalive=25
+      '';
+      networkConfig = ''
+        [Match]
+        Name=''${interface}
+
+        [Network]
+        Description=WireGuard PIA network interface
+        Address=''${peerip}/32
+        DNS=10.3.0.1
+        NTP=10.3.0.5
+
+        [RoutingPolicyRule]
+        FirewallMark=0x8888
+        InvertRule=true
+        Priority=10
+        Table=1000
+
+        [RoutingPolicyRule]
+        Priority=5
+        To=''${wg_ip}/32
+
+        [RoutingPolicyRule]
+        Priority=6
+        To=''${meta_ip}/32
+
+        [RoutingPolicyRule]
+        Priority=9
+        To=10.3.0.0/23
+
+        [RoutingPolicyRule]
+        Priority=9
+        To=10.10.0.0/24
+
+        [Route]
+        Destination=0.0.0.0/0
+        Table=1000
+      '';
+      portForward = {
+        enable = true;
+      };
+    };
   };
 
   environment.systemPackages = with nixpkgs; [
     recyclarr
     jdupes
-    libnatpmp
     wireguard-tools
   ];
 

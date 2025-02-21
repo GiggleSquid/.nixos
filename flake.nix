@@ -113,6 +113,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    nix-pia-vpn = {
+      url = "github:rcambrj/nix-pia-vpn";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
