@@ -157,6 +157,58 @@ in
               }
             '';
         };
+        "qbittorrent.squidbit.lan.gigglesquid.tech" = {
+          extraConfig = # caddyfile
+            ''
+              import bunny_acme_settings
+              import deny_non_local
+              route {
+                crowdsec
+                reverse_proxy https://squidbit.lan.gigglesquid.tech:8080 {
+                  header_up Host {upstream_hostport}
+                }
+              }
+            '';
+        };
+        "radarr.squidbit.lan.gigglesquid.tech" = {
+          extraConfig = # caddyfile
+            ''
+              import bunny_acme_settings
+              import deny_non_local
+              route {
+                crowdsec
+                reverse_proxy https://squidbit.lan.gigglesquid.tech:7777 {
+                  header_up Host {upstream_hostport}
+                }
+              }
+            '';
+        };
+        "sonarr.squidbit.lan.gigglesquid.tech" = {
+          extraConfig = # caddyfile
+            ''
+              import bunny_acme_settings
+              import deny_non_local
+              route {
+                crowdsec
+                reverse_proxy https://squidbit.lan.gigglesquid.tech:8888 {
+                  header_up Host {upstream_hostport}
+                }
+              }
+            '';
+        };
+        "prowlarr.squidbit.lan.gigglesquid.tech" = {
+          extraConfig = # caddyfile
+            ''
+              import bunny_acme_settings
+              import deny_non_local
+              route {
+                crowdsec
+                reverse_proxy https://squidbit.lan.gigglesquid.tech:9595 {
+                  header_up Host {upstream_hostport}
+                }
+              }
+            '';
+        };
         "storj-node.cephalonas.lan.gigglesquid.tech" = {
           extraConfig = # caddyfile
             ''

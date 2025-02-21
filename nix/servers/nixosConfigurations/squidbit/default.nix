@@ -41,7 +41,7 @@ in
       };
     };
     certs = {
-      "qbittorrent.squidbit.lan.gigglesquid.tech" = {
+      "squidbit.lan.gigglesquid.tech" = {
         postRun = # bash
           ''
             cp -v key.pem /var/lib/qbittorrent/
@@ -51,33 +51,20 @@ in
             cp -v fullchain.pem /var/lib/qbittorrent/
             chown -v qbittorrent:qbittorrent /var/lib/qbittorrent/fullchain.pem
             chmod -v 640 /var/lib/qbittorrent/fullchain.pem
-          '';
-      };
-      "prowlarr.squidbit.lan.gigglesquid.tech" = {
-        postRun = # bash
-          ''
-            openssl pkcs12 -export -out prowlarr.squidbit.lan.gigglesquid.tech.pfx -inkey key.pem -in cert.pem -certfile chain.pem -passout file:${config.sops.secrets.lego_pfx_pass.path}
-            chown -v prowlarr:prowlarr prowlarr.squidbit.lan.gigglesquid.tech.pfx
-            chmod -v 640 prowlarr.squidbit.lan.gigglesquid.tech.pfx
-            cp -vp prowlarr.squidbit.lan.gigglesquid.tech.pfx /var/lib/prowlarr/
-          '';
-      };
-      "radarr.squidbit.lan.gigglesquid.tech" = {
-        postRun = # bash
-          ''
-            openssl pkcs12 -export -out radarr.squidbit.lan.gigglesquid.tech.pfx -inkey key.pem -in cert.pem -certfile chain.pem -passout file:${config.sops.secrets.lego_pfx_pass.path}
-            chown -v radarr:radarr radarr.squidbit.lan.gigglesquid.tech.pfx
-            chmod -v 640 radarr.squidbit.lan.gigglesquid.tech.pfx
-            cp -vp radarr.squidbit.lan.gigglesquid.tech.pfx /var/lib/radarr/
-          '';
-      };
-      "sonarr.squidbit.lan.gigglesquid.tech" = {
-        postRun = # bash
-          ''
-            openssl pkcs12 -export -out sonarr.squidbit.lan.gigglesquid.tech.pfx -inkey key.pem -in cert.pem -certfile chain.pem -passout file:${config.sops.secrets.lego_pfx_pass.path}
-            chown -v sonarr:sonarr sonarr.squidbit.lan.gigglesquid.tech.pfx
-            chmod -v 640 sonarr.squidbit.lan.gigglesquid.tech.pfx
-            cp -vp sonarr.squidbit.lan.gigglesquid.tech.pfx /var/lib/sonarr/
+
+            openssl pkcs12 -export -out squidbit.lan.gigglesquid.tech.pfx -inkey key.pem -in cert.pem -certfile chain.pem -passout file:${config.sops.secrets.lego_pfx_pass.path}
+
+            cp -v squidbit.lan.gigglesquid.tech.pfx /var/lib/prowlarr/
+            chown -v prowlarr:prowlarr /var/lib/prowlarr/squidbit.lan.gigglesquid.tech.pfx
+            chmod -v 640 /var/lib/prowlarr/squidbit.lan.gigglesquid.tech.pfx
+
+            cp -v squidbit.lan.gigglesquid.tech.pfx /var/lib/radarr/
+            chown -v radarr:radarr /var/lib/radarr/squidbit.lan.gigglesquid.tech.pfx
+            chmod -v 640 /var/lib/radarr/squidbit.lan.gigglesquid.tech.pfx
+
+            cp -v squidbit.lan.gigglesquid.tech.pfx /var/lib/sonarr/
+            chown -v sonarr:sonarr /var/lib/sonarr/squidbit.lan.gigglesquid.tech.pfx
+            chmod -v 640 /var/lib/sonarr/squidbit.lan.gigglesquid.tech.pfx
           '';
       };
     };
@@ -89,8 +76,12 @@ in
     nameservers = [ "10.3.0.1" ];
     useNetworkd = true;
     firewall = {
-      enable = false;
-      allowedTCPPorts = [ ];
+      enable = true;
+      allowedTCPPorts = [
+        8888
+        7777
+        9595
+      ];
       allowedUDPPorts = [ ];
     };
   };
