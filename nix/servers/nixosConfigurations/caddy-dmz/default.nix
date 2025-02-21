@@ -122,6 +122,7 @@ in
           (bunny_acme_settings) {
             tls {
               dns bunny {env.BUNNY_API_KEY}
+              resolvers 9.9.9.9 149.112.112.112
             }
           }
           (deny_non_local) {
