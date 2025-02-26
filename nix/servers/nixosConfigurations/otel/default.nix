@@ -15,6 +15,7 @@ in
   networking = {
     inherit hostName;
     domain = "lan.gigglesquid.tech";
+    nameservers = [ "10.3.0.1" ];
     firewall = {
       allowedTCPPorts = [
         80
@@ -36,6 +37,7 @@ in
       prometheus_basic_auth_env_var = {
         owner = "prometheus";
       };
+      prometheus_exporters_pve = { };
     };
   };
 
@@ -130,27 +132,32 @@ in
       };
       provision = {
         enable = true;
-        datasources.settings = {
-          datasources = [
-            {
-              name = "Prometheus";
-              type = "prometheus";
-              access = "proxy";
-              url = "http://127.0.0.1:${toString config.services.prometheus.port}";
-              basicAuth = true;
-              basicAuthUser = "admin";
-              secureJsonData = {
-                basicAuthPassword = "$PROMETHEUS_BASIC_AUTH";
-              };
-            }
-            {
-              name = "Loki";
-              type = "loki";
-              access = "proxy";
-              url = "http://127.0.0.1:${toString config.services.loki.configuration.server.http_listen_port}";
-            }
-          ];
-        };
+        datasources.settings.datasources = [
+          {
+            name = "Prometheus";
+            uid = "PBFA97CFB590B2093";
+            type = "prometheus";
+            access = "proxy";
+            url = "http://127.0.0.1:${toString config.services.prometheus.port}";
+            basicAuth = true;
+            basicAuthUser = "admin";
+            secureJsonData = {
+              basicAuthPassword = "$PROMETHEUS_BASIC_AUTH";
+            };
+          }
+          {
+            name = "Loki";
+            type = "loki";
+            access = "proxy";
+            url = "http://127.0.0.1:${toString config.services.loki.configuration.server.http_listen_port}";
+          }
+        ];
+        dashboards.settings.providers = [
+          {
+            name = "My dashboards";
+            options.path = "/etc/grafana-dashboards";
+          }
+        ];
       };
     };
 
@@ -161,6 +168,42 @@ in
       webConfigFile = "${config.sops.secrets.prometheus_web_config.path}";
       extraFlags = [
         "--web.enable-remote-write-receiver"
+      ];
+      exporters = {
+        pve = {
+          enable = true;
+          configFile = "${config.sops.secrets.prometheus_exporters_pve.path}";
+        };
+      };
+      scrapeConfigs = [
+        {
+          job_name = "pve";
+          static_configs = [
+            {
+              targets = [ "tentacle0.kraken.lan.gigglesquid.tech:8006" ];
+            }
+          ];
+          metrics_path = "/pve";
+          params = {
+            module = [ "default" ];
+            cluster = [ "1" ];
+            node = [ "1" ];
+          };
+          relabel_configs = [
+            {
+              source_labels = [ "__address__" ];
+              target_label = "__param_target";
+            }
+            {
+              source_labels = [ "__param_target" ];
+              target_label = "instance";
+            }
+            {
+              target_label = "__address__";
+              replacement = "127.0.0.1:9221";
+            }
+          ];
+        }
       ];
     };
 
@@ -247,7 +290,14 @@ in
     };
   };
 
-  environment.etc."alloy/config.alloy".text = '''';
+  environment.etc = {
+    "grafana-dashboards/proxmox-via-prometheus.json" = {
+      source = ./. + "/_grafana-dashboards/proxmox-via-prometheus.json";
+      user = "grafana";
+      group = "grafana";
+    };
+    "alloy/config.alloy".text = '''';
+  };
 
   imports =
     let
