@@ -284,106 +284,63 @@ in
       };
     };
 
-    alloy = {
+    alloy-squid = {
       enable = true;
-      extraFlags = [
-        "--disable-reporting"
-        "--server.http.listen-addr=10.3.0.10:12345"
-      ];
+      listenAddr = "10.3.1.10";
+      supplementaryGroups = [ "caddy" ];
+      alloyConfig = # river
+        ''
+          local.file_match "caddy_access_log" {
+            path_targets = [
+              {"__path__" = "/var/log/caddy/access.log"},
+            ]
+            sync_period = "15s"
+          }
+           
+          loki.source.file "caddy_access_log" {
+            targets    = local.file_match.caddy_access_log.targets
+            forward_to = [loki.process.caddy_add_labels.receiver]
+            tail_from_end = true
+          }
+
+          loki.process "caddy_add_labels" {
+            stage.json {
+              expressions = {
+                level = "",
+                logger = "",
+                host = "request.host",
+                method = "request.method",
+                proto = "request.proto",
+                ts = "",
+              }
+            }
+
+            stage.labels {
+              values = {
+                level = "",
+                logger = "",
+                host = "",
+                method = "",
+                proto = "",
+              }
+            }
+
+            stage.static_labels {
+              values = {
+                job = "loki.source.file.caddy_access_log",
+              }
+            }
+
+            stage.timestamp {
+              source = "ts"
+              format = "unix"
+            }
+           
+            forward_to = [loki.write.grafana_loki.receiver]
+          }
+        '';
     };
   };
-
-  # environment.etc."alloy/config.alloy".text = ''
-  #   prometheus.exporter.unix "local_system" { }
-
-  #   prometheus.scrape "scrape_metrics" {
-  #     targets         = prometheus.exporter.unix.local_system.targets
-  #     forward_to      = [prometheus.relabel.filter_metrics.receiver]
-  #     scrape_interval = "15s"
-  #   }
-
-  #   prometheus.relabel "filter_metrics" {
-  #     forward_to = [prometheus.remote_write.metrics_service.receiver]
-  #   }
-
-  #   prometheus.remote_write "metrics_service" {
-  #     endpoint {
-  #       url = "https://prometheus.otel.lan.gigglesquid.tech/api/v1/write"
-  #       basic_auth {
-  #         username = "admin"
-  #         password_file = "${config.sops.secrets.prometheus_basic_auth.path}"
-  #       }
-  #     }
-  #   }
-
-  #   loki.source.journal "journal" {
-  #     forward_to = [loki.process.filter_journal.receiver]
-  #   }
-
-  #   loki.process "filter_journal" {
-  #     forward_to = [loki.write.grafana_loki.receiver]
-  #   }
-
-  #   local.file_match "caddy_access_log" {
-  #     path_targets = [
-  #       {"__path__" = "/var/log/caddy/access.log"},
-  #     ]
-  #     sync_period = "15s"
-  #   }
-
-  #   loki.source.file "caddy_scrape" {
-  #     targets    = local.file_match.caddy_access_log.targets
-  #     forward_to = [loki.process.caddy_add_labels.receiver]
-  #     tail_from_end = true
-  #   }
-
-  #   loki.process "caddy_add_labels" {
-  #     stage.json {
-  #       expressions = {
-  #         level = "",
-  #         logger = "",
-  #         host = "request.host",
-  #         method = "request.method",
-  #         proto = "request.proto",
-  #         ts = "",
-  #       }
-  #     }
-
-  #     stage.labels {
-  #       values = {
-  #         level = "",
-  #         logger = "",
-  #         host = "",
-  #         method = "",
-  #         proto = "",
-  #       }
-  #     }
-
-  #     stage.static_labels {
-  #       values = {
-  #         job = "caddy_access_log",
-  #         service_name = "caddy-internal",
-  #       }
-  #     }
-
-  #     stage.timestamp {
-  #       source = "ts"
-  #       format = "unix"
-  #     }
-
-  #     forward_to = [loki.write.grafana_loki.receiver]
-  #   }
-
-  #   loki.write "grafana_loki" {
-  #     endpoint {
-  #       url = "https://loki.otel.lan.gigglesquid.tech/loki/api/v1/push"
-  #       //basic_auth {
-  #       //  username = "admin"
-  #       //  password_file = ""
-  #       //}
-  #     }
-  #   }
-  # '';
 
   imports =
     let
