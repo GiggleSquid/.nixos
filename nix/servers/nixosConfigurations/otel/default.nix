@@ -59,9 +59,9 @@ in
       enable = true;
       package = nixpkgs.caddy.withPlugins {
         plugins = [
-          "github.com/GiggleSquid/caddy-bunny-mirror@v1.5.2-mirror"
+          "github.com/caddy-dns/bunny@v1.1.3-0.20250204130652-0099cab6eaad"
         ];
-        hash = "sha256-1SgPt430Bd5ROMwnFgXzo8WYzOnyciR5/m9tUKvz4Ao=";
+        hash = "sha256-DZGUXX9NHfr5L7xrLn5InO24J0ZkMEB/SoDwH8ACgbI=";
       };
       email = "jack.connors@protonmail.com";
       acmeCA = "https://acme-v02.api.letsencrypt.org/directory";
@@ -69,13 +69,10 @@ in
         '''';
       extraConfig = # caddyfile
         ''
-          (bunny_acme_settings_gigglesquid_tech) {
+          (bunny_acme_settings) {
             tls {
-              dns bunny {
-                access_key {env.BUNNY_API_KEY}
-                zone gigglesquid.tech
-              }
-              propagation_timeout -1
+              dns bunny {env.BUNNY_API_KEY}
+              resolvers 9.9.9.9 149.112.112.112
             }
           }
           (deny_non_local) {
@@ -89,7 +86,7 @@ in
         "grafana.otel.lan.gigglesquid.tech" = {
           extraConfig = # caddyfile
             ''
-              import bunny_acme_settings_gigglesquid_tech
+              import bunny_acme_settings
               import deny_non_local
               handle {
                 reverse_proxy 127.0.0.1:${toString config.services.grafana.port}
@@ -99,7 +96,7 @@ in
         "prometheus.otel.lan.gigglesquid.tech" = {
           extraConfig = # caddyfile
             ''
-              import bunny_acme_settings_gigglesquid_tech
+              import bunny_acme_settings
               import deny_non_local
               handle {
                 reverse_proxy 127.0.0.1:${toString config.services.prometheus.port}
@@ -109,7 +106,7 @@ in
         "loki.otel.lan.gigglesquid.tech" = {
           extraConfig = # caddyfile
             ''
-              import bunny_acme_settings_gigglesquid_tech
+              import bunny_acme_settings
               import deny_non_local
               handle {
                 reverse_proxy 127.0.0.1:${toString config.services.loki.configuration.server.http_listen_port}
