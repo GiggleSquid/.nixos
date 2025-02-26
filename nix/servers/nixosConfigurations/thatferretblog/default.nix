@@ -47,7 +47,7 @@ in
         "github.com/GiggleSquid/caddy-bunny-mirror@v1.5.2-mirror"
         "github.com/mohammed90/caddy-git-fs@v0.0.0-20240805164056-529acecd1830"
       ];
-      hash = "sha256-1omg9OoNafnbhI0niHNQWC5cbOuB/3rzoaqeH/TRBpg=";
+      hash = "sha256-YVcwQKEF06JVHuYWmYFGjPvamZTIbnDRZAUE4PMjztw=";
     };
     logFormat = ''
       level DEBUG
