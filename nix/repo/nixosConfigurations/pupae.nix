@@ -15,7 +15,7 @@ in
   imports =
     let
       profiles = [
-        hardwareProfiles.servers
+        hardwareProfiles.vms
       ];
       suites = with nixosSuites; larva;
     in
@@ -24,5 +24,5 @@ in
       suites
     ];
 
-  system.stateVersion = "24.05";
+  system.stateVersion = "25.05";
 }
