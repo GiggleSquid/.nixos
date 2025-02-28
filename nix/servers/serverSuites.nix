@@ -43,4 +43,6 @@ rec {
 
   minesquid = [ nixosModules.nix-minecraft ];
 
+  arion = [ nixosModules.arion ];
+
 }

@@ -235,6 +235,71 @@ in
               }
             '';
         };
+        "warrior-1.archiveteam.lan.gigglesquid.tech" = {
+          extraConfig = # caddyfile
+            ''
+              import bunny_acme_settings
+              import deny_non_local
+              route {
+                crowdsec
+                reverse_proxy http://10.3.1.60:8001 {
+                  header_up Host {upstream_hostport}
+                }
+              }
+            '';
+        };
+        "warrior-2.archiveteam.lan.gigglesquid.tech" = {
+          extraConfig = # caddyfile
+            ''
+              import bunny_acme_settings
+              import deny_non_local
+              route {
+                crowdsec
+                reverse_proxy http://10.3.1.60:8002 {
+                  header_up Host {upstream_hostport}
+                }
+              }
+            '';
+        };
+        "warrior-3.archiveteam.lan.gigglesquid.tech" = {
+          extraConfig = # caddyfile
+            ''
+              import bunny_acme_settings
+              import deny_non_local
+              route {
+                crowdsec
+                reverse_proxy http://10.3.1.60:8003 {
+                  header_up Host {upstream_hostport}
+                }
+              }
+            '';
+        };
+        "warrior-4.archiveteam.lan.gigglesquid.tech" = {
+          extraConfig = # caddyfile
+            ''
+              import bunny_acme_settings
+              import deny_non_local
+              route {
+                crowdsec
+                reverse_proxy http://10.3.1.60:8004 {
+                  header_up Host {upstream_hostport}
+                }
+              }
+            '';
+        };
+        "warrior-5.archiveteam.lan.gigglesquid.tech" = {
+          extraConfig = # caddyfile
+            ''
+              import bunny_acme_settings
+              import deny_non_local
+              route {
+                crowdsec
+                reverse_proxy http://10.3.1.60:8005 {
+                  header_up Host {upstream_hostport}
+                }
+              }
+            '';
+        };
         "marciandfriends.co.uk.internal.caddy.lan.gigglesquid.tech" = {
           extraConfig = # caddyfile
             ''

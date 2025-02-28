@@ -38,6 +38,8 @@ keys:
 
   - &searxng age1uzsyvn7arkk5xs6tagcn3leu2zn52equl3f66yhq2shdx3pzj3msgr77lx
 
+  - &warrior-archiveteam age15dnpa7pl8u7660dpl5n8h69tdqx3jptv5wmrp337qn8qz7akcy8s4xrepd
+
 creation_rules:
   - path_regex: sops/[^/]+\.yaml$
     key_groups:
@@ -64,3 +66,4 @@ creation_rules:
       - *thatferretblog
       - *boinc-tentacle0
       - *searxng
+      - *warrior-archiveteam
