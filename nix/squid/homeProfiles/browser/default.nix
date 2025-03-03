@@ -9,6 +9,8 @@
         "middlemouse.paste" = false;
         "general.autoScroll" = true;
         "webgl.disabled" = false;
+        "sidebar.revamp" = true;
+        "sidebar.verticalTabs" = true;
       };
     };
   };
