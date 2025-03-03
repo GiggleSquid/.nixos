@@ -65,8 +65,16 @@ in
       };
       email = "jack.connors@protonmail.com";
       acmeCA = "https://acme-v02.api.letsencrypt.org/directory";
+      logFormat = ''
+        output file /var/log/caddy/access.log {
+          mode 640
+        }
+        level INFO
+      '';
       globalConfig = # caddyfile
-        '''';
+        ''
+          metrics
+        '';
       extraConfig = # caddyfile
         ''
           (bunny_acme_settings) {
@@ -144,6 +152,7 @@ in
           }
           {
             name = "Loki";
+            uid = "P8E80F9AEF21F6940";
             type = "loki";
             access = "proxy";
             url = "http://127.0.0.1:${toString config.services.loki.configuration.server.http_listen_port}";
@@ -278,22 +287,92 @@ in
       };
     };
 
-    alloy = {
+    alloy-squid = {
       enable = true;
-      extraFlags = [
-        "--disable-reporting"
-        "--server.http.listen-addr=10.3.0.60:12345"
-      ];
+      listenAddr = "10.3.0.60";
+      supplementaryGroups = [ "caddy" ];
+      alloyConfig = # river
+        ''
+          discovery.relabel "caddy" {
+            targets = [{
+              __address__ = "localhost:2019",
+            }]
+            rule {
+              target_label = "instance"
+              replacement  = constants.hostname
+            }
+          }
+
+          prometheus.scrape "caddy" {
+            targets         = discovery.relabel.caddy.output
+            forward_to      = [prometheus.remote_write.metrics_service.receiver]
+            scrape_interval = "15s"
+            job_name   = "caddy.metrics.scrape"
+          }
+
+          local.file_match "caddy_access_log" {
+            path_targets = [
+              {"__path__" = "/var/log/caddy/access.log"},
+            ]
+            sync_period = "15s"
+          }
+
+          loki.source.file "caddy_access_log" {
+            targets    = local.file_match.caddy_access_log.targets
+            forward_to = [loki.process.caddy_add_labels.receiver]
+            tail_from_end = true
+          }
+
+          loki.process "caddy_add_labels" {
+            stage.json {
+              expressions = {
+                level = "",
+                logger = "",
+                host = "request.host",
+                method = "request.method",
+                proto = "request.proto",
+                ts = "",
+              }
+            }
+
+            stage.labels {
+              values = {
+                level = "",
+                logger = "",
+                host = "",
+                method = "",
+                proto = "",
+              }
+            }
+
+            stage.static_labels {
+              values = {
+                job = "loki.source.file.caddy_access_log",
+              }
+            }
+
+            stage.timestamp {
+              source = "ts"
+              format = "unix"
+            }
+           
+            forward_to = [loki.write.grafana_loki.receiver]
+          }
+        '';
     };
   };
 
   environment.etc = {
     "grafana-dashboards/proxmox-via-prometheus.json" = {
-      source = ./. + "/_grafana-dashboards/proxmox-via-prometheus.json";
+      source = ./. + "/_grafana-dashboards/10347-proxmox-via-prometheus.json";
       user = "grafana";
       group = "grafana";
     };
-    "alloy/config.alloy".text = '''';
+    "grafana-dashboards/caddy-monitoring.json" = {
+      source = ./. + "/_grafana-dashboards/20802-caddy-monitoring.json";
+      user = "grafana";
+      group = "grafana";
+    };
   };
 
   imports =
@@ -305,6 +384,7 @@ in
         with serverSuites;
         lib.concatLists [
           nixosSuites.server
+          base
         ];
     in
     lib.concatLists [

@@ -355,6 +355,23 @@ in
       supplementaryGroups = [ "caddy" ];
       alloyConfig = # river
         ''
+          discovery.relabel "caddy" {
+            targets = [{
+              __address__ = "localhost:2019",
+            }]
+            rule {
+              target_label = "instance"
+              replacement  = constants.hostname
+            }
+          }
+
+          prometheus.scrape "caddy" {
+            targets         = discovery.relabel.caddy.output
+            forward_to      = [prometheus.remote_write.metrics_service.receiver]
+            scrape_interval = "15s"
+            job_name   = "caddy.metrics.scrape"
+          }
+
           local.file_match "caddy_access_log" {
             path_targets = [
               {"__path__" = "/var/log/caddy/access.log"},
