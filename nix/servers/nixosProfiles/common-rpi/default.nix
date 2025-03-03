@@ -6,6 +6,7 @@ in
 {
   networking = {
     useNetworkd = true;
+    nameservers = [ "10.3.0.1" ];
     firewall = {
       enable = false;
       allowedTCPPorts = [ ];
@@ -36,7 +37,6 @@ in
         networkConfig = {
           DHCP = "no";
         };
-        dns = [ "10.3.0.1" ];
         # make routing on this interface a dependency for network-online.target
         linkConfig.RequiredForOnline = "routable";
       };

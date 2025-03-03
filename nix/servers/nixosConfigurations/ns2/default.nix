@@ -18,6 +18,12 @@ in
     nameservers = [ "127.0.0.1" ];
   };
 
+  services = {
+    resolved = {
+      fallbackDns = [ ];
+    };
+  };
+
   sops = {
     defaultSopsFile = "${self}/sops/squid-rig.yaml";
     secrets = {
@@ -85,14 +91,14 @@ in
             profiles
             suites
           ];
-        home.stateVersion = "24.05";
+        home.stateVersion = "25.05";
       };
       nixos = {
         imports = with homeSuites; nixos;
-        home.stateVersion = "24.05";
+        home.stateVersion = "25.05";
       };
     };
   };
 
-  system.stateVersion = "24.05";
+  system.stateVersion = "25.05";
 }
