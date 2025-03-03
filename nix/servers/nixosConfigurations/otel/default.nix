@@ -144,6 +144,7 @@ in
           }
           {
             name = "Loki";
+            uid = "P8E80F9AEF21F6940";
             type = "loki";
             access = "proxy";
             url = "http://127.0.0.1:${toString config.services.loki.configuration.server.http_listen_port}";
@@ -278,18 +279,40 @@ in
       };
     };
 
-    alloy = {
+    alloy-squid = {
       enable = true;
-      extraFlags = [
-        "--disable-reporting"
-        "--server.http.listen-addr=10.3.0.60:12345"
-      ];
+      listenAddr = "10.3.1.10";
+      supplementaryGroups = [ "caddy" ];
+      alloyConfig = # river
+        ''
+          discovery.relabel "caddy" {
+            targets = [{
+              __address__ = "localhost:2019",
+            }]
+            rule {
+              target_label = "instance"
+              replacement  = constants.hostname
+            }
+          }
+
+          prometheus.scrape "caddy" {
+            targets         = discovery.relabel.caddy.output
+            forward_to      = [prometheus.remote_write.metrics_service.receiver]
+            scrape_interval = "15s"
+            job_name   = "caddy.metrics.scrape"
+          }
+        '';
     };
   };
 
   environment.etc = {
     "grafana-dashboards/proxmox-via-prometheus.json" = {
-      source = ./. + "/_grafana-dashboards/proxmox-via-prometheus.json";
+      source = ./. + "/_grafana-dashboards/10347-proxmox-via-prometheus.json";
+      user = "grafana";
+      group = "grafana";
+    };
+    "grafana-dashboards/caddy-monitoring.json" = {
+      source = ./. + "/_grafana-dashboards/20802-caddy-monitoring.json";
       user = "grafana";
       group = "grafana";
     };
@@ -305,6 +328,7 @@ in
         with serverSuites;
         lib.concatLists [
           nixosSuites.server
+          base
         ];
     in
     lib.concatLists [
