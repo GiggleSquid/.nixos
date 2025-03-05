@@ -13,8 +13,7 @@ keys:
 
   - &timesquid-0 age1m6qkmvryf4fmmus2nrmrauphlsqtt6q8flzd2wyn30xgplvse9msk0tarv
 
-  - &ns-root age17fhjh5pvuph39spz8d3x445gajfw4h0cq3t2mj29l83y6tlazg9sqpkdvu
-  - &ns1 age1ukvapr6llvuw6yddkr3srcnpkhj4r0hyhup0yj0ft80lmutwcdeqyq7j7f
+  - &ns1 age1s9faynudufelwa7k8n6e4mvygvq22eh2mcqskc554z9mc20xg5dqcrtg5a
   - &ns2 age1t423w78ykm3c8yqe2jdw5t87pckev278tfvwgtshcetu2yve7e7sv5edv9
 
   - &i2p age1naucvcsg7p4hjp3fz0y0dh2c6c6ue5wph2paza26r8qzryl87dzq48r9ck
@@ -50,7 +49,6 @@ creation_rules:
       - *caddy-dmz
       - *caddy-internal
       - *timesquid-0
-      - *ns-root
       - *ns1
       - *ns2
       - *i2p
