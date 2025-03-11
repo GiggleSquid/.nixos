@@ -107,6 +107,12 @@ in
                   header_up Host {upstream_hostport}
                 }
               }
+              handle_errors {
+                rewrite * /{err.status_code}.html
+                file_server {
+                  fs thatferretblog
+                }
+              }
             '';
         };
       };
