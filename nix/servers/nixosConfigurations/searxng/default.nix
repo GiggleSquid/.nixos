@@ -43,7 +43,7 @@ in
           safe_search = 0;
           autocomplete = "duckduckgo";
           favicon_resolver = "duckduckgo";
-          default_lang = "en";
+          default_lang = "en-GB";
         };
         server = {
           base_url = "https://search.gigglesquid.tech";
