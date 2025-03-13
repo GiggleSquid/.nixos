@@ -52,7 +52,6 @@ in
           secret_key = "@SEARX_SECRET_KEY@";
           method = "GET";
           public_instance = false;
-          image_proxy = true;
           limiter = false;
         };
         engines = lib.mapAttrsToList (name: value: { inherit name; } // value) {
