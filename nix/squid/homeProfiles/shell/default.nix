@@ -30,6 +30,20 @@ in
   programs = {
     fish = {
       enable = true;
+      plugins = [
+        {
+          name = "sponge";
+          src = nixpkgs.fishPlugins.sponge.src;
+        }
+        {
+          name = "fzf-fish";
+          src = nixpkgs.fishPlugins.fzf-fish.src;
+        }
+        {
+          name = "colored-man-pages";
+          src = nixpkgs.fishPlugins.colored-man-pages.src;
+        }
+      ];
       interactiveShellInit = '''';
       functions = {
         starship_transient_rprompt_func = ''
@@ -38,9 +52,19 @@ in
       };
     };
 
+    fzf = {
+      enable = true;
+      enableFishIntegration = true;
+    };
+
     zoxide = {
       enable = true;
+      enableFishIntegration = true;
       options = [ "--cmd cd" ];
+    };
+
+    fd = {
+      enable = true;
     };
 
     bat = {

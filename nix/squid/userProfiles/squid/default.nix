@@ -36,12 +36,10 @@ in
         "minecraft"
         "i2c"
       ];
-      shell = nixpkgs.fish;
     };
     groups.squid = {
       name = "squid";
       gid = 1000;
     };
   };
-  programs.fish.enable = true;
 }

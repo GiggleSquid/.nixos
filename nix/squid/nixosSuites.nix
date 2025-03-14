@@ -7,7 +7,6 @@ rec {
   base = [
     core
     ssh
-    fish
     nixosModules.sops
     userProfiles.root
   ];
@@ -16,6 +15,7 @@ rec {
     core
     fonts
     nixosModules.sops
+    ssh
     userProfiles.larvaRoot
   ];
 

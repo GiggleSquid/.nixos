@@ -28,12 +28,10 @@ in
         "input"
         "power"
       ];
-      shell = nixpkgs.fish;
     };
     groups.nixos = {
       name = "nixos";
       gid = 1001;
     };
   };
-  programs.fish.enable = true;
 }
