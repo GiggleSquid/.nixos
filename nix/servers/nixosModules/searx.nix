@@ -25,8 +25,6 @@ let
     (
       umask 077
       cp --no-preserve=mode ${settingsFile} settings.yml
-      cp --no-preserve=mode ${limiterSettingsFile} limiter.toml
-      cp --no-preserve=mode ${faviconsSettingsFile} favicons.toml
     )
 
     # substitute environment variables
@@ -72,7 +70,7 @@ in
         type = types.nullOr types.path;
         default = null;
         description = ''
-          Environment file (see `systemd.exec(5)`
+          Environment file (see {manpage}`systemd.exec(5)`
           "EnvironmentFile=" section for the syntax) to define variables for
           Searx. This option can be used to safely include secret keys into the
           Searx configuration.
@@ -167,7 +165,7 @@ in
             favicons = {
               cfg_schema = 1;
               cache = {
-                db_url = "/var/cache/searxng/faviconcache.db";
+                db_url = "/run/searx/faviconcache.db";
                 HOLD_TIME = 5184000;
                 LIMIT_TOTAL_BYTES = 2147483648;
                 BLOB_MAX_BYTES = 40960;
@@ -316,6 +314,15 @@ in
       enable = true;
       user = "searx";
       port = 0;
+    };
+
+    environment.etc = {
+      "searxng/limiter.toml" = lib.mkIf (cfg.limiterSettings != { }) {
+        source = limiterSettingsFile;
+      };
+      "searxng/favicons.toml" = lib.mkIf (cfg.faviconsSettings != { }) {
+        source = faviconsSettingsFile;
+      };
     };
   };
 
