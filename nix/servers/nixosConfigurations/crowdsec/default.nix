@@ -81,10 +81,21 @@ in
               cscli collections install crowdsecurity/linux
             fi
           '';
+        install-parsers = # bash
+          nixpkgs.writeScriptBin "install-parsers" ''
+            #!${nixpkgs.runtimeShell}
+            set -eu
+            set -o pipefail
+
+            if ! cscli parsers list | grep -q "crowdsecurity/whitelists"; then
+              cscli parsers install crowdsecurity/whitelists
+            fi
+          '';
       in
       [
         "${register-bouncers}/bin/register-bouncers"
         "${install-collections}/bin/install-collections"
+        "${install-parsers}/bin/install-parsers"
       ];
   };
 
