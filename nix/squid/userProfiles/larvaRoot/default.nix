@@ -9,5 +9,4 @@
       ];
     };
   };
-  services.openssh.enable = true;
 }

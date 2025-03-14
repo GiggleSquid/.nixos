@@ -4,7 +4,11 @@ let
   inherit (inputs.cells.toolchain) pkgs packages;
 in
 {
-  deviceTree = nixpkgs.callPackage nixos-hardware.apply-overlays-dtmerge { };
+  deviceTree = nixpkgs.deviceTree // {
+    applyOverlays =
+      nixpkgs.callPackage "${nixos-hardware.nixosModules.raspberry-pi-4}/apply-overlays-dtmerge.nix"
+        { };
+  };
 
   qbittorrent-enhanced-nox = packages.qbittorrent-enhanced.override { guiSupport = false; };
 

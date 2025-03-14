@@ -42,6 +42,13 @@ lib.mapAttrs (_: dev.mkShell) {
             '';
           }
           {
+            name = "nymph4";
+            help = "Write a minimal rpi4 sd image to disk";
+            command = ''
+              nixos-generate --flake $PRJ_ROOT#nymph4 -f sd-aarch64 --system aarch64-linux $@
+            '';
+          }
+          {
             name = "get-age";
             help = "Convert ssh ed25519 pub key (from ssh-keyscan) to age";
             command = ''

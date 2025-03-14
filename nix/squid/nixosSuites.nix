@@ -13,8 +13,6 @@ rec {
 
   larva = [
     core
-    fonts
-    nixosModules.sops
     ssh
     userProfiles.larvaRoot
   ];
