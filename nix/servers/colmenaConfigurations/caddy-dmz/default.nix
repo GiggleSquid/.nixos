@@ -1,14 +1,15 @@
 { inputs, cell }:
 let
-  inherit (inputs) common;
+  inherit (inputs) rpi;
 in
 {
   imports = [ cell.nixosConfigurations.caddy-dmz ];
-  inherit (common) bee;
 
-  deployment = common.deployment // {
+  inherit (rpi) bee;
+
+  deployment = rpi.deployment // {
     targetHost = "10.100.0.10";
-    tags = (common.deployment.tags) ++ [
+    tags = (rpi.deployment.tags) ++ [
       "caddy"
       "webserver"
     ];

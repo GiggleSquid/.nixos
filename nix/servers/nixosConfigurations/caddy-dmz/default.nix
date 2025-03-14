@@ -4,18 +4,19 @@
   config,
 }:
 let
-  inherit (inputs) common nixpkgs self;
-  inherit (cell) hardwareProfiles serverSuites;
+  inherit (inputs) rpi nixpkgs self;
+  inherit (cell) serverSuites hardwareProfiles;
   inherit (inputs.cells.squid) nixosSuites homeSuites;
   lib = nixpkgs.lib // builtins;
   hostName = "dmz";
 in
 {
-  inherit (common) bee time;
+  inherit (rpi) bee time;
   networking = {
     inherit hostName;
     domain = "caddy.lan.gigglesquid.tech";
     nameservers = [ "10.100.0.1" ];
+    timeServers = [ "10.3.0.5" ];
     firewall = {
       enable = true;
       allowedTCPPorts = [
@@ -29,6 +30,20 @@ in
         443
         25566
       ];
+    };
+  };
+
+  systemd.network = {
+    networks = {
+      "10-lan" = {
+        matchConfig.Name = lib.mkForce "end0";
+        networkConfig = {
+          DHCP = "no";
+          Address = "10.100.0.10/24";
+          Gateway = "10.100.0.1";
+        };
+        linkConfig.RequiredForOnline = "routable";
+      };
     };
   };
 
@@ -70,7 +85,7 @@ in
           "github.com/digilolnet/caddy-bunny-ip@v0.0.0-20250118080727-ef607b8e1644"
           "github.com/hslatman/caddy-crowdsec-bouncer@v0.8.1"
         ];
-        hash = "sha256-PDVZUirZXtFRZNeB7lWPHZcOBiE7P9Aj8whkQDjvYPE=";
+        hash = "sha256-kxsjoVStUE0dP+fkkDNHJky9ugNDyuBomYctwyyAees=";
       };
       email = "jack.connors@protonmail.com";
       acmeCA = "https://acme-v02.api.letsencrypt.org/directory";
@@ -201,6 +216,28 @@ in
               }
             '';
         };
+        # "www.gigglesquid.tech" = {
+        #   extraConfig = # caddyfile
+        #     ''
+        #       import bunny_acme_settings
+        #       route {
+        #         crowdsec
+        #         redir https://gigglesquid.tech{uri} permanent
+        #       }
+        #     '';
+        # };
+        # "gigglesquid.tech" = {
+        #   extraConfig = # caddyfile
+        #     ''
+        #       import bunny_acme_settings
+        #       route {
+        #         crowdsec
+        #         reverse_proxy https://gigglesquid.tech.internal.caddy.lan.gigglesquid.tech {
+        #           header_up Host {upstream_hostport}
+        #         }
+        #       }
+        #     '';
+        # };
       };
     };
 
@@ -287,16 +324,21 @@ in
     };
   };
 
+  fileSystems = {
+    "/" = {
+      device = "/dev/disk/by-label/NIXOS_SD";
+      fsType = "ext4";
+    };
+  };
+
   imports =
     let
-      profiles = [
-        hardwareProfiles.servers
-      ];
+      profiles = [ hardwareProfiles.rpi4 ];
       suites =
         with serverSuites;
         lib.concatLists [
           nixosSuites.server
-          caddy-server
+          caddy-server-rpi
         ];
     in
     lib.concatLists [

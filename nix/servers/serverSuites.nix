@@ -14,13 +14,18 @@ rec {
     nixosModules.alloy-squid
   ];
 
+  rpi-server = base-rpi;
+
   crowdsec = [ nixosModules.crowdsec ];
 
   ntp-server = base-rpi ++ [
     chrony
   ];
 
-  rpi-server = base-rpi;
+  caddy-server-rpi = rpi-server ++ [
+    caddy
+    nixosModules.crowdsec
+  ];
 
   dns-server = [ technitium ];
 

@@ -8,7 +8,7 @@ keys:
   - &squid-rig age1qvktpvzde3rfnjnt3y9s9fvt9m23cgzqmp5qhgtrwgwqp70m7ewqnkkup4
   - &squid-top age1mfe5l2x5prlvdxzy9vnfau7grl8xyapnzud9qqk6hx9uagj0sppsjlt0v0
 
-  - &caddy-dmz age14mc2vk5dfgww45hmszgud03q5q03xhwpqc5x60nm5zk3m69ruyfq0p923j
+  - &caddy-dmz age1uuuqrhvn5kx4qd92xjv0qmj85ve2c53g85gypvzku77m67qm2pasflluqq
   - &caddy-internal age1k8wmvwravcdk5gsh2k6rhe003ardaup476nn8mafdmzrs30f6vasf2mgae
 
   - &timesquid-0 age1m6qkmvryf4fmmus2nrmrauphlsqtt6q8flzd2wyn30xgplvse9msk0tarv
