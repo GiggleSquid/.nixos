@@ -42,43 +42,28 @@ in
   # wezterm 'nightly'
   wezterm = nixpkgs.wezterm.override (
     let
-      rustPlatform = nixpkgs.makeRustPlatform {
+      rustPlatform' = nixpkgs.makeRustPlatform {
         rustc = pkgs.rust-bin.stable.latest.minimal;
         cargo = pkgs.rust-bin.stable.latest.minimal;
       };
     in
-    old: {
-      rustPlatform = old.rustPlatform // {
+    {
+      rustPlatform = rustPlatform' // {
         buildRustPackage =
           args:
-          rustPlatform.buildRustPackage (
+          rustPlatform'.buildRustPackage (
             args
             // rec {
               pname = "wezterm";
-              version = "ee0c04e735fb94cb5119681f704fb7fa6731e713";
+              version = "0-unstable-2025-03-09";
               src = nixpkgs.fetchFromGitHub {
                 owner = "wez";
                 repo = pname;
-                rev = version;
+                rev = "12b971ac44738f37c120160da165cd9072c0e6d2";
                 fetchSubmodules = true;
-                hash = "sha256-0jqnSzzfg8ecBaayJI8oP9X0FyijFFT3LA6GKfpAFwI=";
+                hash = "sha256-AJ//9O1Sbo0FqU0C2ZUMD9VTk/IP+uMZU1Cx+Tra2Jo=";
               };
-
-              postPatch = ''
-                cp ${./wezterm/Cargo.lock} Cargo.lock
-
-                echo ${version} > .tag
-
-                # tests are failing with: Unable to exchange encryption keys
-                rm -r wezterm-ssh/tests
-              '';
-
-              cargoLock = {
-                lockFile = ./wezterm/Cargo.lock;
-                outputHashes = {
-                  "xcb-imdkit-0.3.0" = "sha256-77KaJO+QJWy3tJ9AF1TXKaQHpoVOfGIRqteyqpQaSWo=";
-                };
-              };
+              cargoHash = "sha256-ndvdnCl5rVtP6tkcVewiRyNAiM5drEoQbb7FvDGfV3A=";
             }
           );
       };
