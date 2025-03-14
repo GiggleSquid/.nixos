@@ -38,7 +38,7 @@ in
       "10-lan" = {
         matchConfig.Name = lib.mkForce "en*18";
         networkConfig = {
-          Address = "10.3.1.100/23";
+          Address = "10.3.1.102/23";
           Gateway = "10.3.0.1";
         };
         dns = [ "10.3.0.1" ];
