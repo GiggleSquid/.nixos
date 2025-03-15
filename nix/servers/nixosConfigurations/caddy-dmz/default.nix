@@ -111,6 +111,7 @@ in
               marciandfriends.co.uk @
               thatferret.blog @
             }
+            dynamic_domains
             ip_source simple_http https://icanhazip.com
             ip_source simple_http https://api64.ipify.org
             check_interval 5m
