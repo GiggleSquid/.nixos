@@ -96,7 +96,6 @@ in
         with serverSuites;
         lib.concatLists [
           nixosSuites.server
-          searxng
         ];
     in
     lib.concatLists [

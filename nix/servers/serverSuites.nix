@@ -34,8 +34,6 @@ rec {
     nixosModules.crowdsec
   ];
 
-  searxng = [ nixosModules.searx ];
-
   squidbit = [
     nixosModules.qbittorrent
     nixosModules.nix-pia-vpn
