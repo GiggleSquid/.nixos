@@ -23,7 +23,7 @@ let
     };
     deployment = {
       allowLocalDeployment = false;
-      buildOnTarget = false;
+      buildOnTarget = true;
       tags = [
         "all"
         "servers"
