@@ -217,28 +217,28 @@ in
               }
             '';
         };
-        # "www.gigglesquid.tech" = {
-        #   extraConfig = # caddyfile
-        #     ''
-        #       import bunny_acme_settings
-        #       route {
-        #         crowdsec
-        #         redir https://gigglesquid.tech{uri} permanent
-        #       }
-        #     '';
-        # };
-        # "gigglesquid.tech" = {
-        #   extraConfig = # caddyfile
-        #     ''
-        #       import bunny_acme_settings
-        #       route {
-        #         crowdsec
-        #         reverse_proxy https://gigglesquid.tech.internal.caddy.lan.gigglesquid.tech {
-        #           header_up Host {upstream_hostport}
-        #         }
-        #       }
-        #     '';
-        # };
+        "www.gigglesquid.tech" = {
+          extraConfig = # caddyfile
+            ''
+              import bunny_acme_settings
+              route {
+                crowdsec
+                redir https://gigglesquid.tech{uri} permanent
+              }
+            '';
+        };
+        "gigglesquid.tech" = {
+          extraConfig = # caddyfile
+            ''
+              import bunny_acme_settings
+              route {
+                crowdsec
+                reverse_proxy https://gigglesquid.tech.internal.caddy.lan.gigglesquid.tech {
+                  header_up Host {upstream_hostport}
+                }
+              }
+            '';
+        };
       };
     };
 
