@@ -119,7 +119,7 @@ in
             ttl 5m
           }
           crowdsec {
-            api_url http://crowdsec.lan.gigglesquid.tech:8080
+            api_url https://crowdsec.lan.gigglesquid.tech:8443
             api_key {env.CROWDSEC_CADDY_DMZ_CADDY_API_KEY}
             ticker_interval 15s
           }
@@ -320,7 +320,7 @@ in
       enable = true;
       settings = {
         api_key = ''''${CROWDSEC_CADDY_DMZ_FIREWALL_API_KEY}'';
-        api_url = "http://crowdsec.lan.gigglesquid.tech:8080";
+        api_url = "https://crowdsec.lan.gigglesquid.tech:8443";
       };
     };
   };

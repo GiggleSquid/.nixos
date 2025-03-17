@@ -99,7 +99,7 @@ in
             }
           }
           crowdsec {
-            api_url http://crowdsec.lan.gigglesquid.tech:8080
+            api_url https://crowdsec.lan.gigglesquid.tech:8443
             api_key {env.CROWDSEC_CADDY_INTERNAL_CADDY_API_KEY}
             ticker_interval 15s
           }

@@ -17,7 +17,7 @@ in
     domain = "lan.gigglesquid.tech";
     nameservers = [ "10.3.0.1" ];
     firewall = {
-      allowedTCPPorts = [ 8080 ];
+      allowedTCPPorts = [ 8443 ];
       allowedUDPPorts = [ ];
     };
   };
@@ -25,6 +25,7 @@ in
   sops = {
     defaultSopsFile = "${self}/sops/squid-rig.yaml";
     secrets = {
+      bunny_dns_api_key = { };
       crowdsec_enroll_key = {
         owner = "crowdsec";
       };
@@ -32,6 +33,26 @@ in
       crowdsec_caddy-dmz_caddy_api_key_env = { };
       crowdsec_caddy-dmz_firewall_api_key_env = { };
       crowdsec_i2p_firewall_api_key_env = { };
+    };
+  };
+
+  security.acme = {
+    acceptTerms = true;
+    defaults = {
+      server = "https://acme-v02.api.letsencrypt.org/directory";
+      email = "jack.connors@protonmail.com";
+    };
+    certs."crowdsec.lan.gigglesquid.tech" = {
+      group = "crowdsec";
+      extraLegoFlags = [
+        "--dns.propagation-wait=300s"
+      ];
+      dnsResolver = "9.9.9.9";
+      dnsProvider = "bunny";
+      credentialFiles = {
+        "BUNNY_API_KEY_FILE" = "${config.sops.secrets.bunny_dns_api_key.path}";
+        "BUNNY_PROPAGATION_TIMEOUT_FILE" = nixpkgs.writeText "BUNNY_PROPAGATION_TIMEOUT" ''360'';
+      };
     };
   };
 
@@ -104,7 +125,12 @@ in
     enrollKeyFile = "${config.sops.secrets.crowdsec_enroll_key.path}";
     settings = {
       api.server = {
-        listen_uri = "10.3.0.50:8080";
+        listen_uri = "0.0.0.0:8443";
+        tls = {
+          cert_file = "/var/lib/acme/crowdsec.lan.gigglesquid.tech/cert.pem";
+          key_file = "/var/lib/acme/crowdsec.lan.gigglesquid.tech/key.pem";
+          client_verification = "NoClientCert";
+        };
       };
     };
     acquisitions = [

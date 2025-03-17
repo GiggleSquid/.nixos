@@ -105,7 +105,7 @@ in
       enable = true;
       settings = {
         api_key = ''''${CROWDSEC_I2P_FIREWALL_API_KEY}'';
-        api_url = "http://crowdsec.lan.gigglesquid.tech:8080";
+        api_url = "https://crowdsec.lan.gigglesquid.tech:8443";
       };
     };
   };
