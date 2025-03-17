@@ -120,6 +120,19 @@ in
           }
         '';
       virtualHosts = {
+        "search.lan.gigglesquid.tech" = {
+          extraConfig = # caddyfile
+            ''
+              import bunny_acme_settings
+              import deny_non_local
+              route {
+                crowdsec
+                reverse_proxy http://searx.lan.gigglesquid.tech:8080 {
+                  header_up Host {upstream_hostport}
+                }
+              }
+            '';
+        };
         "squidjelly.internal.caddy.lan.gigglesquid.tech" = {
           extraConfig = # caddyfile
             ''
@@ -217,19 +230,6 @@ in
               route {
                 crowdsec
                 reverse_proxy http://10.3.0.25:20909 {
-                  header_up Host {upstream_hostport}
-                }
-              }
-            '';
-        };
-        "search.gigglesquid.tech" = {
-          extraConfig = # caddyfile
-            ''
-              import bunny_acme_settings
-              import deny_non_local
-              route {
-                crowdsec
-                reverse_proxy http://search.lan.gigglesquid.tech:8080 {
                   header_up Host {upstream_hostport}
                 }
               }

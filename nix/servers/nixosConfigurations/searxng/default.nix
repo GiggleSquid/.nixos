@@ -46,7 +46,7 @@ in
           default_lang = "en-GB";
         };
         server = {
-          base_url = "https://search.gigglesquid.tech";
+          base_url = "https://search.lan.gigglesquid.tech";
           port = 8080;
           bind_address = "0.0.0.0";
           secret_key = "@SEARX_SECRET_KEY@";
