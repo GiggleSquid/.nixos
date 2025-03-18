@@ -1,7 +1,23 @@
+{ inputs, cell }:
+let
+  inherit (inputs) nixpkgs;
+in
 {
   programs.helix = {
     enable = true;
     defaultEditor = true;
+    extraPackages = with nixpkgs; [
+      nixd
+      nixfmt-rfc-style
+      vscode-langservers-extracted
+      superhtml
+      gopls
+      marksman
+      taplo
+      lua-language-server
+      yaml-language-server
+      bash-language-server
+    ];
     settings = {
       theme = "catppuccin_mocha";
       editor = {
