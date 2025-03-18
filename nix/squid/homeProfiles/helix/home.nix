@@ -8,6 +8,7 @@ in
     nixfmt-rfc-style
     vscode-langservers-extracted
     superhtml
+    gopls
     marksman
     taplo
     lua-language-server
