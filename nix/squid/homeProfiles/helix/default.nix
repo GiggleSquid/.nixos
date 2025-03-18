@@ -11,7 +11,11 @@ in
       nixfmt-rfc-style
       vscode-langservers-extracted
       superhtml
+      go
       gopls
+      delve
+      gotools
+      golangci-lint-langserver
       marksman
       taplo
       lua-language-server
