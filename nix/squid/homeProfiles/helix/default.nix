@@ -9,6 +9,8 @@ in
     extraPackages = with nixpkgs; [
       nixd
       nixfmt-rfc-style
+      nodePackages.prettier
+      prettier-plugin-go-template
       vscode-langservers-extracted
       superhtml
       go
@@ -107,6 +109,29 @@ in
             command = "nixfmt";
           };
         }
+        {
+          name = "gotmpl";
+          file-types = [ { glob = "*.go.html"; } ];
+          block-comment-tokens = {
+            start = "<!--";
+            end = "-->";
+          };
+          language-servers = [
+            "gopls"
+            "vscode-html-language-server"
+          ];
+          auto-format = true;
+          formatter = {
+            command = "prettier";
+            args = [
+              "--plugin"
+              "${nixpkgs.prettier-plugin-go-template}/lib/node_modules/prettier-plugin-go-template/lib/index.js"
+              "--parser"
+              "go-template"
+              "--bracket-same-line"
+            ];
+          };
+        }
       ];
       language-server = {
         nixd = {
@@ -131,6 +156,18 @@ in
             # schemas = { };
           };
         };
+      };
+    };
+  };
+
+  xdg = {
+    configFile = {
+      "helix/runtime/queries/gotmpl/injections.scm" = {
+        text = ''
+          ((text) @injection.content
+           (#set! injection.language "html")
+           (#set! injection.combined))
+        '';
       };
     };
   };
