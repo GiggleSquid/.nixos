@@ -62,7 +62,7 @@ in
         ''
           metrics
           filesystem thatferretblog git https://github.com/GiggleSquid/thatferretblog {
-            ref 0998da67a8fb11589edf58dced591b696cd6efe0
+            refresh_period 60s
           }
         '';
       extraConfig = # caddyfile

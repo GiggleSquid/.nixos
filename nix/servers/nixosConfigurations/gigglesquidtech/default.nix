@@ -62,7 +62,7 @@ in
         ''
           metrics
           filesystem gigglesquidtech git https://github.com/GiggleSquid/gigglesquidtech {
-            ref 738560f3cefd0dbe57711eadba8ee157b07837f8
+            refresh_period 60s
           }
         '';
       extraConfig = # caddyfile
