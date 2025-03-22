@@ -59,11 +59,11 @@ in
               src = nixpkgs.fetchFromGitHub {
                 owner = "wez";
                 repo = pname;
-                rev = "12b971ac44738f37c120160da165cd9072c0e6d2";
+                rev = "a87358516004a652ad840bc1661bdf65ffc89b43";
                 fetchSubmodules = true;
-                hash = "sha256-AJ//9O1Sbo0FqU0C2ZUMD9VTk/IP+uMZU1Cx+Tra2Jo=";
+                hash = "sha256-aYONqWAJ8oasqWscXMVqbnMuJQjZ+9uL3oeFFUhp7KE=";
               };
-              cargoHash = "sha256-ndvdnCl5rVtP6tkcVewiRyNAiM5drEoQbb7FvDGfV3A=";
+              cargoHash = "sha256-f+ARyJJfwHjplAmu2iid++MYQfEs8eDWT5cfkqh1Q94=";
             }
           );
       };
