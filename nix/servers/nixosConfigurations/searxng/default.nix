@@ -68,9 +68,6 @@ in
           "reddit".disabled = false;
           "duckduckgo images".disabled = false;
           "duckduckgo videos".disabled = false;
-          "wikibooks".disabled = false;
-          "wikisource".disabled = false;
-          "wikispecies".disabled = false;
         };
       };
       faviconsSettings = {
