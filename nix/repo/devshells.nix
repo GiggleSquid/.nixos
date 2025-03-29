@@ -27,6 +27,7 @@ lib.mapAttrs (_: dev.mkShell) {
           { package = colmena.packages.colmena; }
           { package = nixpkgs.sops; }
           { package = nixpkgs.ssh-to-age; }
+          { package = nixpkgs.transcrypt; }
           {
             name = "larva";
             help = "Write a minimal proxmox lxc image to disk";
