@@ -44,7 +44,9 @@ in
           src = nixpkgs.fishPlugins.colored-man-pages.src;
         }
       ];
-      interactiveShellInit = '''';
+      interactiveShellInit = ''
+        set sponge_delay 10
+      '';
       functions = {
         starship_transient_rprompt_func = ''
           starship module time
