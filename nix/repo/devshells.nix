@@ -28,6 +28,7 @@ lib.mapAttrs (_: dev.mkShell) {
           { package = nixpkgs.sops; }
           { package = nixpkgs.ssh-to-age; }
           { package = nixpkgs.transcrypt; }
+          { package = nixpkgs.openssl; }
           {
             name = "larva";
             help = "Write a minimal proxmox lxc image to disk";
