@@ -7,7 +7,6 @@ let
   inherit (inputs) common nixpkgs self;
   inherit (cell) hardwareProfiles serverSuites;
   inherit (inputs.cells.squid) nixosSuites homeSuites;
-  inherit (inputs.cells.toolchain) pkgs;
   lib = nixpkgs.lib // builtins;
   hostName = "squidbit";
 in
@@ -126,7 +125,6 @@ in
     };
     flaresolverr = {
       enable = true;
-      package = pkgs.nur.repos.xddxdd.flaresolverr-21hsmw;
     };
     prowlarr = {
       enable = true;
