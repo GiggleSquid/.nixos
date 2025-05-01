@@ -50,7 +50,9 @@ in
         "*/.local/share/Trash*"
         "*/lost+found"
       ];
-      repo = "borg@unimatrix.cephalonas.lan.gigglesquid.tech:.";
+      # repo = "borg@unimatrix.cephalonas.lan.gigglesquid.tech:.";
+      # ipv6 privacy extensions is causing trouble with ssh known hosts. the outgoing address changes so known hosts on unimatrix will always be out of date and shh connections are refused and closed.
+      repo = "borg@10.3.1.27:.";
       environment = {
         BORG_RSH = "ssh -i /etc/ssh/ssh_host_ed25519_key";
       };
