@@ -7,7 +7,7 @@ in
   inherit (rpi) bee;
 
   deployment = rpi.deployment // {
-    targetHost = "10.3.0.11";
+    targetHost = "ns1.dns.lan.gigglesquid.tech";
     tags = (rpi.deployment.tags) ++ [
       "dns"
       "ns"

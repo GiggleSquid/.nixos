@@ -1,19 +1,24 @@
+{ inputs }:
+let
+  inherit (inputs) nixpkgs;
+  lib = nixpkgs.lib // builtins;
+in
 {
   networking = {
-    useNetworkd = true;
-    wireguard.enable = true;
-    timeServers = [ "10.3.0.5" ];
-    firewall = {
-      enable = true;
-      allowedTCPPorts = [
-        1313 # hugo
-      ];
-      allowedUDPPorts = [ ];
-    };
+    useDHCP = false;
+    useHostResolvConf = false;
   };
 
   services = {
-    chrony.enable = true;
+    chrony = {
+      enable = true;
+      servers = lib.mkDefault [ "timesquid-0.ntp.lan.gigglesquid.tech" ];
+      initstepslew.enabled = lib.mkDefault false;
+      extraFlags = [ "-s" ];
+      extraConfig = lib.mkDefault ''
+        makestep 25 3
+      '';
+    };
     timesyncd.enable = false;
     resolved.fallbackDns = [ ];
   };
@@ -22,14 +27,11 @@
     enable = true;
     networks = {
       "10-lan" = {
-        matchConfig.Name = "eno1";
+        DHCP = lib.mkDefault "no";
         networkConfig = {
-          DHCP = "no";
+          IPv6PrivacyExtensions = lib.mkDefault "yes";
         };
-        gateway = [ "10.10.0.1" ];
-        dns = [ "10.10.0.1" ];
-        # make routing on this interface a dependency for network-online.target
-        linkConfig.RequiredForOnline = "routable";
+        linkConfig.RequiredForOnline = lib.mkDefault "routable";
       };
     };
   };

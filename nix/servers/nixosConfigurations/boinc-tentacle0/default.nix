@@ -1,6 +1,6 @@
 { inputs, cell }:
 let
-  inherit (inputs) common nixpkgs;
+  inherit (inputs) common nixpkgs self;
   inherit (cell) hardwareProfiles serverSuites;
   inherit (inputs.cells.squid) nixosSuites homeSuites;
   lib = nixpkgs.lib // builtins;
@@ -14,6 +14,23 @@ in
     firewall = {
       allowedTCPPorts = [ 31416 ];
       allowedUDPPorts = [ 31416 ];
+    };
+  };
+
+  systemd.network = {
+    networks = {
+      "10-lan" = {
+        matchConfig.Name = "eth0";
+        ipv6AcceptRAConfig = {
+          Token = "static:::1:21";
+        };
+        address = [
+          "10.3.1.21/23"
+        ];
+        gateway = [
+          "10.3.0.1"
+        ];
+      };
     };
   };
 
@@ -40,6 +57,7 @@ in
         with serverSuites;
         lib.concatLists [
           nixosSuites.server
+          base
         ];
     in
     lib.concatLists [
@@ -50,6 +68,7 @@ in
   home-manager = {
     useUserPackages = true;
     useGlobalPkgs = true;
+    backupFileExtension = "hm-bak";
     users = {
       squid = {
         imports =

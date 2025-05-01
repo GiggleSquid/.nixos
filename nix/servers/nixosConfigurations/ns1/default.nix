@@ -15,8 +15,28 @@ in
   networking = {
     inherit hostName;
     domain = "lan.gigglesquid.tech";
-    nameservers = [ "127.0.0.1" ];
-    timeServers = [ "10.3.0.5" ];
+  };
+
+  systemd.network = {
+    networks = {
+      "10-lan" = {
+        matchConfig.Name = lib.mkForce "end0";
+        ipv6AcceptRAConfig = {
+          Token = "static:::11";
+          UseDNS = false;
+        };
+        address = [
+          "10.3.0.11/23"
+        ];
+        gateway = [
+          "10.3.0.1"
+        ];
+        dns = [
+          "::1"
+          "127.0.0.1"
+        ];
+      };
+    };
   };
 
   sops = {
@@ -53,20 +73,6 @@ in
     };
   };
 
-  systemd.network = {
-    networks = {
-      "10-lan" = {
-        matchConfig.Name = lib.mkForce "end0";
-        networkConfig = {
-          DHCP = "no";
-          Address = "10.3.0.11/23";
-          Gateway = "10.3.0.1";
-        };
-        linkConfig.RequiredForOnline = "routable";
-      };
-    };
-  };
-
   imports =
     let
       profiles = [
@@ -76,8 +82,8 @@ in
         with serverSuites;
         lib.concatLists [
           nixosSuites.server
+          base-rpi
           dns-server
-          rpi-server
         ];
     in
     lib.concatLists [
@@ -88,6 +94,7 @@ in
   home-manager = {
     useUserPackages = true;
     useGlobalPkgs = true;
+    backupFileExtension = "hm-bak";
     users = {
       squid = {
         imports =

@@ -14,6 +14,44 @@ in
 {
   inherit (common) bee time;
 
+  networking = {
+    inherit hostName;
+    domain = "lan.gigglesquid.tech";
+    firewall = {
+      allowedTCPPorts = [
+        8888
+        7777
+        9595
+      ];
+      allowedUDPPorts = [ ];
+    };
+  };
+
+  # PIA (pain in the ass) blocks ipv6 traffic for "security" and/or "pirvicy" "reasons".
+  # So no ipv6 routing on the wg iface I guess.
+  # Nuclear option to prevent leaks.
+  boot.kernelParams = [ "ipv6.disable=1" ];
+
+  systemd.network = {
+    networks = {
+      "10-lan" = {
+        matchConfig.Name = "enp6s18";
+        address = [
+          "10.3.1.30/23"
+        ];
+        gateway = [
+          "10.3.0.1"
+        ];
+        ntp = [
+          "10.3.0.5"
+        ];
+        dns = [
+          "10.3.0.1"
+        ];
+      };
+    };
+  };
+
   sops = {
     defaultSopsFile = "${self}/sops/squid-rig.yaml";
     secrets = {
@@ -71,53 +109,12 @@ in
     };
   };
 
-  networking = {
-    inherit hostName;
-    domain = "lan.gigglesquid.tech";
-    nameservers = [ "10.3.0.1" ];
-    useNetworkd = true;
-    firewall = {
-      enable = true;
-      allowedTCPPorts = [
-        8888
-        7777
-        9595
-      ];
-      allowedUDPPorts = [ ];
-    };
-  };
-
-  systemd.network = {
-    enable = true;
-    networks = {
-      "10-lan" = {
-        matchConfig.Name = lib.mkForce "en*18";
-        DHCP = "no";
-        address = [ "10.3.1.30/23" ];
-        gateway = [ "10.3.0.1" ];
-        dns = [ "10.3.0.1" ];
-        ntp = [ "10.3.0.5" ];
-      };
-    };
-  };
-
   systemd.services.recyclarr.serviceConfig.LoadCredential = [
     "radarr_api_key:${config.sops.secrets.radarr_api_key.path}"
     "sonarr_api_key:${config.sops.secrets.sonarr_api_key.path}"
   ];
 
   services = {
-    chrony = {
-      enable = true;
-      initstepslew = lib.mkDefault {
-        enabled = true;
-        threshold = 120;
-      };
-    };
-    timesyncd.enable = false;
-    resolved = {
-      fallbackDns = [ ];
-    };
     qbittorrent = {
       enable = true;
       package = pkgs.qbittorrent-enhanced-nox;
@@ -458,6 +455,7 @@ in
         with serverSuites;
         lib.concatLists [
           nixosSuites.server
+          base
           squidbit
         ];
     in
@@ -469,6 +467,7 @@ in
   home-manager = {
     useUserPackages = true;
     useGlobalPkgs = true;
+    backupFileExtension = "hm-bak";
     users = {
       squid = {
         imports =

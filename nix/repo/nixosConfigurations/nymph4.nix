@@ -14,10 +14,8 @@ in
 
   imports =
     let
-      profiles = [
-        hardwareProfiles.rpi4
-      ];
-      suites = with nixosSuites; larva;
+      profiles = [ hardwareProfiles.rpi4 ];
+      suites = lib.concatLists [ nixosSuites.larva ];
     in
     lib.concatLists [
       profiles

@@ -12,7 +12,7 @@ in
 
   proxmoxLXC = {
     privileged = false;
-    manageNetwork = false;
+    manageNetwork = true;
     manageHostName = true;
   };
 

@@ -7,7 +7,7 @@ in
   inherit (common) bee;
 
   deployment = common.deployment // {
-    targetHost = "10.3.0.40";
+    targetHost = "i2p.lan.gigglesquid.tech";
     tags = (common.deployment.tags) ++ [ "i2p" ];
   };
 }

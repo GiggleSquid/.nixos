@@ -15,7 +15,6 @@ in
   networking = {
     inherit hostName;
     domain = "lan.gigglesquid.tech";
-    nameservers = [ "10.3.0.1" ];
     firewall = {
       allowedTCPPorts = [
         80
@@ -25,9 +24,29 @@ in
     };
   };
 
+  systemd.network = {
+    networks = {
+      "10-lan" = {
+        matchConfig.Name = "eth0";
+        ipv6AcceptRAConfig = {
+          Token = "static:::60";
+        };
+        address = [
+          "10.3.0.60/23"
+        ];
+        gateway = [
+          "10.3.0.1"
+        ];
+      };
+    };
+  };
+
   sops = {
     defaultSopsFile = "${self}/sops/squid-rig.yaml";
     secrets = {
+      ipv6_prefix_env = {
+        owner = "caddy";
+      };
       bunny_dns_api_key_caddy = {
         owner = "caddy";
       };
@@ -44,6 +63,7 @@ in
   systemd.services = {
     caddy.serviceConfig = {
       EnvironmentFile = [
+        "${config.sops.secrets.ipv6_prefix_env.path}"
         "${config.sops.secrets.bunny_dns_api_key_caddy.path}"
       ];
     };
@@ -84,7 +104,7 @@ in
             }
           }
           (deny_non_local) {
-            @denied not remote_ip private_ranges
+            @denied not remote_ip private_ranges {env.IPV6_PREFIX}
             handle @denied {
               abort
             }
@@ -97,7 +117,7 @@ in
               import bunny_acme_settings
               import deny_non_local
               handle {
-                reverse_proxy 127.0.0.1:${toString config.services.grafana.port}
+                reverse_proxy 127.0.0.1:${toString config.services.grafana.settings.server.http_port}
               }
             '';
         };
@@ -395,6 +415,7 @@ in
   home-manager = {
     useUserPackages = true;
     useGlobalPkgs = true;
+    backupFileExtension = "hm-bak";
     users = {
       squid = {
         imports =

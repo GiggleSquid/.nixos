@@ -8,7 +8,7 @@ in
   inherit (rpi) bee;
 
   deployment = rpi.deployment // {
-    targetHost = "10.100.0.10";
+    targetHost = "dmz.caddy.lan.gigglesquid.tech";
     tags = (rpi.deployment.tags) ++ [
       "caddy"
       "webserver"

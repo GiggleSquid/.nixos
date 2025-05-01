@@ -7,7 +7,7 @@ in
   inherit (common) bee;
 
   deployment = common.deployment // {
-    targetHost = "10.3.1.40";
+    targetHost = "velocity.minesquid.lan.gigglesquid.tech";
     tags = common.deployment.tags ++ [
       "minecraft"
       "minesquid-velocity"

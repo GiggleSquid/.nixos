@@ -7,7 +7,7 @@ in
   inherit (common) bee;
 
   deployment = common.deployment // {
-    targetHost = "10.3.1.30";
+    targetHost = "squidbit.lan.gigglesquid.tech";
     tags = (common.deployment.tags) ++ [
       "media"
       "squidbit"

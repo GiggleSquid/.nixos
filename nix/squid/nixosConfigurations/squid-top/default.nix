@@ -1,6 +1,6 @@
 { inputs, cell }:
 let
-  inherit (inputs) common nixpkgs;
+  inherit (inputs) common nixpkgs self;
   inherit (cell)
     machineProfiles
     hardwareProfiles
@@ -8,20 +8,34 @@ let
     homeSuites
     ;
   lib = nixpkgs.lib // builtins;
-  hostName = "squid-top";
-  ip = "10.10.0.11/24";
 in
 {
   inherit (common) bee time;
   networking = {
-    inherit hostName;
+    hostName = "squid-top";
+    firewall = {
+      allowedTCPPorts = [ ];
+      allowedUDPPorts = [ ];
+    };
   };
+
+  #
+  # Needs work because wlan and such
+  # This is all placeholder
+  #
   systemd.network = {
     networks = {
       "10-lan" = {
-        networkConfig = {
-          Address = ip;
+        matchConfig.Name = "eno1";
+        ipv6AcceptRAConfig = {
+          Token = "static:::11";
         };
+        address = [
+          "10.10.0.11/24"
+        ];
+        gateway = [
+          "10.10.0.1"
+        ];
       };
     };
   };
@@ -29,8 +43,8 @@ in
   imports =
     let
       profiles = [
-        hardwareProfiles."${hostName}"
-        machineProfiles."${hostName}"
+        hardwareProfiles.squid-top
+        machineProfiles.squid-top
       ];
       suites =
         with nixosSuites;
@@ -47,6 +61,7 @@ in
   home-manager = {
     useUserPackages = true;
     useGlobalPkgs = true;
+    backupFileExtension = "hm-bak";
     users = {
       squid = {
         imports =
@@ -65,10 +80,10 @@ in
             profiles
             suites
           ];
+
         home.stateVersion = "23.11";
       };
     };
   };
-
   system.stateVersion = "23.11";
 }

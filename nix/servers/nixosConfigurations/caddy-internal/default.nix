@@ -15,7 +15,6 @@ in
   networking = {
     inherit hostName;
     domain = "caddy.lan.gigglesquid.tech";
-    nameservers = [ "10.3.0.1" ];
     firewall = {
       allowedTCPPorts = [
         80
@@ -31,6 +30,23 @@ in
     };
   };
 
+  systemd.network = {
+    networks = {
+      "10-lan" = {
+        matchConfig.Name = "eth0";
+        ipv6AcceptRAConfig = {
+          Token = "static:::1:10";
+        };
+        address = [
+          "10.3.1.10/23"
+        ];
+        gateway = [
+          "10.3.0.1"
+        ];
+      };
+    };
+  };
+
   users = {
     users.alloy = {
       group = "alloy";
@@ -42,6 +58,9 @@ in
   sops = {
     defaultSopsFile = "${self}/sops/squid-rig.yaml";
     secrets = {
+      ipv6_prefix_env = {
+        owner = "caddy";
+      };
       bunny_dns_api_key_caddy = {
         owner = "caddy";
       };
@@ -58,6 +77,7 @@ in
   systemd.services = {
     caddy.serviceConfig = {
       EnvironmentFile = [
+        "${config.sops.secrets.ipv6_prefix_env.path}"
         "${config.sops.secrets.bunny_dns_api_key_caddy.path}"
         "${config.sops.secrets.crowdsec_caddy-internal_caddy_api_key_env.path}"
       ];
@@ -113,7 +133,7 @@ in
             }
           }
           (deny_non_local) {
-            @denied not remote_ip private_ranges
+            @denied not remote_ip private_ranges {env.IPV6_PREFIX}
             handle @denied {
               abort
             }
@@ -157,14 +177,14 @@ in
               }
             '';
         };
-        "squidcasts.gigglesquid.tech" = {
+        "squidcasts.internal.caddy.lan.gigglesquid.tech" = {
           extraConfig = # caddyfile
             ''
               import bunny_acme_settings
               import deny_non_local
               route {
                 crowdsec
-                reverse_proxy http://squidcasts.lan.gigglesquid.tech:8000 {
+                reverse_proxy https://squidcasts.lan.gigglesquid.tech {
                   header_up Host {upstream_hostport}
                 }
               }
@@ -300,29 +320,29 @@ in
               }
             '';
         };
-        "marciandfriends.co.uk.internal.caddy.lan.gigglesquid.tech" = {
-          extraConfig = # caddyfile
-            ''
-              import bunny_acme_settings
-              # odoochat
-              @websocket {
-                header Connection *Upgrade*
-                header Upgrade websocket
-              }
-              route @websocket {
-                crowdsec
-                reverse_proxy marciandfriends.lan.gigglesquid.tech:8072 {
-                  header_up Host {upstream_hostport}
-                }
-              }
-              route {
-                crowdsec
-                reverse_proxy marciandfriends.lan.gigglesquid.tech:8069 {
-                  header_up Host {upstream_hostport}
-                }
-              }
-            '';
-        };
+        # "marciandfriends.co.uk.internal.caddy.lan.gigglesquid.tech" = {
+        #   extraConfig = # caddyfile
+        #     ''
+        #       import bunny_acme_settings
+        #       # odoochat
+        #       @websocket {
+        #         header Connection *Upgrade*
+        #         header Upgrade websocket
+        #       }
+        #       route @websocket {
+        #         crowdsec
+        #         reverse_proxy marciandfriends.lan.gigglesquid.tech:8072 {
+        #           header_up Host {upstream_hostport}
+        #         }
+        #       }
+        #       route {
+        #         crowdsec
+        #         reverse_proxy marciandfriends.lan.gigglesquid.tech:8069 {
+        #           header_up Host {upstream_hostport}
+        #         }
+        #       }
+        #     '';
+        # };
         "thatferret.blog.internal.caddy.lan.gigglesquid.tech" = {
           extraConfig = # caddyfile
             ''
@@ -445,6 +465,7 @@ in
         with serverSuites;
         lib.concatLists [
           nixosSuites.server
+          base
           caddy-server
         ];
     in
@@ -456,6 +477,7 @@ in
   home-manager = {
     useUserPackages = true;
     useGlobalPkgs = true;
+    backupFileExtension = "hm-bak";
     users = {
       squid = {
         imports =

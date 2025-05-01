@@ -14,8 +14,6 @@ in
   networking = {
     inherit hostName;
     domain = "archiveteam.lan.gigglesquid.tech";
-    nameservers = [ "10.3.0.1" ];
-    useNetworkd = true;
     firewall = {
       enable = false;
       allowedTCPPorts = [ ];
@@ -26,11 +24,16 @@ in
   systemd.network = {
     networks = {
       "10-lan" = {
-        matchConfig.Name = lib.mkForce "en*18";
-        networkConfig = {
-          Address = "10.3.1.60/23";
-          Gateway = "10.3.0.1";
+        matchConfig.Name = "enp6s18";
+        ipv6AcceptRAConfig = {
+          Token = "static:::1:60";
         };
+        address = [
+          "10.3.1.60/23"
+        ];
+        gateway = [
+          "10.3.0.1"
+        ];
       };
     };
   };
@@ -127,6 +130,7 @@ in
         with serverSuites;
         lib.concatLists [
           nixosSuites.server
+          base
           arion
         ];
     in
@@ -138,6 +142,7 @@ in
   home-manager = {
     useUserPackages = true;
     useGlobalPkgs = true;
+    backupFileExtension = "hm-bak";
     users = {
       squid = {
         imports =

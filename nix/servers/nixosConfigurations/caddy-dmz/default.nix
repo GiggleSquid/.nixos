@@ -15,10 +15,7 @@ in
   networking = {
     inherit hostName;
     domain = "caddy.lan.gigglesquid.tech";
-    nameservers = [ "10.100.0.1" ];
-    timeServers = [ "10.3.0.5" ];
     firewall = {
-      enable = true;
       allowedTCPPorts = [
         80
         443
@@ -36,13 +33,16 @@ in
   systemd.network = {
     networks = {
       "10-lan" = {
-        matchConfig.Name = lib.mkForce "end0";
-        networkConfig = {
-          DHCP = "no";
-          Address = "10.100.0.10/24";
-          Gateway = "10.100.0.1";
+        matchConfig.Name = "end0";
+        ipv6AcceptRAConfig = {
+          Token = "static:::10";
         };
-        linkConfig.RequiredForOnline = "routable";
+        address = [
+          "10.100.0.10/24"
+        ];
+        gateway = [
+          "10.100.0.1"
+        ];
       };
     };
   };
@@ -81,11 +81,12 @@ in
         plugins = [
           "github.com/caddy-dns/bunny@v1.1.3-0.20250204130652-0099cab6eaad"
           "github.com/mholt/caddy-dynamicdns@v0.0.0-20241025234131-7c818ab3fc34"
+          "github.com/fvbommel/caddy-combine-ip-ranges@v0.0.2-0.20240127132546-5624d08f5f9e"
           "github.com/mholt/caddy-l4@v0.0.0-20250124234235-87e3e5e2c7f9"
           "github.com/digilolnet/caddy-bunny-ip@v0.0.0-20250118080727-ef607b8e1644"
           "github.com/hslatman/caddy-crowdsec-bouncer@v0.8.1"
         ];
-        hash = "sha256-kxsjoVStUE0dP+fkkDNHJky9ugNDyuBomYctwyyAees=";
+        hash = "sha256-gxuhZXqCieWrZqntzev9uSBHwJLbr45O4b0ftBxreWg=";
       };
       email = "jack.connors@protonmail.com";
       acmeCA = "https://acme-v02.api.letsencrypt.org/directory";
@@ -103,11 +104,12 @@ in
               interval 6h
               timeout 25s
             }
+            trusted_proxies_strict
           }
           dynamic_dns {
             provider bunny {env.BUNNY_API_KEY}
             domains {
-              gigglesquid.tech ddns
+              gigglesquid.tech @ ddns storj wg
               marciandfriends.co.uk @
               thatferret.blog @
             }
@@ -141,12 +143,6 @@ in
               resolvers 9.9.9.9 149.112.112.112
             }
           }
-          (deny_non_local) {
-            @denied not remote_ip private_ranges
-            handle @denied {
-              abort
-            }
-          }
         '';
       virtualHosts = {
         "squidjelly.gigglesquid.tech" = {
@@ -173,38 +169,30 @@ in
               }
             '';
         };
-        "www.marciandfriends.co.uk" = {
+        "squidcasts.gigglesquid.tech" = {
           extraConfig = # caddyfile
             ''
               import bunny_acme_settings
               route {
                 crowdsec
-                redir https://marciandfriends.co.uk{uri} permanent
-              }
-            '';
-        };
-        "marciandfriends.co.uk" = {
-          extraConfig = # caddyfile
-            ''
-              import bunny_acme_settings
-              route {
-                crowdsec
-                reverse_proxy https://marciandfriends.co.uk.internal.caddy.lan.gigglesquid.tech {
+                reverse_proxy https://squidcasts.internal.caddy.lan.gigglesquid.tech {
                   header_up Host {upstream_hostport}
                 }
               }
             '';
         };
-        "www.thatferret.blog" = {
-          extraConfig = # caddyfile
-            ''
-              import bunny_acme_settings
-              route {
-                crowdsec
-                redir https://thatferret.blog{uri} permanent
-              }
-            '';
-        };
+        # "marciandfriends.co.uk" = {
+        #   extraConfig = # caddyfile
+        #     ''
+        #       import bunny_acme_settings
+        #       route {
+        #         crowdsec
+        #         reverse_proxy https://marciandfriends.co.uk.internal.caddy.lan.gigglesquid.tech {
+        #           header_up Host {upstream_hostport}
+        #         }
+        #       }
+        #     '';
+        # };
         "thatferret.blog" = {
           extraConfig = # caddyfile
             ''
@@ -214,16 +202,6 @@ in
                 reverse_proxy https://thatferret.blog.internal.caddy.lan.gigglesquid.tech {
                   header_up Host {upstream_hostport}
                 }
-              }
-            '';
-        };
-        "www.gigglesquid.tech" = {
-          extraConfig = # caddyfile
-            ''
-              import bunny_acme_settings
-              route {
-                crowdsec
-                redir https://gigglesquid.tech{uri} permanent
               }
             '';
         };
@@ -321,6 +299,7 @@ in
       settings = {
         api_key = ''''${CROWDSEC_CADDY_DMZ_FIREWALL_API_KEY}'';
         api_url = "https://crowdsec.lan.gigglesquid.tech:8443";
+
       };
     };
   };
@@ -339,7 +318,8 @@ in
         with serverSuites;
         lib.concatLists [
           nixosSuites.server
-          caddy-server-rpi
+          base-rpi
+          caddy-server
         ];
     in
     lib.concatLists [
@@ -350,6 +330,7 @@ in
   home-manager = {
     useUserPackages = true;
     useGlobalPkgs = true;
+    backupFileExtension = "hm-bak";
     users = {
       squid = {
         imports =

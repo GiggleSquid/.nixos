@@ -15,12 +15,28 @@ in
   networking = {
     inherit hostName;
     domain = "lan.gigglesquid.tech";
-    nameservers = [ "10.3.0.1" ];
     firewall = {
       allowedTCPPorts = [
         8080
       ];
       allowedUDPPorts = [ ];
+    };
+  };
+
+  systemd.network = {
+    networks = {
+      "10-lan" = {
+        matchConfig.Name = "eth0";
+        ipv6AcceptRAConfig = {
+          Token = "static:::1:50";
+        };
+        address = [
+          "10.3.1.50/23"
+        ];
+        gateway = [
+          "10.3.0.1"
+        ];
+      };
     };
   };
 
@@ -93,6 +109,7 @@ in
         with serverSuites;
         lib.concatLists [
           nixosSuites.server
+          base
         ];
     in
     lib.concatLists [
@@ -103,6 +120,7 @@ in
   home-manager = {
     useUserPackages = true;
     useGlobalPkgs = true;
+    backupFileExtension = "hm-bak";
     users = {
       squid = {
         imports =

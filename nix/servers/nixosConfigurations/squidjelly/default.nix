@@ -15,12 +15,26 @@ in
   networking = {
     inherit hostName;
     domain = "lan.gigglesquid.tech";
-    nameservers = [ "10.3.0.1" ];
-    useNetworkd = true;
     firewall = {
-      enable = false;
       allowedTCPPorts = [ ];
       allowedUDPPorts = [ ];
+    };
+  };
+
+  systemd.network = {
+    networks = {
+      "10-lan" = {
+        matchConfig.Name = "enp6s18";
+        ipv6AcceptRAConfig = {
+          Token = "static:::1:31";
+        };
+        address = [
+          "10.3.1.31/23"
+        ];
+        gateway = [
+          "10.3.0.1"
+        ];
+      };
     };
   };
 
@@ -58,37 +72,14 @@ in
     };
   };
 
-  systemd.network = {
-    networks = {
-      "10-lan" = {
-        matchConfig.Name = lib.mkForce "en*18";
-        networkConfig = {
-          Address = "10.3.1.31/23";
-          Gateway = "10.3.0.1";
-        };
-        dns = [ "10.3.0.1" ];
-      };
-    };
-  };
-
   services = {
-    chrony = {
-      enable = true;
-      initstepslew = lib.mkDefault {
-        enabled = true;
-        threshold = 120;
-      };
-    };
-    timesyncd.enable = false;
-    resolved = {
-      fallbackDns = [ ];
-    };
     jellyfin = {
       enable = true;
       openFirewall = true;
     };
     jellyseerr = {
       enable = true;
+      port = 5055;
       openFirewall = true;
     };
   };
@@ -98,13 +89,22 @@ in
       device = "cephalonas.lan.gigglesquid.tech:/mnt/main/media";
       fsType = "nfs";
       noCheck = true;
+      options = [
+        "x-systemd.automount"
+        "noauto"
+      ];
     };
   };
 
   imports =
     let
       profiles = [ hardwareProfiles.vms ];
-      suites = with serverSuites; lib.concatLists [ nixosSuites.server ];
+      suites =
+        with serverSuites;
+        lib.concatLists [
+          nixosSuites.server
+          base
+        ];
     in
     lib.concatLists [
       profiles
@@ -114,6 +114,7 @@ in
   home-manager = {
     useUserPackages = true;
     useGlobalPkgs = true;
+    backupFileExtension = "hm-bak";
     users = {
       squid = {
         imports =

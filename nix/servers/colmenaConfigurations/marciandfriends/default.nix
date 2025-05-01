@@ -7,7 +7,7 @@ in
   inherit (common) bee;
 
   deployment = common.deployment // {
-    targetHost = "10.3.1.102";
+    targetHost = "marciandfriends.lan.gigglesquid.tech";
     tags = (common.deployment.tags) ++ [
       "website"
       "marciandfriends"

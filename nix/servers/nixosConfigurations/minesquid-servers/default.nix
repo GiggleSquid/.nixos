@@ -26,6 +26,23 @@ in
     };
   };
 
+  systemd.network = {
+    networks = {
+      "10-lan" = {
+        matchConfig.Name = "eth0";
+        ipv6AcceptRAConfig = {
+          Token = "static:::1:41";
+        };
+        address = [
+          "10.3.1.41/23"
+        ];
+        gateway = [
+          "10.3.0.1"
+        ];
+      };
+    };
+  };
+
   sops = {
     defaultSopsFile = "${self}/sops/squid-rig.yaml";
     secrets."minesquid_env_vars" = { };
@@ -84,7 +101,7 @@ in
             };
             "plugins/floodgate.jar" = pkgs.fetchurl {
               url = "https://download.geysermc.org/v2/projects/floodgate/versions/latest/builds/latest/downloads/spigot";
-              hash = "sha256-aMrZ5yrqy6LWfYYEeh3mR3nIDS4g5SOTPJNSdgWieOY=";
+              hash = "sha256-lnLGEWtBGuQSFU7fLZMVxLZ9sbNtGJhUedPMl8S0WrU=";
             };
 
             "plugins/stargate-rewitten.jar" = ././Stargate-1.0.0.16-ALPHA.jar;
@@ -231,6 +248,7 @@ in
   home-manager = {
     useUserPackages = true;
     useGlobalPkgs = true;
+    backupFileExtension = "hm-bak";
     users = {
       squid = {
         imports =

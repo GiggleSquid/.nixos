@@ -7,7 +7,7 @@ in
   inherit (common) bee;
 
   deployment = common.deployment // {
-    targetHost = "10.3.0.50";
+    targetHost = "crowdsec.lan.gigglesquid.tech";
     tags = (common.deployment.tags) ++ [
       "crowdsec"
     ];

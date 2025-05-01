@@ -15,12 +15,27 @@ in
   networking = {
     inherit hostName;
     domain = "lan.gigglesquid.tech";
-    nameservers = [ "127.0.0.1" ];
   };
 
-  services = {
-    resolved = {
-      fallbackDns = [ ];
+  systemd.network = {
+    networks = {
+      "10-lan" = {
+        matchConfig.Name = "eth0";
+        ipv6AcceptRAConfig = {
+          Token = "static:::12";
+          UseDNS = false;
+        };
+        address = [
+          "10.3.0.12/23"
+        ];
+        gateway = [
+          "10.3.0.1"
+        ];
+        dns = [
+          "::1"
+          "127.0.0.1"
+        ];
+      };
     };
   };
 
@@ -67,6 +82,7 @@ in
         with serverSuites;
         lib.concatLists [
           nixosSuites.server
+          base
           dns-server
         ];
     in
@@ -78,6 +94,7 @@ in
   home-manager = {
     useUserPackages = true;
     useGlobalPkgs = true;
+    backupFileExtension = "hm-bak";
     users = {
       squid = {
         imports =

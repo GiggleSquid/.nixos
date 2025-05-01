@@ -14,10 +14,8 @@ in
 
   imports =
     let
-      profiles = [
-        hardwareProfiles.vms
-      ];
-      suites = with nixosSuites; larva;
+      profiles = [ hardwareProfiles.vms ];
+      suites = lib.concatLists [ nixosSuites.larva ];
     in
     lib.concatLists [
       profiles

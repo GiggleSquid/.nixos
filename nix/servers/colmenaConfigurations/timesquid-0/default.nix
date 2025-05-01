@@ -7,7 +7,7 @@ in
   inherit (rpi) bee;
 
   deployment = rpi.deployment // {
-    targetHost = "10.3.0.5";
+    targetHost = "timesquid-0.ntp.lan.gigglesquid.tech";
     tags = (rpi.deployment.tags) ++ [
       "ntp"
       "timesquid-0"

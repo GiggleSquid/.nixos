@@ -1,37 +1,34 @@
 { inputs, cell }:
 let
   inherit (inputs) common nixpkgs;
-  inherit (cell) machineProfiles hardwareProfiles serverSuites;
+  inherit (cell) hardwareProfiles serverSuites;
   inherit (inputs.cells.squid) nixosSuites homeSuites;
   lib = nixpkgs.lib // builtins;
   hostName = "unimatrix";
-  ip = "10.3.1.27/23";
 in
 {
   inherit (common) bee time;
   networking = {
     inherit hostName;
     domain = "lan.gigglesquid.tech";
-    useNetworkd = true;
-    timeServers = [ "10.3.0.5" ];
     firewall = {
       allowedTCPPorts = [ ];
     };
   };
+
   systemd.network = {
-    enable = true;
     networks = {
       "10-lan" = {
-        matchConfig.Name = "en*";
-        networkConfig = {
-          Address = ip;
-          DHCP = "no";
+        matchConfig.Name = "enp5s0";
+        ipv6AcceptRAConfig = {
+          Token = "static:::1:27";
         };
-        gateway = [ "10.3.0.1" ];
-        dns = [ "10.3.0.1" ];
-
-        # make routing on this interface a dependency for network-online.target
-        linkConfig.RequiredForOnline = "routable";
+        address = [
+          "10.3.1.27/23"
+        ];
+        gateway = [
+          "10.3.0.1"
+        ];
       };
     };
   };
@@ -52,7 +49,12 @@ in
   imports =
     let
       profiles = [ hardwareProfiles.unimatrix ];
-      suites = lib.concatLists [ nixosSuites.server ];
+      suites =
+        with serverSuites;
+        lib.concatLists [
+          nixosSuites.server
+          base
+        ];
     in
     lib.concatLists [
       profiles
@@ -62,6 +64,7 @@ in
   home-manager = {
     useUserPackages = true;
     useGlobalPkgs = true;
+    backupFileExtension = "hm-bak";
     users = {
       squid = {
         imports =
@@ -75,14 +78,14 @@ in
             profiles
             suites
           ];
-        home.stateVersion = "24.05";
+        home.stateVersion = "25.05";
       };
       nixos = {
         imports = with homeSuites; nixos;
-        home.stateVersion = "24.05";
+        home.stateVersion = "25.05";
       };
     };
   };
 
-  system.stateVersion = "24.05";
+  system.stateVersion = "25.05";
 }

@@ -7,6 +7,7 @@ rec {
   base = [
     core
     ssh
+    networking
     nixosModules.sops
     userProfiles.root
   ];
@@ -27,7 +28,6 @@ rec {
     gpg
     userProfiles.squid
     pipewire
-    networking
     lazygit
     printing
     email

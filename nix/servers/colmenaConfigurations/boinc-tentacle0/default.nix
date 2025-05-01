@@ -7,7 +7,7 @@ in
   inherit (common) bee;
 
   deployment = common.deployment // {
-    targetHost = "10.3.1.21";
+    targetHost = "boinc.tentacle0.kraken.lan.gigglesquid.tech";
     tags = (common.deployment.tags) ++ [ "boinc" ];
   };
 }

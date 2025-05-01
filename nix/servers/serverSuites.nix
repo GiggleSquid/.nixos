@@ -3,33 +3,20 @@ let
   inherit (cell) nixosProfiles nixosModules;
 in
 with nixosProfiles;
-rec {
+{
   base = [
-    common
     nixosModules.alloy-squid
   ];
 
   base-rpi = [
-    common-rpi
     nixosModules.alloy-squid
   ];
 
-  rpi-server = base-rpi;
-
   crowdsec = [ nixosModules.crowdsec ];
-
-  ntp-server = base-rpi ++ [
-    chrony
-  ];
-
-  caddy-server-rpi = rpi-server ++ [
-    caddy
-    nixosModules.crowdsec
-  ];
 
   dns-server = [ technitium ];
 
-  caddy-server = base ++ [
+  caddy-server = [
     caddy
     nixosModules.crowdsec
   ];
@@ -39,7 +26,7 @@ rec {
     nixosModules.nix-pia-vpn
   ];
 
-  i2pd = base ++ [
+  i2pd = [
     nixosModules.i2pd
     nixosModules.crowdsec
   ];

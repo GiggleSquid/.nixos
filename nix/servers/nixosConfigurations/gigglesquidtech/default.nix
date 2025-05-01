@@ -15,7 +15,6 @@ in
   networking = {
     inherit hostName;
     domain = "tech.lan.gigglesquid.tech";
-    nameservers = [ "10.3.0.1" ];
     firewall = {
       allowedTCPPorts = [
         80
@@ -27,15 +26,38 @@ in
     };
   };
 
-  sops.secrets = {
-    bunny_dns_api_key_caddy = {
-      sopsFile = "${self}/sops/squid-rig.yaml";
-      owner = "caddy";
+  systemd.network = {
+    networks = {
+      "10-lan" = {
+        matchConfig.Name = "eth0";
+        ipv6AcceptRAConfig = {
+          Token = "static:::1:100";
+        };
+        address = [
+          "10.3.1.100/23"
+        ];
+        gateway = [
+          "10.3.0.1"
+        ];
+      };
+    };
+  };
+
+  sops = {
+    defaultSopsFile = "${self}/sops/squid-rig.yaml";
+    secrets = {
+      ipv6_prefix_env = {
+        owner = "caddy";
+      };
+      bunny_dns_api_key_caddy = {
+        owner = "caddy";
+      };
     };
   };
 
   systemd.services.caddy.serviceConfig = {
     EnvironmentFile = [
+      "${config.sops.secrets.ipv6_prefix_env.path}"
       "${config.sops.secrets.bunny_dns_api_key_caddy.path}"
     ];
   };
@@ -74,7 +96,7 @@ in
             }
           }
           (deny_non_local) {
-            @denied not remote_ip private_ranges
+            @denied not remote_ip private_ranges {env.IPV6_PREFIX}
             handle @denied {
               abort
             }
@@ -196,6 +218,7 @@ in
         with serverSuites;
         lib.concatLists [
           nixosSuites.server
+          base
           caddy-server
         ];
     in
@@ -207,6 +230,7 @@ in
   home-manager = {
     useUserPackages = true;
     useGlobalPkgs = true;
+    backupFileExtension = "hm-bak";
     users = {
       squid = {
         imports =

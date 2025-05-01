@@ -7,7 +7,7 @@ in
   inherit (common) bee;
 
   deployment = common.deployment // {
-    targetHost = "10.3.1.50";
+    targetHost = "searx.lan.gigglesquid.tech";
     tags = (common.deployment.tags) ++ [
       "searxng"
       "search"

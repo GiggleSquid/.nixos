@@ -1,6 +1,10 @@
-{ inputs, cell }:
+{
+  inputs,
+  cell,
+  config,
+}:
 let
-  inherit (inputs) common nixpkgs;
+  inherit (inputs) common nixpkgs self;
   inherit (cell) hardwareProfiles serverSuites;
   inherit (inputs.cells.squid) nixosSuites homeSuites;
   lib = nixpkgs.lib // builtins;
@@ -11,46 +15,107 @@ in
   networking = {
     inherit hostName;
     domain = "lan.gigglesquid.tech";
-    nameservers = [ "10.3.0.1" ];
-    useNetworkd = true;
     firewall = {
-      enable = false;
-      allowedTCPPorts = [ ];
-      allowedUDPPorts = [ ];
+      allowedTCPPorts = [
+        443
+      ];
+      allowedUDPPorts = [
+        443
+      ];
     };
-
   };
 
   systemd.network = {
     networks = {
       "10-lan" = {
-        matchConfig.Name = lib.mkForce "en*18";
-        networkConfig = {
-          Address = "10.3.1.32/23";
-          Gateway = "10.3.0.1";
+        matchConfig.Name = "enp6s18";
+        ipv6AcceptRAConfig = {
+          Token = "static:::1:32";
         };
-        dns = [ "10.3.0.1" ];
+        address = [
+          "10.3.1.32/23"
+        ];
+        gateway = [
+          "10.3.0.1"
+        ];
       };
     };
   };
 
-  services = {
-    chrony = {
-      enable = true;
-      initstepslew = lib.mkDefault {
-        enabled = true;
-        threshold = 120;
+  sops = {
+    defaultSopsFile = "${self}/sops/squid-rig.yaml";
+    secrets = {
+      ipv6_prefix_env = {
+        owner = "caddy";
+      };
+      bunny_dns_api_key_caddy = {
+        owner = "caddy";
       };
     };
-    timesyncd.enable = false;
-    resolved = {
-      fallbackDns = [ ];
+  };
+
+  systemd.services.caddy.serviceConfig = {
+    EnvironmentFile = [
+      "${config.sops.secrets.ipv6_prefix_env.path}"
+      "${config.sops.secrets.bunny_dns_api_key_caddy.path}"
+    ];
+  };
+
+  services = {
+    caddy = {
+      enable = true;
+      package = nixpkgs.caddy.withPlugins {
+        plugins = [
+          "github.com/caddy-dns/bunny@v1.1.3-0.20250204130652-0099cab6eaad"
+        ];
+        hash = "sha256-1tkDdm/s7v1t0Qf1gQlzX8f5bfG5tbyiIATJr/NRoyA=";
+      };
+      logFormat = ''
+        output file /var/log/caddy/access.log {
+          mode 640
+        }
+        level INFO
+      '';
+      email = "jack.connors@protonmail.com";
+      acmeCA = "https://acme-v02.api.letsencrypt.org/directory";
+      globalConfig = # caddyfile
+        ''
+          metrics
+        '';
+      extraConfig = # caddyfile
+        ''
+          (bunny_acme_settings) {
+            tls {
+              dns bunny {env.BUNNY_API_KEY}
+              resolvers 9.9.9.9 149.112.112.112
+            }
+          }
+          (deny_non_local) {
+            @denied not remote_ip private_ranges {env.IPV6_PREFIX}
+            handle @denied {
+              abort
+            }
+          }
+        '';
+      virtualHosts = {
+        "squidcasts.lan.gigglesquid.tech" = {
+          extraConfig = # caddyfile
+            ''
+              import bunny_acme_settings
+              import deny_non_local
+              encode zstd gzip
+              handle {
+                reverse_proxy http://127.0.0.1:${toString config.services.audiobookshelf.port}
+              }
+            '';
+        };
+      };
     };
+
     audiobookshelf = {
       enable = true;
-      port = 8000;
-      host = "10.3.1.32";
-      openFirewall = true;
+      port = 8080;
+      host = "127.0.0.1";
     };
   };
 
@@ -59,13 +124,23 @@ in
       device = "cephalonas.lan.gigglesquid.tech:/mnt/main/media";
       fsType = "nfs";
       noCheck = true;
+      options = [
+        "x-systemd.automount"
+        "noauto"
+      ];
     };
   };
 
   imports =
     let
       profiles = [ hardwareProfiles.vms ];
-      suites = with serverSuites; lib.concatLists [ nixosSuites.server ];
+      suites =
+        with serverSuites;
+        lib.concatLists [
+          nixosSuites.server
+          base
+          caddy-server
+        ];
     in
     lib.concatLists [
       profiles
@@ -75,6 +150,7 @@ in
   home-manager = {
     useUserPackages = true;
     useGlobalPkgs = true;
+    backupFileExtension = "hm-bak";
     users = {
       squid = {
         imports =
