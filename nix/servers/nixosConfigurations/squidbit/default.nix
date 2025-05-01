@@ -117,7 +117,7 @@ in
   services = {
     qbittorrent = {
       enable = true;
-      package = pkgs.qbittorrent-enhanced-nox;
+      package = nixpkgs.qbittorrent-enhanced-nox;
       openFirewall = true;
       waitForMounts = [
         "mnt-media.mount"

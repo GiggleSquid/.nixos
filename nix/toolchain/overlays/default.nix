@@ -10,8 +10,6 @@ in
         { };
   };
 
-  qbittorrent-enhanced-nox = packages.qbittorrent-enhanced.override { guiSupport = false; };
-
   odoo = packages.odoo;
 
   website_maf = packages.website_maf;
