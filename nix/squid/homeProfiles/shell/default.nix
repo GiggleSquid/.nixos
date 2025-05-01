@@ -95,7 +95,6 @@ in
 
     lsd = {
       enable = true;
-      enableAliases = true;
       settings = {
         total-size = true;
       };
