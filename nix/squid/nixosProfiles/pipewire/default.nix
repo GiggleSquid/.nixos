@@ -29,13 +29,13 @@ in
               96000
               192000
             ];
-            "default.clock.quantum" = 256;
-            "default.clock.min-quantum" = 256;
-            "default.clock.max-quantum" = 256;
+            "default.clock.quantum" = 512;
+            "default.clock.min-quantum" = 512;
+            "default.clock.max-quantum" = 512;
           };
         };
       };
-      pipewire-pulse."92-low-latency" = {
+      pipewire-pulse."92-latency" = {
         "context.properties" = [
           {
             name = "libpipewire-module-protocol-pulse";
@@ -43,14 +43,14 @@ in
           }
         ];
         "pulse.properties" = {
-          "pulse.min.req" = "256/48000";
-          "pulse.default.req" = "256/48000";
-          "pulse.max.req" = "256/48000";
-          "pulse.min.quantum" = "256/48000";
-          "pulse.max.quantum" = "256/48000";
+          "pulse.min.req" = "512/48000";
+          "pulse.default.req" = "512/48000";
+          "pulse.max.req" = "512/48000";
+          "pulse.min.quantum" = "512/48000";
+          "pulse.max.quantum" = "512/48000";
         };
         "stream.properties" = {
-          "node.latency" = "256/48000";
+          "node.latency" = "512/48000";
           "resample.quality" = 1;
         };
       };
