@@ -76,19 +76,23 @@ in
     chrony = {
       enable = true;
       servers = [ ];
+      enableRTCTrimming = false;
       extraConfig =
         let
           ipv6Prefix = lib.removeSuffix "\n" (lib.readFile "${self}/transcrypt/ipv6/prefix");
         in
         ''
-          pool uk.pool.ntp.org iburst maxsources 4 xleave
+          pool uk.pool.ntp.org iburst minpoll 5 maxpoll 5 polltarget 16 maxdelay 0.030 maxdelaydevratio 2 maxsources 5
           makestep 1 3
-          refclock SHM 0 refid GNSS poll 8 precision 1e-1 offset 0.050 delay 0.2 trust noselect
-          refclock PPS /dev/pps0 refid PPS lock GNSS maxlockage 2 poll 4 precision 1e-7 trust prefer
+          refclock SOCK /run/chrony.clk.ttyAMA0.sock refid GNSS poll 8 precision 1e-1 offset 0.055 delay 0.2 trust noselect
+          refclock SOCK /run/chrony.pps0.sock refid kPPS lock GNSS maxlockage 2 poll 4 precision 1e-7 trust prefer
           allow ${ipv6Prefix}
           allow 10.0.0.0/8
+          driftfile /var/lib/chrony/chrony.drift
+          rtcsync
           logdir /var/log/chrony
-          log tracking measurements statistics
+          log rawmeasurements measurements statistics tracking refclocks tempcomp
+          lock_all
         '';
     };
   };
