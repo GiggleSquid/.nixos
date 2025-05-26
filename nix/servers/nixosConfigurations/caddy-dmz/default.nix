@@ -79,14 +79,14 @@ in
       enable = true;
       package = nixpkgs.caddy.withPlugins {
         plugins = [
-          "github.com/caddy-dns/bunny@v1.1.3-0.20250204130652-0099cab6eaad"
-          "github.com/mholt/caddy-dynamicdns@v0.0.0-20241025234131-7c818ab3fc34"
+          "github.com/caddy-dns/bunny@v1.2.0"
+          "github.com/mholt/caddy-dynamicdns@v0.0.0-20250430031602-b846b9e8fb83"
           "github.com/fvbommel/caddy-combine-ip-ranges@v0.0.2-0.20240127132546-5624d08f5f9e"
           "github.com/mholt/caddy-l4@v0.0.0-20250124234235-87e3e5e2c7f9"
           "github.com/digilolnet/caddy-bunny-ip@v0.0.0-20250118080727-ef607b8e1644"
           "github.com/hslatman/caddy-crowdsec-bouncer@v0.8.1"
         ];
-        hash = "sha256-gxuhZXqCieWrZqntzev9uSBHwJLbr45O4b0ftBxreWg=";
+        hash = "sha256-JXovaJZzMoP/wkPjv41dg5wk/2fw/D+M5UBJCXvoV5I=";
       };
       email = "jack.connors@protonmail.com";
       acmeCA = "https://acme-v02.api.letsencrypt.org/directory";

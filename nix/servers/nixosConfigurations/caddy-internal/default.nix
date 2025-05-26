@@ -95,11 +95,11 @@ in
       enable = true;
       package = nixpkgs.caddy.withPlugins {
         plugins = [
-          "github.com/caddy-dns/bunny@v1.1.3-0.20250204130652-0099cab6eaad"
+          "github.com/caddy-dns/bunny@v1.2.0"
           "github.com/digilolnet/caddy-bunny-ip@v0.0.0-20250118080727-ef607b8e1644"
           "github.com/hslatman/caddy-crowdsec-bouncer@v0.8.1"
         ];
-        hash = "sha256-bbEkroz/HFWkKpKcNqxSwAyDxDtaKhNN+ws8m6U/RD8=";
+        hash = "sha256-mkt6Ha17Dq1SA7lyJgybDLqZkTz1uaQv+LytRvQtISk=";
       };
       email = "jack.connors@protonmail.com";
       acmeCA = "https://acme-v02.api.letsencrypt.org/directory";

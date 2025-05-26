@@ -67,10 +67,10 @@ in
       enable = true;
       package = nixpkgs.caddy.withPlugins {
         plugins = [
-          "github.com/caddy-dns/bunny@v1.1.3-0.20250204130652-0099cab6eaad"
+          "github.com/caddy-dns/bunny@v1.2.0"
           "github.com/mohammed90/caddy-git-fs@v0.0.0-20240805164056-529acecd1830"
         ];
-        hash = "sha256-uL1eoZFXCQGeJQ9PnyIkBY4SSgDhdCuVq7oqfAwpdH4=";
+        hash = "sha256-dRYEx4z23xqqsuMZfxyASI9OGsM2cFXBMsALvvCLSfo=";
       };
       logFormat = ''
         output file /var/log/caddy/access.log {
