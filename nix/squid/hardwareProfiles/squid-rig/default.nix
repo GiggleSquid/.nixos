@@ -180,11 +180,5 @@ in
       fsType = "nfs";
       noCheck = true;
     };
-
-    "/mnt/cephalonas/media/torrent-downloads" = {
-      device = "cephalonas.lan.gigglesquid.tech:/mnt/main/media/torrent-downloads";
-      fsType = "nfs";
-      noCheck = true;
-    };
   };
 }
