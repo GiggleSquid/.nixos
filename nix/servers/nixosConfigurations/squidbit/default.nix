@@ -83,37 +83,59 @@ in
         postRun = # bash
           ''
             cp -v key.pem /var/lib/qbittorrent/
-            chown -v qbittorrent:qbittorrent /var/lib/qbittorrent/key.pem
+            chown -v qbittorrent /var/lib/qbittorrent/key.pem
             chmod -v 640 /var/lib/qbittorrent/key.pem
 
             cp -v fullchain.pem /var/lib/qbittorrent/
-            chown -v qbittorrent:qbittorrent /var/lib/qbittorrent/fullchain.pem
+            chown -v qbittorrent /var/lib/qbittorrent/fullchain.pem
             chmod -v 640 /var/lib/qbittorrent/fullchain.pem
 
-            openssl pkcs12 -export -out squidbit.lan.gigglesquid.tech.pfx -inkey key.pem -in cert.pem -certfile chain.pem -passout file:${config.sops.secrets.lego_pfx_pass.path}
+            cp -v key.pem /var/lib/nzbget/
+            chown -v nzbget /var/lib/nzbget/key.pem
+            chmod -v 640 /var/lib/nzbget/key.pem
+
+            cp -v fullchain.pem /var/lib/nzbget/
+            chown -v nzbget /var/lib/nzbget/fullchain.pem
+            chmod -v 640 /var/lib/nzbget/fullchain.pem
+
+            openssl pkcs12 -export \
+              -out squidbit.lan.gigglesquid.tech.pfx \
+              -inkey key.pem \
+              -in cert.pem \
+              -certfile chain.pem \
+              -passout file:${config.sops.secrets.lego_pfx_pass.path}
 
             cp -v squidbit.lan.gigglesquid.tech.pfx /var/lib/prowlarr/
             chown -v prowlarr:prowlarr /var/lib/prowlarr/squidbit.lan.gigglesquid.tech.pfx
             chmod -v 640 /var/lib/prowlarr/squidbit.lan.gigglesquid.tech.pfx
 
             cp -v squidbit.lan.gigglesquid.tech.pfx /var/lib/radarr/
-            chown -v radarr:radarr /var/lib/radarr/squidbit.lan.gigglesquid.tech.pfx
+            chown -v radarr /var/lib/radarr/squidbit.lan.gigglesquid.tech.pfx
             chmod -v 640 /var/lib/radarr/squidbit.lan.gigglesquid.tech.pfx
 
             cp -v squidbit.lan.gigglesquid.tech.pfx /var/lib/sonarr/
-            chown -v sonarr:sonarr /var/lib/sonarr/squidbit.lan.gigglesquid.tech.pfx
+            chown -v sonarr /var/lib/sonarr/squidbit.lan.gigglesquid.tech.pfx
             chmod -v 640 /var/lib/sonarr/squidbit.lan.gigglesquid.tech.pfx
           '';
       };
     };
   };
 
-  systemd.services.recyclarr.serviceConfig.LoadCredential = [
-    "radarr_api_key:${config.sops.secrets.radarr_api_key.path}"
-    "sonarr_api_key:${config.sops.secrets.sonarr_api_key.path}"
-  ];
+  systemd.services = {
 
+    recyclarr.serviceConfig.LoadCredential = [
+      "radarr_api_key:${config.sops.secrets.radarr_api_key.path}"
+      "sonarr_api_key:${config.sops.secrets.sonarr_api_key.path}"
+    ];
 
+    nzbget = {
+      after = [
+        "mnt-media.mount"
+        "pia-vpn.service"
+      ];
+      path = [ nixpkgs.python3 ];
+    };
+  };
 
   users.groups.media = { };
 
@@ -127,6 +149,17 @@ in
         "mnt-media.mount"
         "mnt-media-torrent\x2ddownloads.mount"
       ];
+    };
+    nzbget = {
+      enable = true;
+      group = "media";
+      settings = {
+        MainDir = "/mnt/media/nzb";
+        CertStore = "${nixpkgs.cacert}/etc/ssl/certs/ca-bundle.crt";
+        SecureCert = "/var/lib/nzbget/fullchain.pem";
+        SecureKey = "/var/lib/nzbget/key.pem";
+        CertCheck = true;
+      };
     };
     flaresolverr = {
       enable = true;

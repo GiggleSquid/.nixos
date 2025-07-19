@@ -203,6 +203,19 @@ in
               }
             '';
         };
+        "nzbget.squidbit.lan.gigglesquid.tech" = {
+          extraConfig = # caddyfile
+            ''
+              import bunny_acme_settings
+              import deny_non_local
+              route {
+                crowdsec
+                reverse_proxy https://squidbit.lan.gigglesquid.tech:6791 {
+                  header_up Host {upstream_hostport}
+                }
+              }
+            '';
+        };
         "radarr.squidbit.lan.gigglesquid.tech" = {
           extraConfig = # caddyfile
             ''
