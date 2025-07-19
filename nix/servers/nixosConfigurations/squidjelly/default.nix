@@ -72,9 +72,12 @@ in
     };
   };
 
+  users.groups.media = { };
+
   services = {
     jellyfin = {
       enable = true;
+      group = "media";
       openFirewall = true;
     };
     jellyseerr = {

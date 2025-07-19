@@ -113,11 +113,16 @@ in
     "sonarr_api_key:${config.sops.secrets.sonarr_api_key.path}"
   ];
 
+
+
+  users.groups.media = { };
+
   services = {
     qbittorrent = {
       enable = true;
       package = nixpkgs.qbittorrent-enhanced-nox;
       openFirewall = true;
+      group = "media";
       waitForMounts = [
         "mnt-media.mount"
         "mnt-media-torrent\x2ddownloads.mount"
@@ -133,10 +138,12 @@ in
     radarr = {
       enable = true;
       openFirewall = true;
+      group = "media";
     };
     sonarr = {
       enable = true;
       openFirewall = true;
+      group = "media";
     };
     recyclarr = {
       enable = true;

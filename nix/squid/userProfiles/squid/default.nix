@@ -35,11 +35,17 @@ in
         "lp"
         "minecraft"
         "i2c"
+        "docker"
+        "media"
       ];
     };
-    groups.squid = {
-      name = "squid";
-      gid = 1000;
+    groups = {
+      squid = {
+        gid = 1000;
+      };
+      media = {
+        gid = 1100;
+      };
     };
   };
 }
