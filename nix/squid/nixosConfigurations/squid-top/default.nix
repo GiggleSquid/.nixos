@@ -26,16 +26,17 @@ in
   systemd.network = {
     networks = {
       "10-lan" = {
-        matchConfig.Name = "eno1";
-        ipv6AcceptRAConfig = {
-          Token = "static:::11";
-        };
-        address = [
-          "10.10.0.11/24"
-        ];
-        gateway = [
-          "10.10.0.1"
-        ];
+        matchConfig.Name = "enp1s0";
+        DHCP = "yes";
+        # ipv6AcceptRAConfig = {
+        #   Token = "static:::11";
+        # };
+        # address = [
+        #   "10.10.0.11/24"
+        # ];
+        # gateway = [
+        #   "10.10.0.1"
+        # ];
       };
     };
   };
