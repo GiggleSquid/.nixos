@@ -148,7 +148,6 @@ in
       group = "media";
       waitForMounts = [
         "mnt-media.mount"
-        "mnt-media-torrent\x2ddownloads.mount"
       ];
     };
     nzbget = {
@@ -503,13 +502,11 @@ in
       device = "cephalonas.lan.gigglesquid.tech:/mnt/main/media";
       fsType = "nfs";
       noCheck = true;
-      options = [ "nolock" ];
-    };
-    "/mnt/media/torrent-downloads" = {
-      device = "cephalonas.lan.gigglesquid.tech:/mnt/main/media/torrent-downloads";
-      fsType = "nfs";
-      noCheck = true;
-      options = [ "nolock" ];
+      options = [
+        "nolock"
+        "_netdev"
+        "nconnect=16"
+      ];
     };
   };
 
