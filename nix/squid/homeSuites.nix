@@ -11,7 +11,6 @@ rec {
 
   nixos = base ++ [
     git
-    k9s
     helix
   ];
 
@@ -25,7 +24,6 @@ rec {
   squid = base ++ [
     gpg
     git
-    k9s
     helix
   ];
 
