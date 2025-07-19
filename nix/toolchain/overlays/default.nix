@@ -26,14 +26,7 @@ in
     };
   });
 
-  i2pd = nixpkgs.i2pd.overrideAttrs (old: rec {
-    pname = "i2pd";
-    version = "0-unstable-2025-02-03";
     src = nixpkgs.fetchFromGitHub {
-      owner = "PurpleI2P";
-      repo = pname;
-      rev = "ef19a85fc099277eef1e0f36e5a25df0c665b547";
-      sha256 = "sha256-m9aI0LzRitP/9hQIlYZ4h9Gayqi+iDW3I4dJFjOZYkg=";
     };
   });
 
