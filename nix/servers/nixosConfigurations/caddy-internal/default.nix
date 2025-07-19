@@ -99,7 +99,7 @@ in
           "github.com/digilolnet/caddy-bunny-ip@v0.0.0-20250118080727-ef607b8e1644"
           "github.com/hslatman/caddy-crowdsec-bouncer@v0.8.1"
         ];
-        hash = "sha256-mkt6Ha17Dq1SA7lyJgybDLqZkTz1uaQv+LytRvQtISk=";
+        hash = "sha256-OLnBXK6QY+WmFUZRCtwLzvjlHuAMFhK0aIWxhZnt2Zo=";
       };
       email = "jack.connors@protonmail.com";
       acmeCA = "https://acme-v02.api.letsencrypt.org/directory";

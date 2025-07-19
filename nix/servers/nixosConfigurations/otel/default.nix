@@ -81,7 +81,7 @@ in
         plugins = [
           "github.com/caddy-dns/bunny@v1.2.0"
         ];
-        hash = "sha256-ZtDmEWPqY51dShi7gZGIIvD60v6baPdeUUzyvEQriuo=";
+        hash = "sha256-fVM/qVtLWA2cHVLnMdfI/pjhMokyHQlGq+U6eXRwjIM=";
       };
       email = "jack.connors@protonmail.com";
       acmeCA = "https://acme-v02.api.letsencrypt.org/directory";
