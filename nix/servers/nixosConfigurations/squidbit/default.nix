@@ -196,6 +196,7 @@ in
               { template = "radarr-quality-definition-sqp-uhd"; }
               { template = "radarr-quality-profile-sqp-2"; }
               { template = "radarr-custom-formats-sqp-2"; }
+              { template = "radarr-quality-definition-anime"; }
               { template = "radarr-quality-profile-anime"; }
               { template = "radarr-custom-formats-anime"; }
             ];
@@ -219,6 +220,30 @@ in
                   }
                 ];
               }
+              # Misc
+              {
+                trash_ids = [
+                  "2899d84dc9372de3408e6d8cc18e9666" # x264
+                ];
+                assign_scores_to = [
+                  {
+                    name = "SQP-2";
+                    score = 0;
+                  }
+                ];
+              }
+              # Unwanted
+              {
+                trash_ids = [
+                  "839bea857ed2c0a8e084f3cbdbd65ecb" # x265 (no HDR/DV)
+                ];
+                assign_scores_to = [
+                  {
+                    name = "SQP-2";
+                    score = 0;
+                  }
+                ];
+              }
               # Optional
               {
                 trash_ids = [
@@ -226,11 +251,11 @@ in
                   "55a5b50cb416dea5a50c4955896217ab" # DV HDR10+ Boost
                   "923b6abef9b17f937fab56cfcf89e1f1" # DV (WEBDL)
                   "b6832f586342ef70d9c128d40c07b872" # Bad Dual Groups
-                  # "cc444569854e9de0b084ab2b8b1532b2" # Black and White Editions
-                  # "90cedc1fea7ea5d11298bebd3d1d3223" # EVO (no WEBDL)
+                  "cc444569854e9de0b084ab2b8b1532b2" # Black and White Editions
+                  "90cedc1fea7ea5d11298bebd3d1d3223" # EVO (no WEBDL)
                   "ae9b7c9ebde1f3bd336a8cbd1ec4c5e5" # No-RlsGroup
-                  # "7357cf5161efbf8c4d5d0c30b4815ee2" # Obfuscated
-                  # "5c44f52a8714fdd79bb4d98e2673be1f" # Retags
+                  "7357cf5161efbf8c4d5d0c30b4815ee2" # Obfuscated
+                  "5c44f52a8714fdd79bb4d98e2673be1f" # Retags
                   # "f537cf427b64c38c8e36298f657e4828" # Scene
                   "f700d29429c023a5734505e77daeaea7" # DV (Disk)
                 ];
@@ -324,9 +349,9 @@ in
                 trash_ids = [
                   "32b367365729d530ca1c124a0b180c64" # Bad Dual Groups
                   "82d40da2bc6923f41e14394075dd4b03" # No-RlsGroup
-                  #"e1a997ddb54e3ecbfe06341ad323c458" # Obfuscated
-                  # "06d66ab109d4d2eddb2794d21526d140" # Retags
-                  #"1b3994c551cbb92a2c781af061f4ab44" # Scene
+                  "e1a997ddb54e3ecbfe06341ad323c458" # Obfuscated
+                  "06d66ab109d4d2eddb2794d21526d140" # Retags
+                  # "1b3994c551cbb92a2c781af061f4ab44" # Scene
                 ];
                 assign_scores_to = [
                   {
