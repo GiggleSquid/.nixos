@@ -77,6 +77,7 @@ in
       luks.devices = {
         "root0".device = "/dev/disk/by-uuid/82272825-b41d-49aa-8b13-120b78ac482d";
         "root1".device = "/dev/disk/by-uuid/fd0d9fe4-d284-409d-8737-3db4b3b12c2d";
+        "root2".device = "/dev/disk/by-uuid/1c0f78c2-9071-41a2-a82f-8f61d7b46304";
         "backups".device = "/dev/disk/by-uuid/8c8c3fe4-b5df-4d60-b141-5d5ad6b6a32a";
         "steam0".device = "/dev/disk/by-uuid/f06e951b-3bf5-4011-8266-44d944380803";
         "steam1".device = "/dev/disk/by-uuid/1841fb4d-de0c-4444-83ce-8401fff0311b";
