@@ -17,6 +17,7 @@ in
       extraFlags = [ "-s" ];
       extraConfig = lib.mkDefault ''
         makestep 25 3
+        pool uk.pool.ntp.org iburst
       '';
     };
     timesyncd.enable = false;
