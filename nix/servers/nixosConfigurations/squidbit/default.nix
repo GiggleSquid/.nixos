@@ -18,12 +18,8 @@ in
     inherit hostName;
     domain = "lan.gigglesquid.tech";
     firewall = {
-      allowedTCPPorts = [
-        8888
-        7777
-        9595
-      ];
-      allowedUDPPorts = [ ];
+      # Handled by proxmox so I can use vpn portforwarding
+      enable = false;
     };
   };
 
@@ -144,7 +140,6 @@ in
     qbittorrent = {
       enable = true;
       package = nixpkgs.qbittorrent-enhanced-nox;
-      openFirewall = true;
       group = "media";
       waitForMounts = [
         "mnt-media.mount"
@@ -167,16 +162,13 @@ in
     };
     prowlarr = {
       enable = true;
-      openFirewall = true;
     };
     radarr = {
       enable = true;
-      openFirewall = true;
       group = "media";
     };
     sonarr = {
       enable = true;
-      openFirewall = true;
       group = "media";
     };
     recyclarr = {
@@ -434,6 +426,7 @@ in
       enable = true;
       certificateFile = config.sops.secrets."pia/ca.rsa.4096.crt".path;
       environmentFile = config.sops.secrets."pia/pia_env".path;
+      region = "nl_amsterdam";
       netdevConfig = ''
         [NetDev]
         Description=WireGuard PIA network device
@@ -458,7 +451,6 @@ in
         Description=WireGuard PIA network interface
         Address=''${peerip}/32
         DNS=10.3.0.1
-        NTP=10.3.0.5
 
         [RoutingPolicyRule]
         FirewallMark=0x8888
@@ -488,6 +480,12 @@ in
       '';
       portForward = {
         enable = true;
+        # update qbittorrent listen port via api.
+        # this took way too long to figure out.
+        script = # bash
+          ''
+            curl --insecure -i -X POST -d "json={\"listen_port\": $port}" "https://localhost:8080/api/v2/app/setPreferences"
+          '';
       };
     };
   };
