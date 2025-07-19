@@ -30,23 +30,6 @@ in
   programs = {
     fish = {
       enable = true;
-      plugins = [
-        {
-          name = "sponge";
-          src = nixpkgs.fishPlugins.sponge.src;
-        }
-        {
-          name = "fzf-fish";
-          src = nixpkgs.fishPlugins.fzf-fish.src;
-        }
-        {
-          name = "colored-man-pages";
-          src = nixpkgs.fishPlugins.colored-man-pages.src;
-        }
-      ];
-      interactiveShellInit = ''
-        set sponge_delay 10
-      '';
       functions = {
         starship_transient_rprompt_func = ''
           starship module time
