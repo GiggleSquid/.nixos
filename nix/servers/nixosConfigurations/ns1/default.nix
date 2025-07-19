@@ -108,14 +108,14 @@ in
             profiles
             suites
           ];
-        home.stateVersion = "24.11";
+        home.stateVersion = "25.05";
       };
       nixos = {
         imports = with homeSuites; nixos;
-        home.stateVersion = "24.11";
+        home.stateVersion = "25.05";
       };
     };
   };
 
-  system.stateVersion = "24.11";
+  system.stateVersion = "25.05";
 }
