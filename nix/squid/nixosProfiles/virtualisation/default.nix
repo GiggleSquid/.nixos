@@ -1,14 +1,9 @@
 {
   virtualisation = {
-    # libvirtd = {
-    #   enable = true;
-    #   qemu = {
-    #     swtpm.enable = true;
-    #     ovmf.enable = true;
-    #     ovmf.packages = [ nixpkgs.OVMFFull.fd ];
-    #   };
-    # };
-    # docker.enable = true;
+    podman = {
+      enable = true;
+      dockerCompat = true;
+    };
     virtualbox = {
       host = {
         enable = true;
