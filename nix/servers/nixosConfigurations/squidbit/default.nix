@@ -52,8 +52,14 @@ in
       lego_pfx_pass = { };
       "pia/pia_env" = { };
       "pia/ca.rsa.4096.crt" = { };
-      radarr_api_key = { };
-      sonarr_api_key = { };
+      radarr_api_key = {
+        mode = "0440";
+        group = "unpackerr";
+      };
+      sonarr_api_key = {
+        mode = "0440";
+        group = "unpackerr";
+      };
     };
   };
 
@@ -167,6 +173,24 @@ in
     sonarr = {
       enable = true;
       group = "media";
+    };
+    unpackerr = {
+      enable = true;
+      group = "media";
+      settings = {
+        radarr_0 = {
+          url = "https://radarr.squidbit.lan.gigglesquid.tech";
+          api_key = "filepath:${config.sops.secrets.radarr_api_key.path}";
+          paths_0 = "/mnt/media/torrents/seeding/radarr";
+          protocols = "torrent";
+        };
+        sonarr_0 = {
+          url = "https://sonarr.squidbit.lan.gigglesquid.tech";
+          api_key = "filepath:${config.sops.secrets.sonarr_api_key.path}";
+          paths_0 = "/mnt/media/torrents/seeding/sonarr";
+          protocols = "torrent";
+        };
+      };
     };
     recyclarr = {
       enable = true;
