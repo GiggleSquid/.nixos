@@ -10,7 +10,7 @@ in
       git
     ];
     shellAliases = {
-      l = "lsd -Al";
+      l = "eza -l --all --icons --time-style=long-iso --group-directories-first --total-size --group --git";
       cat = "bat";
       mkdir = "mkdir -p";
       lg = "lazygit";
@@ -110,11 +110,12 @@ in
       };
     };
 
-    lsd = {
+    eza = {
       enable = true;
-      settings = {
-        total-size = true;
-      };
+      enableFishIntegration = true;
+      git = true;
+      colors = "auto";
+      icons = "auto";
     };
 
     bash = {
