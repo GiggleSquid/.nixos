@@ -93,7 +93,10 @@ in
       efi.canTouchEfiVariables = true;
     };
 
-    supportedFilesystems = [ "btrfs" ];
+    supportedFilesystems = [
+      "btrfs"
+      "nfs"
+    ];
 
     binfmt.emulatedSystems = [ "aarch64-linux" ];
 
@@ -179,6 +182,12 @@ in
       device = "cephalonas.lan.gigglesquid.tech:/mnt/main/media";
       fsType = "nfs";
       noCheck = true;
+      options = [
+        "x-systemd.automount"
+        "x-systemd.idle-timeout=3600"
+        "_netdev"
+        "nconnect=6"
+      ];
     };
   };
 }
