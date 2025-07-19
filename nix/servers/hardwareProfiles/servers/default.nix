@@ -1,6 +1,7 @@
 { inputs }:
 let
   inherit (inputs) common nixos-hardware nixpkgs;
+  lib = nixpkgs.lib;
 in
 {
   imports = with nixos-hardware.nixosModules; [
@@ -15,6 +16,8 @@ in
     manageNetwork = true;
     manageHostName = true;
   };
+
+  services.chrony.enable = lib.mkForce false;
 
   inherit (common) hardware;
 
