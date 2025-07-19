@@ -21,13 +21,10 @@ in
       # Handled by proxmox so I can use vpn portforwarding
       enable = false;
     };
+    # PIA (pain in the ass) blocks ipv6 traffic for
+    # "security" and/or "pirvicy" "reasons".
+    enableIPv6 = false;
   };
-
-  # PIA (pain in the ass) blocks ipv6 traffic for "security" and/or "pirvicy" "reasons".
-  # So no ipv6 routing on the wg iface I guess.
-  # Nuclear option to prevent leaks.
-  boot.kernelParams = [ "ipv6.disable=1" ];
-
   systemd.network = {
     networks = {
       "10-lan" = {
