@@ -93,8 +93,9 @@ in
       fsType = "nfs";
       noCheck = true;
       options = [
-        "x-systemd.automount"
-        "noauto"
+        "nolock"
+        "_netdev"
+        "nconnect=6"
       ];
     };
   };
