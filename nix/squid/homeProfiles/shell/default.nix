@@ -86,6 +86,46 @@ in
       };
     };
 
+    gitui = {
+      enable = true;
+      # https://github.com/gitui-org/gitui/issues/2286
+      # https://github.com/catppuccin/gitui/issues/17
+      # theme =
+      #   nixpkgs.fetchFromGitHub {
+      #     owner = "catppuccin";
+      #     repo = "gitui";
+      #     rev = "df2f59f847e047ff119a105afff49238311b2d36";
+      #     hash = "sha256-DRK/j3899qJW4qP1HKzgEtefz/tTJtwPkKtoIzuoTj0=";
+      #   }
+      #   + "/themes/catppuccin-mocha.ron";
+      theme = # ron
+        ''
+          (
+            selected_tab: Some("Reset"),
+            command_fg: Some("#CDD6F4"),
+            selection_bg: Some("#585B70"),
+            selection_fg: Some("#cdd6f4"),
+            cmdbar_bg: Some("#181825"),
+            cmdbar_extra_lines_bg: Some("#181825"),
+            disabled_fg: Some("#7f849c"),
+            diff_line_add: Some("#a6e3a1"),
+            diff_line_delete: Some("#f38ba8"),
+            diff_file_added: Some("#a6e3a1"),
+            diff_file_removed: Some("#eba0ac"),
+            diff_file_moved: Some("#cba6f7"),
+            diff_file_modified: Some("#fab387"),
+            commit_hash: Some("#b4befe"),
+            commit_time: Some("#bac2de"),
+            commit_author: Some("#74c7ec"),
+            danger_fg: Some("#f38ba8"),
+            push_gauge_bg: Some("#89b4fa"),
+            push_gauge_fg: Some("#1e1e2e"),
+            tag_fg: Some("#f5e0dc"),
+            branch_fg: Some("#94e2d5")
+          )
+        '';
+    };
+
     btop = {
       enable = true;
       settings = {
