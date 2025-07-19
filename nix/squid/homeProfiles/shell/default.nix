@@ -54,6 +54,23 @@ in
       };
     };
 
+    atuin = {
+      enable = true;
+      daemon.enable = true;
+      enableFishIntegration = true;
+      settings = {
+        auto_sync = true;
+        dialect = "uk";
+        sync_address = "http://atuin.lan.gigglesquid.tech:8080";
+        sync_frequency = "10m";
+        inline_height = 0;
+        search_mode = "fuzzy";
+        filter_mode_shell_up_key_binding = "host";
+        enter_accept = true;
+        store_failed = false;
+      };
+    };
+
     fzf = {
       enable = true;
       enableFishIntegration = true;

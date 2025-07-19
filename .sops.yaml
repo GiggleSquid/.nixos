@@ -38,6 +38,8 @@ keys:
 
   - &searxng age1uzsyvn7arkk5xs6tagcn3leu2zn52equl3f66yhq2shdx3pzj3msgr77lx
 
+  - &atuin age13mwtjzqadx0ylnft42j6qep96aktfkp9zndt2ekg6cjywzrske8qtcfh5j
+
   - &warrior-archiveteam age15dnpa7pl8u7660dpl5n8h69tdqx3jptv5wmrp337qn8qz7akcy8s4xrepd
 
 creation_rules:
@@ -66,4 +68,5 @@ creation_rules:
       - *marciandfriends
       - *boinc-tentacle0
       - *searxng
+      - *atuin
       - *warrior-archiveteam
