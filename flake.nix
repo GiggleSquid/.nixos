@@ -102,6 +102,10 @@
 
   inputs = {
     nixpkgs = {
+      follows = "nixpkgs-unstable";
+    };
+
+    nixpkgs-unstable = {
       url = "github:nixos/nixpkgs/nixos-unstable";
     };
 
