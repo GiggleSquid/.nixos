@@ -41,6 +41,9 @@ in
   sops = {
     defaultSopsFile = "${self}/sops/squid-rig.yaml";
     secrets = {
+      ipv6_prefix_env = {
+        owner = "crowdsec";
+      };
       bunny_dns_api_key = { };
       crowdsec_enroll_key = {
         owner = "crowdsec";
@@ -74,6 +77,7 @@ in
 
   systemd.services.crowdsec.serviceConfig = {
     EnvironmentFile = [
+      "${config.sops.secrets.ipv6_prefix_env.path}"
       "${config.sops.secrets.crowdsec_caddy-internal_caddy_api_key_env.path}"
       "${config.sops.secrets.crowdsec_caddy-dmz_caddy_api_key_env.path}"
       "${config.sops.secrets.crowdsec_caddy-dmz_firewall_api_key_env.path}"
@@ -133,6 +137,26 @@ in
         "${register-bouncers}/bin/register-bouncers"
         "${install-collections}/bin/install-collections"
         "${install-parsers}/bin/install-parsers"
+      ];
+    ExecStartPost =
+      let
+        allowlist-ipv6Prefix = # bash
+          nixpkgs.writeScriptBin "allowlist-ipv6Prefix" ''
+            #!${nixpkgs.runtimeShell}
+            set -eu
+            set -o pipefail
+
+            if ! cscli allowlist list | grep -q "ipv6_prefix"; then
+              cscli allowlist create ipv6_prefix -d "Allow HE tunnel prefix"
+            fi
+
+            if ! cscli allowlist inspect ipv6_prefix | grep -q "''${IPV6_PREFIX}"; then
+              cscli allowlist add ipv6_prefix ''${IPV6_PREFIX}
+            fi
+          '';
+      in
+      [
+        "${allowlist-ipv6Prefix}/bin/allowlist-ipv6Prefix"
       ];
   };
 
