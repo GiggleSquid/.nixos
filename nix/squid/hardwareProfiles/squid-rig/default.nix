@@ -90,7 +90,7 @@ in
         consoleMode = "max";
         configurationLimit = 10;
       };
-      efi.canTouchEfiVariables = true;
+      efi.canTouchEfiVariables = false;
     };
 
     supportedFilesystems = [
