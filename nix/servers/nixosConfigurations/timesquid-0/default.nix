@@ -77,23 +77,21 @@ in
       enable = true;
       servers = [ ];
       enableRTCTrimming = false;
-      extraConfig =
-        let
-          ipv6Prefix = lib.removeSuffix "\n" (lib.readFile "${self}/transcrypt/ipv6/prefix");
-        in
-        ''
-          pool uk.pool.ntp.org iburst minpoll 5 maxpoll 5 polltarget 16 maxdelay 0.030 maxdelaydevratio 2 maxsources 5
-          makestep 1 3
-          refclock SOCK /run/chrony.clk.ttyAMA0.sock refid GNSS poll 8 precision 1e-1 offset 0.055 delay 0.2 trust noselect
-          refclock SOCK /run/chrony.pps0.sock refid kPPS lock GNSS maxlockage 2 poll 4 precision 1e-7 trust prefer
-          allow ${ipv6Prefix}
-          allow 10.0.0.0/8
-          driftfile /var/lib/chrony/chrony.drift
-          rtcsync
-          logdir /var/log/chrony
-          log rawmeasurements measurements statistics tracking refclocks tempcomp
-          lock_all
-        '';
+      extraConfig = ''
+        pool uk.pool.ntp.org iburst minpoll 5 maxpoll 5 polltarget 16 maxdelay 0.030 maxdelaydevratio 2 maxsources 5
+        makestep 1 3
+        refclock SOCK /run/chrony.clk.ttyAMA0.sock refid GNSS poll 8 precision 1e-1 offset 0.055 delay 0.2 trust noselect
+        refclock SOCK /run/chrony.pps0.sock refid kPPS lock GNSS maxlockage 2 poll 4 precision 1e-7 trust prefer
+        ## This was using transcrypt, need to use env variables or something instaed
+        # allow ''${ipv6Prefix}
+        ##
+        allow 10.0.0.0/8
+        driftfile /var/lib/chrony/chrony.drift
+        rtcsync
+        logdir /var/log/chrony
+        log rawmeasurements measurements statistics tracking refclocks tempcomp
+        lock_all
+      '';
     };
   };
 
