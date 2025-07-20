@@ -54,11 +54,11 @@ in
       "pia/ca.rsa.4096.crt" = { };
       radarr_api_key = {
         mode = "0440";
-        group = "unpackerr";
+        group = "media";
       };
       sonarr_api_key = {
         mode = "0440";
-        group = "unpackerr";
+        group = "media";
       };
     };
   };
