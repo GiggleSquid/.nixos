@@ -133,6 +133,7 @@ in
         "mnt-media.mount"
         "pia-vpn.service"
       ];
+      bindsTo = [ "pia-vpn.service" ];
       path = [ nixpkgs.python3 ];
     };
   };
