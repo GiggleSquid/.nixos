@@ -195,7 +195,7 @@ in
     };
     recyclarr = {
       enable = true;
-      schedule = "daily";
+      schedule = "hourly";
       configuration = {
         radarr = {
           main-radarr = {
@@ -206,9 +206,9 @@ in
             delete_old_custom_formats = true;
             replace_existing_custom_formats = true;
             include = [
-              { template = "radarr-quality-definition-sqp-uhd"; }
-              { template = "radarr-quality-profile-sqp-2"; }
-              { template = "radarr-custom-formats-sqp-2"; }
+              { template = "radarr-quality-definition-sqp-streaming"; }
+              { template = "radarr-quality-profile-sqp-1-2160p-imax-e"; }
+              { template = "radarr-custom-formats-sqp-1-2160p"; }
               { template = "radarr-quality-definition-anime"; }
               { template = "radarr-quality-profile-anime"; }
               { template = "radarr-custom-formats-anime"; }
@@ -217,43 +217,17 @@ in
               # Movie Versions
               {
                 trash_ids = [
-                  "0f12c086e289cf966fa5948eac571f44" # Hybrid
                   "570bc9ebecd92723d2d21500f4be314c" # Remaster
                   "eca37840c13c6ef2dd0262b141a5482f" # 4K Remaster
                   "e0c07d59beb37348e975a930d5e50319" # Criterion Collection
                   "9d27d9d2181838f76dee150882bdc58c" # Masters of Cinema
                   "db9b4c4b53d312a3ca5f1378f6440fc9" # Vinegar Syndrome
                   "957d0f44b592285f26449575e8b1167e" # Special Edition
-                  "eecf3a857724171f968a66cb5719e152" # IMAX
                   "9f6cbff8cfe4ebbc1bde14c7b7bec0de" # IMAX Enhanced
                 ];
                 assign_scores_to = [
                   {
-                    name = "SQP-2";
-                  }
-                ];
-              }
-              # Misc
-              {
-                trash_ids = [
-                  "2899d84dc9372de3408e6d8cc18e9666" # x264
-                ];
-                assign_scores_to = [
-                  {
-                    name = "SQP-2";
-                    score = 0;
-                  }
-                ];
-              }
-              # Unwanted
-              {
-                trash_ids = [
-                  "839bea857ed2c0a8e084f3cbdbd65ecb" # x265 (no HDR/DV)
-                ];
-                assign_scores_to = [
-                  {
-                    name = "SQP-2";
-                    score = 0;
+                    name = "SQP-1 (2160p)";
                   }
                 ];
               }
@@ -263,18 +237,17 @@ in
                   "b17886cb4158d9fea189859409975758" # HDR10+ Boost
                   "55a5b50cb416dea5a50c4955896217ab" # DV HDR10+ Boost
                   "923b6abef9b17f937fab56cfcf89e1f1" # DV (WEBDL)
+
                   "b6832f586342ef70d9c128d40c07b872" # Bad Dual Groups
                   "cc444569854e9de0b084ab2b8b1532b2" # Black and White Editions
-                  "90cedc1fea7ea5d11298bebd3d1d3223" # EVO (no WEBDL)
                   "ae9b7c9ebde1f3bd336a8cbd1ec4c5e5" # No-RlsGroup
                   "7357cf5161efbf8c4d5d0c30b4815ee2" # Obfuscated
                   "5c44f52a8714fdd79bb4d98e2673be1f" # Retags
                   # "f537cf427b64c38c8e36298f657e4828" # Scene
-                  "f700d29429c023a5734505e77daeaea7" # DV (Disk)
                 ];
                 assign_scores_to = [
                   {
-                    name = "SQP-2";
+                    name = "SQP-1 (2160p)";
                   }
                 ];
               }
@@ -285,7 +258,7 @@ in
                 ];
                 assign_scores_to = [
                   {
-                    name = "SQP-2";
+                    name = "SQP-1 (2160p)";
                   }
                 ];
               }
