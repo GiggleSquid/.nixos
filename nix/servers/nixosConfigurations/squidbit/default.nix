@@ -381,6 +381,17 @@ in
                   }
                 ];
               }
+              # Upscaled
+              {
+                trash_ids = [
+                  "23297a736ca77c0fc8e70f8edd7ee56c" # Upscaled
+                ];
+                assign_scores_to = [
+                  {
+                    name = "WEB-2160p";
+                  }
+                ];
+              }
               # Anime
               {
                 trash_ids = [
