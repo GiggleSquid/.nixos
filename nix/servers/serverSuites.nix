@@ -22,7 +22,6 @@ with nixosProfiles;
   ];
 
   squidbit = [
-    nixosModules.qbittorrent
     nixosModules.unpackerr
     nixosModules.nix-pia-vpn
   ];

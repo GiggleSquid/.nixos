@@ -82,13 +82,13 @@ in
       "squidbit.lan.gigglesquid.tech" = {
         postRun = # bash
           ''
-            cp -v key.pem /var/lib/qbittorrent/
-            chown -v qbittorrent /var/lib/qbittorrent/key.pem
-            chmod -v 640 /var/lib/qbittorrent/key.pem
+            cp -v key.pem /var/lib/qBittorrent/
+            chown -v qbittorrent /var/lib/qBittorrent/key.pem
+            chmod -v 640 /var/lib/qBittorrent/key.pem
 
-            cp -v fullchain.pem /var/lib/qbittorrent/
-            chown -v qbittorrent /var/lib/qbittorrent/fullchain.pem
-            chmod -v 640 /var/lib/qbittorrent/fullchain.pem
+            cp -v fullchain.pem /var/lib/qBittorrent/
+            chown -v qbittorrent /var/lib/qBittorrent/fullchain.pem
+            chmod -v 640 /var/lib/qBittorrent/fullchain.pem
 
             cp -v key.pem /var/lib/nzbget/
             chown -v nzbget /var/lib/nzbget/key.pem
@@ -128,6 +128,12 @@ in
       "sonarr_api_key:${config.sops.secrets.sonarr_api_key.path}"
     ];
 
+    qbittorrent = {
+      after = [
+        "mnt-media.mount"
+      ];
+    };
+
     nzbget = {
       after = [
         "mnt-media.mount"
@@ -145,9 +151,6 @@ in
       enable = true;
       package = nixpkgs.qbittorrent-enhanced-nox;
       group = "media";
-      waitForMounts = [
-        "mnt-media.mount"
-      ];
     };
     nzbget = {
       enable = true;
