@@ -68,7 +68,7 @@ in
         plugins = [
           "github.com/caddy-dns/bunny@v1.2.0"
         ];
-        hash = "sha256-fVM/qVtLWA2cHVLnMdfI/pjhMokyHQlGq+U6eXRwjIM=";
+        hash = "sha256-d8b5VD0e8ZOFYa+4KAQ/id3CmNCE6ur9lgbYJ4N3OYQ=";
       };
       logFormat = ''
         output file /var/log/caddy/access.log {
