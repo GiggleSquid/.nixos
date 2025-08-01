@@ -17,9 +17,12 @@ in
     domain = "lan.gigglesquid.tech";
     firewall = {
       allowedTCPPorts = [
-        8080
+        80
+        443
       ];
-      allowedUDPPorts = [ ];
+      allowedUDPPorts = [
+        443
+      ];
     };
   };
 
@@ -42,7 +45,30 @@ in
 
   sops = {
     defaultSopsFile = "${self}/sops/squid-rig.yaml";
-    secrets."searxng_env_vars" = { };
+    secrets = {
+      "searxng_env_vars" = { };
+      ipv6_prefix_env = {
+        owner = "caddy";
+      };
+      bunny_dns_api_key_caddy = {
+        owner = "caddy";
+      };
+    };
+  };
+
+  systemd.services = {
+    caddy.serviceConfig = {
+      EnvironmentFile = [
+        "${config.sops.secrets.ipv6_prefix_env.path}"
+        "${config.sops.secrets.bunny_dns_api_key_caddy.path}"
+      ];
+      SupplementaryGroups = [ "searx" ];
+    };
+    searx-init = {
+      script = ''
+        ln -sf /etc/searxng/favicons.toml /run/searx/
+      '';
+    };
   };
 
   services = {
@@ -50,9 +76,10 @@ in
       enable = true;
       redisCreateLocally = true;
       environmentFile = config.sops.secrets."searxng_env_vars".path;
-      runInUwsgi = true;
+      configureUwsgi = true;
       uwsgiConfig = {
-        http = ":8080";
+        socket = "/run/searx/searx.sock";
+        chmod-socket = "660";
       };
       settings = {
         search = {
@@ -63,9 +90,7 @@ in
         };
         server = {
           base_url = "https://search.lan.gigglesquid.tech";
-          port = 8080;
-          bind_address = "0.0.0.0";
-          secret_key = "@SEARX_SECRET_KEY@";
+          secret_key = "$SEARX_SECRET_KEY";
           method = "GET";
           public_instance = false;
           limiter = false;
@@ -78,8 +103,6 @@ in
           "caddy.community".disabled = false;
           "npm".disabled = false;
           "crates.io".disabled = false;
-          "1337x".disabled = false;
-          "nyaa".disabled = false;
           "annas archive".disabled = false;
           "reddit".disabled = false;
           "duckduckgo images".disabled = false;
@@ -90,13 +113,72 @@ in
         favicons = {
           cfg_schema = 1;
           cache = {
-            db_url = "/run/searx/faviconcache.db";
+            db_url = "/var/cache/searx/faviconcache.db";
             LIMIT_TOTAL_BYTES = 2147483648;
             HOLD_TIME = 2592000;
             BLOB_MAX_BYTES = 40960;
             MAINTENANCE_MODE = "auto";
             MAINTENANCE_PERIOD = 3600;
           };
+        };
+      };
+    };
+
+    caddy = {
+      enable = true;
+      package = nixpkgs.caddy.withPlugins {
+        plugins = [
+          "github.com/caddy-dns/bunny@v1.2.0"
+          "github.com/BadAimWeeb/caddy-uwsgi-transport@v0.0.0-20240317192154-74a1008b9763"
+        ];
+        hash = "sha256-dKMXSK3qpmHnejJ72NAYubjX+/R6F8jqvr+vqUHFnCI=";
+      };
+      logFormat = ''
+        output file /var/log/caddy/access.log {
+          mode 640
+        }
+        level INFO
+      '';
+      email = "jack.connors@protonmail.com";
+      acmeCA = "https://acme-v02.api.letsencrypt.org/directory";
+      globalConfig = # caddyfile
+        ''
+          metrics
+        '';
+      extraConfig = # caddyfile
+        ''
+          (bunny_acme_settings) {
+            tls {
+              dns bunny {env.BUNNY_API_KEY}
+              resolvers 9.9.9.9 149.112.112.112
+            }
+          }
+          (deny_non_local) {
+            @denied not remote_ip private_ranges {env.IPV6_PREFIX}
+            handle @denied {
+              abort
+            }
+          }
+        '';
+      virtualHosts = {
+        "search.lan.gigglesquid.tech" = {
+          extraConfig = # caddyfile
+            ''
+              import bunny_acme_settings
+              import deny_non_local
+              encode zstd gzip
+              handle {
+                reverse_proxy unix/${config.services.uwsgi.instance.vassals.searx.socket} {
+                  transport uwsgi {
+                    uwsgi_param HTTP_X_SCRIPT_NAME ""
+                  }
+                }
+              }
+              handle_path /static/ {
+                root "${config.services.searx.package}/share/static/*"
+                file_server
+              }
+            '';
         };
       };
     };
