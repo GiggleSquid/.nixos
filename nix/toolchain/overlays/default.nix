@@ -10,12 +10,6 @@ in
         { };
   };
 
-  odoo = packages.odoo;
-
-  website_maf = packages.website_maf;
-  product_brand_sale = packages.product_brand_sale;
-  product_brand_ecommerce = packages.product_brand_ecommerce;
-
   ladybird = nixpkgs.ladybird.overrideAttrs (old: {
     version = "0-unstable-2024-08-30";
     src = nixpkgs.fetchFromGitHub {
