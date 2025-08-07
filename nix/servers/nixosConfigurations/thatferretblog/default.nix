@@ -123,12 +123,6 @@ in
                   fs thatferretblog
                 }
               }
-              handle /umami_analytics.js {
-                rewrite * /script.js
-                reverse_proxy https://cloud.umami.is {
-                  header_up Host {upstream_hostport}
-                }
-              }
               handle_errors {
                 rewrite * /{err.status_code}.html
                 file_server {
