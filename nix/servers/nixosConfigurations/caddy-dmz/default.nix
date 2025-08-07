@@ -166,6 +166,18 @@ in
               }
             '';
         };
+        "cfwrs.gigglesquid.tech" = {
+          extraConfig = # caddyfile
+            ''
+              import bunny_acme_settings
+              route {
+                crowdsec
+                reverse_proxy https://cfwrs.org.uk.internal.caddy.lan.gigglesquid.tech {
+                  header_up Host {upstream_hostport}
+                }
+              }
+            '';
+        };
         # "marciandfriends.co.uk" = {
         #   extraConfig = # caddyfile
         #     ''

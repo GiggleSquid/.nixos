@@ -391,6 +391,18 @@ in
               }
             '';
         };
+        "cfwrs.org.uk.internal.caddy.lan.gigglesquid.tech" = {
+          extraConfig = # caddyfile
+            ''
+              import bunny_acme_settings
+              route {
+                crowdsec
+                reverse_proxy https://cfwrs.org.uk.lan.gigglesquid.tech {
+                  header_up Host {upstream_hostport}
+                }
+              }
+            '';
+        };
         "umami.internal.caddy.lan.gigglesquid.tech" = {
           extraConfig = # caddyfile
             ''

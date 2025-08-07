@@ -35,6 +35,7 @@ keys:
   - &gigglesquidtech age1735wpngc823k4trcp0ayzfnreqntvez8uymz048sv4wy59h0k9jq3r6pmj
   - &thatferretblog age1vghjsjt0rnqw8spwdgqesaqjs8kg725wkvvmhua94j3uaryg0c9snj6u67
   - &marciandfriends age1ukde72l2ekp5uq53gnc5cnmfag4qd0ew9r6j5gmpsldntcedjufqfnms5z
+  - &cfwrs age1as0xm26nvwdvxqyw6wg0je8zhwvjt8szqedzm88svwaw7uea6dds7q8n3z
 
   - &boinc-tentacle0 age13mk5pue6mlr3rjkrppxafcc2wz8wsygdhnt4jx335wxwaph5yads057hej
 
@@ -69,6 +70,7 @@ creation_rules:
       - *gigglesquidtech
       - *thatferretblog
       - *marciandfriends
+      - *cfwrs
       - *boinc-tentacle0
       - *searxng
       - *atuin
