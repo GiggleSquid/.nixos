@@ -30,6 +30,8 @@ keys:
 
   - &unimatrix age1xp8y9snexane7duz53h8xx0vwxy8a6mhdh2rn5edrjuts5fegsgqxl7ecd
 
+  - &umami age1cth8tyun4jrm4syafscm8hjp0crdkzyujj9f94afzrs42txy0dss85znkn
+
   - &gigglesquidtech age1735wpngc823k4trcp0ayzfnreqntvez8uymz048sv4wy59h0k9jq3r6pmj
   - &thatferretblog age1vghjsjt0rnqw8spwdgqesaqjs8kg725wkvvmhua94j3uaryg0c9snj6u67
   - &marciandfriends age1ukde72l2ekp5uq53gnc5cnmfag4qd0ew9r6j5gmpsldntcedjufqfnms5z
@@ -63,6 +65,7 @@ creation_rules:
       - *minesquid-velocity
       - *minesquid
       - *unimatrix
+      - *umami
       - *gigglesquidtech
       - *thatferretblog
       - *marciandfriends
