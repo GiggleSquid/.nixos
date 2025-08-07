@@ -268,6 +268,19 @@ in
               }
             '';
         };
+        "sftpgo.cephalonas.lan.gigglesquid.tech" = {
+          extraConfig = # caddyfile
+            ''
+              import bunny_acme_settings
+              import deny_non_local
+              route {
+                crowdsec
+                reverse_proxy http://10.3.0.25:30112 {
+                  header_up Host {upstream_hostport}
+                }
+              }
+            '';
+        };
         "warrior-1.archiveteam.lan.gigglesquid.tech" = {
           extraConfig = # caddyfile
             ''
