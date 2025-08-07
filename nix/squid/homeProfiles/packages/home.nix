@@ -39,6 +39,7 @@ in
     path-of-building
     scribus
     freecad-qt6
+    imagemagick
     # See: https://github.com/NixOS/nixpkgs/issues/370715
     # https://bugzilla.redhat.com/show_bug.cgi?id=2248131
     # lmms
