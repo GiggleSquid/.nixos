@@ -54,10 +54,7 @@ in
       package = pkgs.odoo;
       autoInit = true;
       autoInitExtraFlags = [ "--without-demo=all" ];
-      addons = [
-        pkgs.product_brand_sale
-        pkgs.product_brand_ecommerce
-      ];
+      addons = [ ];
       settings = {
         options = {
           proxy_mode = lib.mkForce true;
