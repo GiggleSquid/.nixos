@@ -8,7 +8,8 @@ in
 
   deployment = common.deployment // {
     targetHost = "ns2.dns.lan.gigglesquid.tech";
-    tags = (common.deployment.tags) ++ [
+    tags = [
+      "all"
       "dns"
       "ns"
     ];

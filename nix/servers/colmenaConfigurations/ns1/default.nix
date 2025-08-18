@@ -8,7 +8,8 @@ in
 
   deployment = rpi.deployment // {
     targetHost = "ns1.dns.lan.gigglesquid.tech";
-    tags = (rpi.deployment.tags) ++ [
+    tags = [
+      "all"
       "dns"
       "ns"
     ];
