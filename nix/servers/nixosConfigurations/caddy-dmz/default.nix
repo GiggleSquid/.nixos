@@ -62,6 +62,7 @@ in
 
   systemd.services = {
     caddy.serviceConfig = {
+      ExecStartPre = ''${lib.getExe' nixpkgs.coreutils "sleep"} 5'';
       EnvironmentFile = [
         "${config.sops.secrets.bunny_dns_api_key_caddy.path}"
         "${config.sops.secrets.crowdsec_caddy-dmz_caddy_api_key_env.path}"

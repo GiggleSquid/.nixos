@@ -55,11 +55,14 @@ in
     };
   };
 
-  systemd.services.caddy.serviceConfig = {
-    EnvironmentFile = [
-      "${config.sops.secrets.ipv6_prefix_env.path}"
-      "${config.sops.secrets.bunny_dns_api_key_caddy.path}"
-    ];
+  systemd.services.caddy = {
+    serviceConfig = {
+      ExecStartPre = ''${lib.getExe' nixpkgs.coreutils "sleep"} 5'';
+      EnvironmentFile = [
+        "${config.sops.secrets.ipv6_prefix_env.path}"
+        "${config.sops.secrets.bunny_dns_api_key_caddy.path}"
+      ];
+    };
   };
 
   services = {
