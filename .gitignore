@@ -1,6 +1,7 @@
 result
 *.qcow2
-.bin
+*.bin
+*.img
 .cache
 .config
 .data
