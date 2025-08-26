@@ -16,19 +16,22 @@ in
       bios = "ovmf";
       cores = 1;
       memory = 1024;
-      net0 = "virtio=00:00:00:00:00:00,bridge=vmbr0,firewall=0,tag=4";
+      net0 = "virtio=00:00:00:00:00:00,bridge=vmbr0,firewall=1,tag=3";
       scsihw = "virtio-scsi-single";
-      virtio0 = "local-btrfs:9002/base-9002-disk-1.raw,aio=native,iothread=1";
+      virtio0 = "local-zfs:101/vm-9999-disk-0,aio=io_uring,discard=on,iothread=1";
     };
     qemuExtraConf = {
       cpu = "host";
       numa = 1;
       machine = "q35";
-      vmstatestorage = "local-btrfs";
+      balloon = 0;
+      vmstatestorage = "local-zfs";
     };
     partitionTableType = "efi";
-    cloudInit.enable = false; # https://github.com/NixOS/nixpkgs/pull/307287/commits/fe35866a2e23e737ce9ae253bbb5c148ccf10778
+    cloudInit.enable = false;
   };
+
+  virtualisation.diskSize = 16384; # MiB
 
   inherit (common) hardware;
 
