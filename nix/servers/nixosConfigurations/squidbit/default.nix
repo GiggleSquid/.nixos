@@ -251,9 +251,8 @@ in
               # Optional
               {
                 trash_ids = [
-                  "b17886cb4158d9fea189859409975758" # HDR10+ Boost
-                  "55a5b50cb416dea5a50c4955896217ab" # DV HDR10+ Boost
-                  "923b6abef9b17f937fab56cfcf89e1f1" # DV (WEBDL)
+                  "b337d6812e06c200ec9a2d3cfa9d20a7" # DV Boost
+                  "caa37d0df9c348912df1fb1d88f9273a" # HDR10+ Boost
                   "b6832f586342ef70d9c128d40c07b872" # Bad Dual Groups
                   "cc444569854e9de0b084ab2b8b1532b2" # Black and White Editions
                   "ae9b7c9ebde1f3bd336a8cbd1ec4c5e5" # No-RlsGroup
@@ -336,9 +335,8 @@ in
               # HDR Formats
               {
                 trash_ids = [
-                  "9b27ab6498ec0f31a3353992e19434ca" # DV (WEBDL)
-                  "0dad0a507451acddd754fe6dc3a7f5e7" # HDR10Plus Boost
-                  "385e9e8581d33133c3961bdcdeffb7b4" # DV HDR10+ Boost
+                  "0c4b99df9206d2cfac3c05ab897dd62a" # HDR10+ Boost
+                  "7c3a61a9c6cb04f52f1544be6d44a026" # DV Boost
                 ];
                 assign_scores_to = [
                   {
