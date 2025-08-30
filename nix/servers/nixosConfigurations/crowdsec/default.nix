@@ -80,52 +80,66 @@ in
 
     ExecStartPre =
       let
-        register-bouncers = # bash
-          nixpkgs.writeScriptBin "register-bouncers" ''
-            #!${nixpkgs.runtimeShell}
-            set -eu
-            set -o pipefail
+        register-bouncers =
+          nixpkgs.writeScriptBin "register-bouncers" # bash
+            ''
+              #!${nixpkgs.runtimeShell}
+              set -eu
+              set -o pipefail
 
-            if ! cscli bouncers list | grep -q "caddy_internal.caddy.lan.gigglesquid.tech"; then
-              cscli bouncers add "caddy_internal.caddy.lan.gigglesquid.tech" --key $CROWDSEC_CADDY_INTERNAL_CADDY_API_KEY
-            fi
+              declare -A bouncers=(
+                ["caddy_dmz.caddy.lan.gigglesquid.tech"]="$CROWDSEC_CADDY_DMZ_CADDY_API_KEY"
+                ["caddy_internal.caddy.lan.gigglesquid.tech"]="$CROWDSEC_CADDY_INTERNAL_CADDY_API_KEY"
+                ["firewall_dmz.caddy.lan.gigglesquid.tech"]="$CROWDSEC_CADDY_DMZ_FIREWALL_API_KEY"
+                ["firewall_i2p.lan.gigglesquid.tech"]="$CROWDSEC_I2P_FIREWALL_API_KEY"
+                ["wordpress_thatferret.shop.lan.gigglesquid.tech"]="$CROWDSEC_THATFERRETSHOP_WORDPRESS_API_KEY"
+              )
 
-            if ! cscli bouncers list | grep -q "caddy_dmz.caddy.lan.gigglesquid.tech"; then
-              cscli bouncers add "caddy_dmz.caddy.lan.gigglesquid.tech" --key $CROWDSEC_CADDY_DMZ_CADDY_API_KEY
-            fi
+              for key in ''${!bouncers[@]}; do
+                if ! cscli bouncers list | grep -q "$key"; then
+                  cscli bouncers add "$key" --key ''${bouncers[''${key}]}
+                fi
+              done  
+            '';
+        install-collections =
+          nixpkgs.writeScriptBin "install-collections" # bash
+            ''
+              #!${nixpkgs.runtimeShell}
+              set -eu
+              set -o pipefail
 
-            if ! cscli bouncers list | grep -q "firewall_dmz.caddy.lan.gigglesquid.tech"; then
-              cscli bouncers add "firewall_dmz.caddy.lan.gigglesquid.tech" --key $CROWDSEC_CADDY_DMZ_FIREWALL_API_KEY
-            fi
+              collections=(
+                "crowdsecurity/linux"
+                "crowdsecurity/caddy"
+                "crowdsecurity/appsec-generic-rules"
+                "crowdsecurity/appsec-virtual-patching"
+                "crowdsecurity/appsec-wordpress"
+                "crowdsecurity/wordpress"
+              )
 
-            if ! cscli bouncers list | grep -q "firewall_i2p.lan.gigglesquid.tech"; then
-              cscli bouncers add "firewall_i2p.lan.gigglesquid.tech" --key $CROWDSEC_I2P_FIREWALL_API_KEY
-            fi
-          '';
-        install-collections = # bash
-          nixpkgs.writeScriptBin "install-collections" ''
-            #!${nixpkgs.runtimeShell}
-            set -eu
-            set -o pipefail
+              for i in ''${collections[@]}; do
+                if ! cscli collections list | grep -q "$i"; then
+                  cscli collections install $i
+                fi
+              done
+            '';
+        install-parsers =
+          nixpkgs.writeScriptBin "install-parsers" # bash
+            ''
+              #!${nixpkgs.runtimeShell}
+              set -eu
+              set -o pipefail
 
-            if ! cscli collections list | grep -q "crowdsecurity/caddy"; then
-              cscli collections install crowdsecurity/caddy
-            fi
+              parsers=(
+                "crowdsecurity/whitelists"
+              )
 
-            if ! cscli collections list | grep -q "crowdsecurity/linux"; then
-              cscli collections install crowdsecurity/linux
-            fi
-          '';
-        install-parsers = # bash
-          nixpkgs.writeScriptBin "install-parsers" ''
-            #!${nixpkgs.runtimeShell}
-            set -eu
-            set -o pipefail
-
-            if ! cscli parsers list | grep -q "crowdsecurity/whitelists"; then
-              cscli parsers install crowdsecurity/whitelists
-            fi
-          '';
+              for i in ''${parsers[@]}; do
+                if ! cscli parsers list | grep -q "$i"; then
+                  cscli parsers install $i
+                fi
+              done
+            '';
       in
       [
         "${register-bouncers}/bin/register-bouncers"
@@ -134,20 +148,21 @@ in
       ];
     ExecStartPost =
       let
-        allowlist-ipv6Prefix = # bash
-          nixpkgs.writeScriptBin "allowlist-ipv6Prefix" ''
-            #!${nixpkgs.runtimeShell}
-            set -eu
-            set -o pipefail
+        allowlist-ipv6Prefix =
+          nixpkgs.writeScriptBin "allowlist-ipv6Prefix" # bash
+            ''
+              #!${nixpkgs.runtimeShell}
+              set -eu
+              set -o pipefail
 
-            if ! cscli allowlist list | grep -q "ipv6_prefix"; then
-              cscli allowlist create ipv6_prefix -d "Allow HE tunnel prefix"
-            fi
+              if ! cscli allowlist list | grep -q "ipv6_prefix"; then
+                cscli allowlist create ipv6_prefix -d "Allow HE tunnel prefix"
+              fi
 
-            if ! cscli allowlist inspect ipv6_prefix | grep -q "''${IPV6_PREFIX}"; then
-              cscli allowlist add ipv6_prefix ''${IPV6_PREFIX}
-            fi
-          '';
+              if ! cscli allowlist inspect ipv6_prefix | grep -q "''${IPV6_PREFIX}"; then
+                cscli allowlist add ipv6_prefix ''${IPV6_PREFIX}
+              fi
+            '';
       in
       [
         "${allowlist-ipv6Prefix}/bin/allowlist-ipv6Prefix"
