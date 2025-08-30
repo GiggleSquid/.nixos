@@ -50,13 +50,8 @@ in
   sops = {
     defaultSopsFile = "${self}/sops/squid-rig.yaml";
     secrets = {
-      bunny_dns_api_key_caddy = {
-        owner = "caddy";
-      };
-      crowdsec_caddy-dmz_caddy_api_key_env = {
-        owner = "caddy";
-      };
-      crowdsec_caddy-dmz_firewall_api_key_env = { };
+      bunny_dns_api_key_caddy = { };
+      crowdsec_bouncer_api_keys_env = { };
     };
   };
 
@@ -65,12 +60,12 @@ in
       ExecStartPre = ''${lib.getExe' nixpkgs.coreutils "sleep"} 5'';
       EnvironmentFile = [
         "${config.sops.secrets.bunny_dns_api_key_caddy.path}"
-        "${config.sops.secrets.crowdsec_caddy-dmz_caddy_api_key_env.path}"
+        "${config.sops.secrets.crowdsec_bouncer_api_keys_env.path}"
       ];
     };
     crowdsec-firewall-bouncer.serviceConfig = {
       EnvironmentFile = [
-        "${config.sops.secrets.crowdsec_caddy-dmz_firewall_api_key_env.path}"
+        "${config.sops.secrets.crowdsec_bouncer_api_keys_env.path}"
       ];
     };
   };

@@ -50,14 +50,14 @@ in
   sops = {
     defaultSopsFile = "${self}/sops/squid-rig.yaml";
     secrets = {
-      crowdsec_i2p_firewall_api_key_env = { };
+      crowdsec_bouncer_api_keys_env = { };
     };
   };
 
   systemd.services = {
     crowdsec-firewall-bouncer.serviceConfig = {
       EnvironmentFile = [
-        "${config.sops.secrets.crowdsec_i2p_firewall_api_key_env.path}"
+        "${config.sops.secrets.crowdsec_bouncer_api_keys_env.path}"
       ];
     };
   };

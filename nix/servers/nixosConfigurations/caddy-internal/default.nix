@@ -58,15 +58,9 @@ in
   sops = {
     defaultSopsFile = "${self}/sops/squid-rig.yaml";
     secrets = {
-      ipv6_prefix_env = {
-        owner = "caddy";
-      };
-      bunny_dns_api_key_caddy = {
-        owner = "caddy";
-      };
-      crowdsec_caddy-internal_caddy_api_key_env = {
-        owner = "caddy";
-      };
+      ipv6_prefix_env = { };
+      bunny_dns_api_key_caddy = { };
+      crowdsec_bouncer_api_keys_env = { };
       prometheus_basic_auth = {
         mode = "0440";
         owner = "alloy";
@@ -80,7 +74,7 @@ in
       EnvironmentFile = [
         "${config.sops.secrets.ipv6_prefix_env.path}"
         "${config.sops.secrets.bunny_dns_api_key_caddy.path}"
-        "${config.sops.secrets.crowdsec_caddy-internal_caddy_api_key_env.path}"
+        "${config.sops.secrets.crowdsec_bouncer_api_keys_env.path}"
       ];
     };
     alloy.serviceConfig = {
