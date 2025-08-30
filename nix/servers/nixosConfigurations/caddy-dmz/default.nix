@@ -84,10 +84,9 @@ in
           "github.com/fvbommel/caddy-combine-ip-ranges@v0.0.2-0.20240127132546-5624d08f5f9e"
           "github.com/fvbommel/caddy-dns-ip-range@v0.0.3-0.20230301183658-6facda90c1f7"
           "github.com/digilolnet/caddy-bunny-ip@v0.0.0-20250118080727-ef607b8e1644"
-          "github.com/mholt/caddy-l4@v0.0.0-20250124234235-87e3e5e2c7f9"
           "github.com/hslatman/caddy-crowdsec-bouncer@v0.8.1"
         ];
-        hash = "sha256-gDo/md/118gI6NIWZ9YxlGpjPfh3ha98LzFA6f/kUhU=";
+        hash = "sha256-mUvBIna0r5w1VG1EefK6iXuEw/NmjDc04UlkByjmFs4=";
       };
       email = "jack.connors@protonmail.com";
       acmeCA = "https://acme-v02.api.letsencrypt.org/directory";
@@ -118,15 +117,6 @@ in
             api_key {env.CROWDSEC_CADDY_DMZ_CADDY_API_KEY}
             ticker_interval 15s
           }
-          # layer4 {
-          #   0.0.0.0:28967 {
-          #     route {
-          #       proxy {
-          #         upstream 	10.3.0.25:28967
-          #       }
-          #     }
-          #   }
-          # }
         '';
       extraConfig = # caddyfile
         ''
@@ -186,18 +176,6 @@ in
               }
             '';
         };
-        # "marciandfriends.co.uk" = {
-        #   extraConfig = # caddyfile
-        #     ''
-        #       import bunny_acme_settings
-        #       route {
-        #         crowdsec
-        #         reverse_proxy https://marciandfriends.co.uk.internal.caddy.lan.gigglesquid.tech {
-        #           header_up Host {upstream_hostport}
-        #         }
-        #       }
-        #     '';
-        # };
         "origin.thatferret.blog" = {
           extraConfig = # caddyfile
             ''

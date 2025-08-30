@@ -132,7 +132,7 @@ in
           "github.com/caddy-dns/bunny@v1.2.0"
           "github.com/BadAimWeeb/caddy-uwsgi-transport@v0.0.0-20240317192154-74a1008b9763"
         ];
-        hash = "sha256-dKMXSK3qpmHnejJ72NAYubjX+/R6F8jqvr+vqUHFnCI=";
+        hash = "sha256-OJjHyMAW4zuqgyUK8uoad6NTB6hv91G8t0yyFGOj7IU=";
       };
       logFormat = ''
         output file /var/log/caddy/access.log {

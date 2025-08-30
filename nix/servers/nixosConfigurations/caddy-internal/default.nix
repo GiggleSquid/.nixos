@@ -102,7 +102,7 @@ in
           "github.com/digilolnet/caddy-bunny-ip@v0.0.0-20250118080727-ef607b8e1644"
           "github.com/hslatman/caddy-crowdsec-bouncer@v0.8.1"
         ];
-        hash = "sha256-FGywWWl/KAeTRsMjon2iA8Rpa5spJuEqPx1ZGvgRD2k=";
+        hash = "sha256-mUvBIna0r5w1VG1EefK6iXuEw/NmjDc04UlkByjmFs4=";
       };
       email = "jack.connors@protonmail.com";
       acmeCA = "https://acme-v02.api.letsencrypt.org/directory";
@@ -356,29 +356,6 @@ in
               }
             '';
         };
-        # "marciandfriends.co.uk.internal.caddy.lan.gigglesquid.tech" = {
-        #   extraConfig = # caddyfile
-        #     ''
-        #       import bunny_acme_settings
-        #       # odoochat
-        #       @websocket {
-        #         header Connection *Upgrade*
-        #         header Upgrade websocket
-        #       }
-        #       route @websocket {
-        #         crowdsec
-        #         reverse_proxy marciandfriends.lan.gigglesquid.tech:8072 {
-        #           header_up Host {upstream_hostport}
-        #         }
-        #       }
-        #       route {
-        #         crowdsec
-        #         reverse_proxy marciandfriends.lan.gigglesquid.tech:8069 {
-        #           header_up Host {upstream_hostport}
-        #         }
-        #       }
-        #     '';
-        # };
         "thatferret.blog.internal.caddy.lan.gigglesquid.tech" = {
           extraConfig = # caddyfile
             ''

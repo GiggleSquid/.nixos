@@ -85,7 +85,7 @@ in
           "github.com/fvbommel/caddy-dns-ip-range@v0.0.3-0.20230301183658-6facda90c1f7"
           "github.com/digilolnet/caddy-bunny-ip@v0.0.0-20250118080727-ef607b8e1644"
         ];
-        hash = "sha256-EpHG7TJTz6KF+xsAXN+mi3FEzqBM9JBOxk8/dxj2I+4=";
+        hash = "sha256-PSm0DJ+sCb/PGuIqbJ0focJV5vLhdHSNtJiE33DQfqA=";
       };
       logFormat = ''
         output file /var/log/caddy/access.log {
