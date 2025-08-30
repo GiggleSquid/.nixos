@@ -30,7 +30,7 @@ in
       "10-lan" = {
         DHCP = lib.mkDefault "no";
         networkConfig = {
-          IPv6PrivacyExtensions = lib.mkDefault "yes";
+          IPv6PrivacyExtensions = lib.mkDefault "no";
         };
         linkConfig.RequiredForOnline = lib.mkDefault "routable";
       };

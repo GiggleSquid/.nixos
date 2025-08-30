@@ -29,6 +29,9 @@ in
     networks = {
       "10-lan" = {
         matchConfig.Name = "eno1";
+        networkConfig = {
+          IPv6PrivacyExtensions = "yes";
+        };
         ipv6AcceptRAConfig = {
           Token = "static:::10";
         };

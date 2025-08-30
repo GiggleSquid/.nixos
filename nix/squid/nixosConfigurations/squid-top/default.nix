@@ -28,6 +28,9 @@ in
       "10-lan" = {
         matchConfig.Name = "enp1s0";
         DHCP = "yes";
+        networkConfig = {
+          IPv6PrivacyExtensions = "yes";
+        };
         # ipv6AcceptRAConfig = {
         #   Token = "static:::11";
         # };
