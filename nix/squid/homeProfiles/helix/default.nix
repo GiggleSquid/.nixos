@@ -23,6 +23,7 @@ in
       lua-language-server
       yaml-language-server
       bash-language-server
+      caddy
     ];
     settings = {
       theme = "catppuccin_mocha";
