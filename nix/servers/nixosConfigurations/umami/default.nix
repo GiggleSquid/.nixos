@@ -135,6 +135,7 @@ in
               import deny_non_local
               reverse_proxy localhost:3000 {
                 header_up X-Forwarded-Host "umami.gigglesquid.tech"
+                header_down Cross-Origin-Resource-Policy cross-origin
               }
             '';
         };
