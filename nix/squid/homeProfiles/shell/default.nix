@@ -154,7 +154,7 @@ in
       enable = true;
       enableTransience = true;
       settings = {
-        command_timeout = 1500;
+        command_timeout = 5000;
         username = {
           show_always = true;
           style_user = "bold peach";
