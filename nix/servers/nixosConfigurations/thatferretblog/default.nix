@@ -110,14 +110,33 @@ in
               import bunny_acme_settings
               import deny_non_local
               encode zstd gzip
-              @cache-default path_regexp \/.*$
-              @cache-images path_regexp \/.*\.(jpg|jpeg|png|gif|webp|ico|svg)$
-              @cache-assets path_regexp \/assets\/(js\/.*\.js|css\/.*\.css)$
-              @cache-fonts path_regexp \/fonts\/.*\.(ttf|otf|woff|woff2)$
-              header @cache-default Cache-Control no-cache
-              header @cache-images Cache-Control max-age=31536000
-              header @cache-assets Cache-Control max-age=15768000
-              header @cache-fonts Cache-Control max-age=15768000
+
+              @static-assets {
+                file
+                path *.js *.css
+              }
+              header @static-assets {
+                Cache-Control "max-age=15768000"
+                Vary "Accept-Encoding"
+              }
+
+              @static-fonts {
+                file
+                path *.ttf *.otf *.woff *.woff2
+              }
+              header @static-fonts {
+                Cache-Control "max-age=15768000"
+                Vary "Accept-Encoding"
+              }
+
+              @static-images {
+                file
+                path *.jpg *.jpeg *.png *.gif *.webp *.avif *.ico *.svg
+              }
+              header @static-images {
+                Cache-Control "max-age=31536000"
+                Vary "Accept-Encoding"
+              }
               handle {
                 root public_html
                 file_server {
