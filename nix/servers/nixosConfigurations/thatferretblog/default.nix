@@ -137,6 +137,18 @@ in
                 Cache-Control "max-age=31536000"
                 Vary "Accept-Encoding"
               }
+
+              header {
+                Content-Security-Policy "default-src 'self'; upgrade-insecure-requests; connect-src 'self' https://app.termly.io; font-src 'self' https://bunnycdn-video-assets.b-cdn.net https://fonts.bunny.net; frame-ancestors 'none'; frame-src https://www.youtube-nocookie.com https://iframe.mediadelivery.net https://ko-fi.com; img-src 'self' https://i.ytimg.com https://storage.ko-fi.com https://mirrors.creativecommons.org; media-src 'self'; style-src 'self' 'unsafe-inline' https://assets.mediadelivery.net https://storage.ko-fi.com https://www.youtube-nocookie.com; script-src 'self' https://umami.gigglesquid.tech https://assets.mediadelivery.net https://app.termly.io https://storage.ko-fi.com 'sha256-Go5RcnylJvBHl0p1MdUOAmiLdIF8QWWhdG4PAs/W6Zo=' 'sha256-wtdPHL8EXHPrs4Mvw2dHBkZsZHCn/HWGuCyLrUtieZc=' 'sha256-uoTJ4ADGjStNCSUaLkO0HRF2hUeHN74I3qLyI7G+NGE=' 'sha256-SW7YuU+FYIfxpDhNx/ozt2nByUOZMoJbUGRVtb9JMLc=' 'sha256-X5avg43RTxt2cSum+E3xICbowEMaOBxeBiNh05CXDTY=' 'sha256-LgSw8ULmGNbRxqB1I7FX6IaR0LyDamHzDXtAZAO6go4=' 'sha256-qdzpwz0NgvASybV2JzmWCDaIa1CFT7Uld55leDS1yo0=' 'sha256-Cenv/0tM+Z66QSIfvGiIGaAKR3m1SqQSzYPCqFxc7CA=';"
+                Cross-Origin-Embedder-Policy "unsafe-none"
+                Cross-Origin-Opener-Policy "same-origin"
+                Cross-Origin-Resource-Policy "same-origin"
+                Referrer-Policy "strict-origin-when-cross-origin"
+                Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+                X-Content-Type-Options "nosniff"
+                X-Frame-Options "DENY"
+              }
+
               handle {
                 root public_html
                 file_server {
