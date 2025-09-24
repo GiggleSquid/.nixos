@@ -277,8 +277,8 @@ in
 
         storage_config = {
           tsdb_shipper = {
-            active_index_directory = "/var/lib/loki/boltdb-shipper-active";
-            cache_location = "/var/lib/loki/boltdb-shipper-cache";
+            active_index_directory = "/var/lib/loki/tsdb_shipper-active_index";
+            cache_location = "/var/lib/loki/tsdb_shipper-cache";
             cache_ttl = "24h";
           };
 
@@ -287,7 +287,22 @@ in
           };
         };
 
+        compactor = {
+          working_directory = "/var/lib/loki";
+          retention_enabled = true;
+          delete_request_store = "filesystem";
+          compaction_interval = "15m";
+          retention_delete_delay = "3h";
+          retention_delete_worker_count = 2;
+          compactor_ring = {
+            kvstore = {
+              store = "inmemory";
+            };
+          };
+        };
+
         limits_config = {
+          retention_period = "90d";
           reject_old_samples = true;
           reject_old_samples_max_age = "1w";
         };
@@ -295,15 +310,6 @@ in
         table_manager = {
           retention_deletes_enabled = false;
           retention_period = "0s";
-        };
-
-        compactor = {
-          working_directory = "/var/lib/loki";
-          compactor_ring = {
-            kvstore = {
-              store = "inmemory";
-            };
-          };
         };
       };
     };
