@@ -149,7 +149,7 @@ in
   services = {
     qbittorrent = {
       enable = true;
-      package = nixpkgs.qbittorrent-enhanced-nox;
+      package = nixpkgs.qbittorrent-nox;
       group = "media";
     };
     nzbget = {
