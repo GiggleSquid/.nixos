@@ -16,7 +16,10 @@ in
     inherit hostName;
     domain = "lan.gigglesquid.tech";
     firewall = {
-      allowedTCPPorts = [ 8443 ];
+      allowedTCPPorts = [
+        8443
+        7422
+      ];
       allowedUDPPorts = [ ];
     };
   };
@@ -57,9 +60,6 @@ in
     defaults = {
       server = "https://acme-v02.api.letsencrypt.org/directory";
       email = "jack.connors@protonmail.com";
-    };
-    certs."crowdsec.lan.gigglesquid.tech" = {
-      group = "crowdsec";
       extraLegoFlags = [
         "--dns.propagation-wait=300s"
       ];
@@ -68,6 +68,11 @@ in
       credentialFiles = {
         "BUNNY_API_KEY_FILE" = "${config.sops.secrets.bunny_dns_api_key.path}";
         "BUNNY_PROPAGATION_TIMEOUT_FILE" = nixpkgs.writeText "BUNNY_PROPAGATION_TIMEOUT" ''360'';
+      };
+    };
+    certs = {
+      "crowdsec.lan.gigglesquid.tech" = {
+        group = "crowdsec";
       };
     };
   };
@@ -88,6 +93,7 @@ in
               set -o pipefail
 
               declare -A bouncers=(
+                ["firewall_mail.lan.gigglesquid.tech"]="$CROWDSEC_MAIL_FIREWALL_API_KEY"
                 ["caddy_dmz.caddy.lan.gigglesquid.tech"]="$CROWDSEC_CADDY_DMZ_CADDY_API_KEY"
                 ["caddy_internal.caddy.lan.gigglesquid.tech"]="$CROWDSEC_CADDY_INTERNAL_CADDY_API_KEY"
                 ["firewall_dmz.caddy.lan.gigglesquid.tech"]="$CROWDSEC_CADDY_DMZ_FIREWALL_API_KEY"
@@ -111,6 +117,8 @@ in
               collections=(
                 "crowdsecurity/linux"
                 "crowdsecurity/caddy"
+                "crowdsecurity/postfix"
+                "crowdsecurity/dovecot"
                 "crowdsecurity/appsec-generic-rules"
                 "crowdsecurity/appsec-virtual-patching"
                 "crowdsecurity/appsec-wordpress"
@@ -173,6 +181,11 @@ in
     enable = true;
     enrollKeyFile = "${config.sops.secrets.crowdsec_enroll_key.path}";
     settings = {
+      crowdsec_service = {
+        parser_routines = 4;
+        buckets_routines = 4;
+        output_routines = 2;
+      };
       api.server = {
         listen_uri = "0.0.0.0:8443";
         tls = {
@@ -183,6 +196,17 @@ in
       };
     };
     acquisitions = [
+      {
+        source = "appsec";
+        listen_addr = "0.0.0.0:7422";
+        cert_file = "/var/lib/acme/crowdsec.lan.gigglesquid.tech/cert.pem";
+        key_file = "/var/lib/acme/crowdsec.lan.gigglesquid.tech/key.pem";
+        appsec_configs = [ "crowdsecurity/appsec-default" ];
+        routines = 2;
+        labels = {
+          type = "appsec";
+        };
+      }
       {
         source = "loki";
         url = "https://loki.otel.lan.gigglesquid.tech";
