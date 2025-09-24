@@ -31,6 +31,8 @@ with nixosProfiles;
     nixosModules.crowdsec
   ];
 
+  snm = [ nixosModules.simple-nixos-mailserver ];
+
   minesquid = [ nixosModules.nix-minecraft ];
 
   arion = [ nixosModules.arion ];
