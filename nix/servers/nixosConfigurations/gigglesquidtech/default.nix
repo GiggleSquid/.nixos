@@ -73,7 +73,7 @@ in
           "github.com/caddy-dns/bunny@v1.2.0"
           "github.com/mohammed90/caddy-git-fs@v0.0.0-20240805164056-529acecd1830"
         ];
-        hash = "sha256-OinmgDw9g+ZaFfbyBESr+o3bwi9B2CfQS7+ZBVnD1yY=";
+        hash = "sha256-/MfZ5qHpvTjZnlnnwWOXITMSxDfZj0/SSF0kdWRzSuU=";
       };
       logFormat = ''
         output file /var/log/caddy/access.log {

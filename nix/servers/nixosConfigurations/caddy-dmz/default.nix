@@ -79,9 +79,10 @@ in
           "github.com/fvbommel/caddy-combine-ip-ranges@v0.0.2-0.20240127132546-5624d08f5f9e"
           "github.com/fvbommel/caddy-dns-ip-range@v0.0.3-0.20230301183658-6facda90c1f7"
           "github.com/digilolnet/caddy-bunny-ip@v0.0.0-20250118080727-ef607b8e1644"
-          "github.com/hslatman/caddy-crowdsec-bouncer@v0.8.1"
+          "github.com/hslatman/caddy-crowdsec-bouncer@v0.9.2"
+          "github.com/mholt/caddy-l4@v0.0.0-20250902102621-4a517a98d7fa"
         ];
-        hash = "sha256-mUvBIna0r5w1VG1EefK6iXuEw/NmjDc04UlkByjmFs4=";
+        hash = "sha256-tNXRA68/0fyK7UltLFiMh6sDz2tBwytkH6lZavdJuN4=";
       };
       email = "jack.connors@protonmail.com";
       acmeCA = "https://acme-v02.api.letsencrypt.org/directory";
