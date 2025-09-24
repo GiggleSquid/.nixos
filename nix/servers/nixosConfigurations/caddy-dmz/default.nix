@@ -87,7 +87,7 @@ in
       email = "jack.connors@protonmail.com";
       acmeCA = "https://acme-v02.api.letsencrypt.org/directory";
       logFormat = ''
-        output file /var/log/caddy/access.log {
+        output file /var/log/caddy/access-global.log {
           mode 640
         }
         level INFO
@@ -127,6 +127,7 @@ in
         "squidjelly.gigglesquid.tech" = {
           extraConfig = # caddyfile
             ''
+              log
               import bunny_acme_settings
               route {
                 crowdsec
@@ -139,6 +140,7 @@ in
         "squidseerr.gigglesquid.tech" = {
           extraConfig = # caddyfile
             ''
+              log
               import bunny_acme_settings
               route {
                 crowdsec
@@ -151,6 +153,7 @@ in
         "squidcasts.gigglesquid.tech" = {
           extraConfig = # caddyfile
             ''
+              log
               import bunny_acme_settings
               route {
                 crowdsec
@@ -163,6 +166,7 @@ in
         "cfwrs.gigglesquid.tech" = {
           extraConfig = # caddyfile
             ''
+              log
               import bunny_acme_settings
               route {
                 crowdsec
@@ -175,6 +179,20 @@ in
         "origin.thatferret.blog" = {
           extraConfig = # caddyfile
             ''
+              log
+              import bunny_acme_settings
+              route {
+                crowdsec
+                reverse_proxy https://thatferret.blog.internal.caddy.lan.gigglesquid.tech {
+                  header_up Host {upstream_hostport}
+                }
+              }
+            '';
+        };
+        "thatferret.blog" = {
+          extraConfig = # caddyfile
+            ''
+              log
               import bunny_acme_settings
               route {
                 crowdsec
@@ -187,6 +205,7 @@ in
         "thatferret.shop" = {
           extraConfig = # caddyfile
             ''
+              log
               import bunny_acme_settings
               route {
                 crowdsec
@@ -199,6 +218,7 @@ in
         "gigglesquid.tech" = {
           extraConfig = # caddyfile
             ''
+              log
               import bunny_acme_settings
               route {
                 crowdsec
@@ -211,6 +231,7 @@ in
         "umami.gigglesquid.tech" = {
           extraConfig = # caddyfile
             ''
+              log
               import bunny_acme_settings
               route {
                 crowdsec
@@ -248,7 +269,7 @@ in
 
           local.file_match "caddy_access_log" {
             path_targets = [
-              {"__path__" = "/var/log/caddy/access.log"},
+              {"__path__" = "/var/log/caddy/access-global.log"},
             ]
             sync_period = "15s"
           }
@@ -302,7 +323,6 @@ in
       settings = {
         api_key = ''''${CROWDSEC_CADDY_DMZ_FIREWALL_API_KEY}'';
         api_url = "https://crowdsec.lan.gigglesquid.tech:8443";
-
       };
     };
   };
