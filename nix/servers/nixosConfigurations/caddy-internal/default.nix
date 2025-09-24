@@ -101,7 +101,7 @@ in
       email = "jack.connors@protonmail.com";
       acmeCA = "https://acme-v02.api.letsencrypt.org/directory";
       logFormat = ''
-        output file /var/log/caddy/access.log {
+        output file /var/log/caddy/access-global.log {
           mode 640
         }
         level INFO
@@ -147,6 +147,7 @@ in
         "search.lan.gigglesquid.tech" = {
           extraConfig = # caddyfile
             ''
+              log
               import bunny_acme_settings
               import deny_non_local
               route {
@@ -160,6 +161,7 @@ in
         "squidjelly.internal.caddy.lan.gigglesquid.tech" = {
           extraConfig = # caddyfile
             ''
+              log
               import bunny_acme_settings
               route {
                 crowdsec
@@ -172,6 +174,7 @@ in
         "squidseerr.internal.caddy.lan.gigglesquid.tech" = {
           extraConfig = # caddyfile
             ''
+              log
               import bunny_acme_settings
               route {
                 crowdsec
@@ -184,6 +187,7 @@ in
         "squidcasts.internal.caddy.lan.gigglesquid.tech" = {
           extraConfig = # caddyfile
             ''
+              log
               import bunny_acme_settings
               import deny_non_local
               route {
@@ -197,6 +201,7 @@ in
         "qbittorrent.squidbit.lan.gigglesquid.tech" = {
           extraConfig = # caddyfile
             ''
+              log
               import bunny_acme_settings
               import deny_non_local
               route {
@@ -210,6 +215,7 @@ in
         "nzbget.squidbit.lan.gigglesquid.tech" = {
           extraConfig = # caddyfile
             ''
+              log
               import bunny_acme_settings
               import deny_non_local
               route {
@@ -223,6 +229,7 @@ in
         "radarr.squidbit.lan.gigglesquid.tech" = {
           extraConfig = # caddyfile
             ''
+              log
               import bunny_acme_settings
               import deny_non_local
               route {
@@ -236,6 +243,7 @@ in
         "sonarr.squidbit.lan.gigglesquid.tech" = {
           extraConfig = # caddyfile
             ''
+              log
               import bunny_acme_settings
               import deny_non_local
               route {
@@ -249,6 +257,7 @@ in
         "prowlarr.squidbit.lan.gigglesquid.tech" = {
           extraConfig = # caddyfile
             ''
+              log
               import bunny_acme_settings
               import deny_non_local
               route {
@@ -262,6 +271,7 @@ in
         "storj-node.cephalonas.lan.gigglesquid.tech" = {
           extraConfig = # caddyfile
             ''
+              log
               import bunny_acme_settings
               import deny_non_local
               route {
@@ -275,6 +285,7 @@ in
         "sftpgo.cephalonas.lan.gigglesquid.tech" = {
           extraConfig = # caddyfile
             ''
+              log
               import bunny_acme_settings
               import deny_non_local
               route {
@@ -288,6 +299,7 @@ in
         "warrior-1.archiveteam.lan.gigglesquid.tech" = {
           extraConfig = # caddyfile
             ''
+              log
               import bunny_acme_settings
               import deny_non_local
               route {
@@ -301,6 +313,7 @@ in
         "warrior-2.archiveteam.lan.gigglesquid.tech" = {
           extraConfig = # caddyfile
             ''
+              log
               import bunny_acme_settings
               import deny_non_local
               route {
@@ -314,6 +327,7 @@ in
         "warrior-3.archiveteam.lan.gigglesquid.tech" = {
           extraConfig = # caddyfile
             ''
+              log
               import bunny_acme_settings
               import deny_non_local
               route {
@@ -327,6 +341,7 @@ in
         "warrior-4.archiveteam.lan.gigglesquid.tech" = {
           extraConfig = # caddyfile
             ''
+              log
               import bunny_acme_settings
               import deny_non_local
               route {
@@ -340,6 +355,7 @@ in
         "warrior-5.archiveteam.lan.gigglesquid.tech" = {
           extraConfig = # caddyfile
             ''
+              log
               import bunny_acme_settings
               import deny_non_local
               route {
@@ -353,6 +369,7 @@ in
         "thatferret.blog.internal.caddy.lan.gigglesquid.tech" = {
           extraConfig = # caddyfile
             ''
+              log
               import bunny_acme_settings
               route {
                 crowdsec
@@ -365,6 +382,7 @@ in
         "thatferret.shop.internal.caddy.lan.gigglesquid.tech" = {
           extraConfig = # caddyfile
             ''
+              log
               import bunny_acme_settings
               route {
                 crowdsec
@@ -377,6 +395,7 @@ in
         "http://thatferret.local.lan.gigglesquid.tech" = {
           extraConfig = # caddyfile
             ''
+              log
               import deny_non_local
               route {
                 reverse_proxy http://10.10.0.10:1313 {
@@ -388,6 +407,7 @@ in
         "gigglesquid.tech.internal.caddy.lan.gigglesquid.tech" = {
           extraConfig = # caddyfile
             ''
+              log
               import bunny_acme_settings
               route {
                 crowdsec
@@ -400,6 +420,7 @@ in
         "cfwrs.org.uk.internal.caddy.lan.gigglesquid.tech" = {
           extraConfig = # caddyfile
             ''
+              log
               import bunny_acme_settings
               route {
                 crowdsec
@@ -412,6 +433,7 @@ in
         "umami.internal.caddy.lan.gigglesquid.tech" = {
           extraConfig = # caddyfile
             ''
+              log
               import bunny_acme_settings
               route {
                 crowdsec
@@ -449,7 +471,7 @@ in
 
           local.file_match "caddy_access_log" {
             path_targets = [
-              {"__path__" = "/var/log/caddy/access.log"},
+              {"__path__" = "/var/log/caddy/access-global.log"},
             ]
             sync_period = "15s"
           }
