@@ -165,9 +165,7 @@ in
               import bunny_acme_settings
               route {
                 crowdsec
-                reverse_proxy https://squidjelly.lan.gigglesquid.tech:8920 {
-                  header_up Host {upstream_hostport}
-                }
+                reverse_proxy http://squidjelly.lan.gigglesquid.tech:8096
               }
             '';
         };
