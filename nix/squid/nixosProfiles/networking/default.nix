@@ -12,7 +12,7 @@ in
   services = {
     chrony = {
       enable = true;
-      servers = lib.mkDefault [ "timesquid-0.ntp.lan.gigglesquid.tech" ];
+      # servers = lib.mkDefault [ "timesquid-0.ntp.lan.gigglesquid.tech" ];
       initstepslew.enabled = lib.mkDefault false;
       extraFlags = [ "-s" ];
       extraConfig = lib.mkDefault ''
