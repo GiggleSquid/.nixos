@@ -32,7 +32,7 @@ in
     libopus
     # qt5 qtwebengine is unmaintained upstream since april 2025
     # https://github.com/jellyfin/jellyfin-media-player/issues/282
-    # jellyfin-media-player
+    jellyfin-media-player
     discord
     tidal-hifi
     packwiz

@@ -83,6 +83,9 @@
             "aspnetcore-runtime-6.0.36"
             "dotnet-sdk-wrapped-6.0.428"
             "dotnet-sdk-6.0.428"
+
+            # jellyfin-media-player
+            "qtwebengine-5.15.19"
           ];
         };
       }
