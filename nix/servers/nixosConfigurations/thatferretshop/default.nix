@@ -200,8 +200,67 @@ in
 
               encode zstd gzip
               root /srv/www/thatferretshop
-              php_fastcgi unix/${config.services.phpfpm.pools.thatferretshop.socket}
+              php_fastcgi unix/${config.services.phpfpm.pools.thatferretshop.socket} {
+                header_up Host thatferret.shop
+              }
               file_server
+
+              header {
+                # Remove headers
+                -X-Powered-By
+
+                # Add headers
+                # Content-Security-Policy-Report-Only "default-src 'self' https://cdn.thatferret.shop; upgrade-insecure-requests; frame-ancestors 'self'; style-src 'self' 'unsafe-inline' https://cdn.thatferret.shop; "
+                Cross-Origin-Embedder-Policy "require-corp"
+                Cross-Origin-Opener-Policy "same-origin"
+                Cross-Origin-Resource-Policy "same-site"
+                Permissions-Policy "interest-cohort=(), camera=(), microphone=(), geolocation=()"
+                Referrer-Policy "strict-origin-when-cross-origin"
+                Strict-Transport-Security "max-age=2592000; includeSubDomains"
+                X-Content-Type-Options "nosniff"
+                X-Frame-Options "SAMEORIGIN"
+              }
+
+              header /wp-admin/* {
+                >Cross-Origin-Embedder-Policy "unsafe-none"
+              }
+
+              @static-assets {
+                file
+                path *.js *.css
+              }
+              header @static-assets {
+                Cache-Control "max-age=86400"
+                Vary "Accept-Encoding"
+              }
+
+              @static-fonts {
+                file
+                path *.ttf *.otf *.woff *.woff2
+              }
+              header @static-fonts {
+                Cache-Control "max-age=86400"
+                Vary "Accept-Encoding"
+              }
+
+              @static-images {
+                file
+                path *.jpg *.jpeg *.png *.gif *.webp *.avif *.ico *.svg
+              }
+              header @static-images {
+                Cache-Control "max-age=86400"
+                Vary "Accept-Encoding"
+              }
+
+              @wp-cache {
+                not header_regexp Cookie "comment_author|wordpress_[a-f0-9]+|wp-postpass|wordpress_logged_in|woocommerce_items_in_cart|wp_woocommerce_session|woocommerce_cart_hash|woocommerce_recently_viewed"
+                not path_regexp "(/wp-admin/|/xmlrpc.php|/wp-(app|cron|login|register|mail).php|wp-.*.php|/feed/|index.php|wp-comments-popup.php|wp-links-opml.php|wp-locations.php|sitemap(index)?.xml|[a-z0-9-]+-sitemap([0-9]+)?.xml|/basket/|/checkout/|/my-account/)"
+                not method POST
+                not expression {query} != '''
+              }
+              # route @wp-cache {
+              #   try_files /wp-content/cache/cache-enabler/{host}{uri}/https-index.html /wp-content/cache/cache-enabler/{host}{uri}/index.html {path} {path}/index.php?{query}
+              # }
 
               @dotfiles {
                 not path /.well-known/*
@@ -210,9 +269,16 @@ in
               error @dotfiles "403 - Forbidden" 403
 
               @forbidden {
+                path /.user.ini
                 path /xmlrpc.php
                 path *.sql
+                path *.sqllite
+
                 path /wp-config.php
+                path /wp-admin/includes/*.php
+                path /wp-includes/*.php
+
+                path /wp-content/debug.log
                 path /wp-content/uploads/*.php
                 path /wp-content/uploads/crowdsec/logs/*
                 path /wp-content/uploads/crowdsec/cache/*
@@ -227,9 +293,8 @@ in
               error @blacklist "403 - Forbidden" 403
 
               handle_errors 403 {
-                respond "403 - Forbidden" 403 {
-                  close
-                }
+                rewrite * /403.html
+                file_server
               }
             '';
         };
