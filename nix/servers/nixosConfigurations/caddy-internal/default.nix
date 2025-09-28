@@ -21,7 +21,6 @@ in
         443
         25565
         25566
-        12345
       ];
       allowedUDPPorts = [
         443
@@ -446,7 +445,6 @@ in
 
     alloy-squid = {
       enable = true;
-      listenAddr = "10.3.1.10";
       supplementaryGroups = [ "caddy" ];
       alloyConfig = # river
         ''

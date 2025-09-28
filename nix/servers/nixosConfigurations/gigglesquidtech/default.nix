@@ -139,7 +139,6 @@ in
 
     alloy-squid = {
       enable = true;
-      listenAddr = "10.3.1.100";
       supplementaryGroups = [ "caddy" ];
       alloyConfig = # river
         ''
