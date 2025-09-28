@@ -19,16 +19,15 @@ in
       allowedTCPPorts = [ ];
       allowedUDPPorts = [ ];
     };
-    enableIPv6 = false;
   };
 
   systemd.network = {
     networks = {
       "10-lan" = {
         matchConfig.Name = "enp6s18";
-        # ipv6AcceptRAConfig = {
-        #   Token = "static:::100:20";
-        # };
+        ipv6AcceptRAConfig = {
+          Token = "static:::20";
+        };
         address = [
           "10.100.0.20/24"
         ];
@@ -48,6 +47,10 @@ in
       "mailserver/pass/jack.connors@gigglesquid.tech" = { };
       "mailserver/pass/kraken.lan@gigglesquid.tech" = { };
       "mailserver/pass/cephalonas.lan@gigglesquid.tech" = { };
+      "mailserver/pass/hello@thatferret.shop" = { };
+      "mailserver/pass/privacy@thatferret.shop" = { };
+      "mailserver/pass/notifications@thatferret.shop" = { };
+      "mailserver/pass/jack.connors@thatferret.shop" = { };
     };
   };
 
@@ -86,7 +89,7 @@ in
     domains = [
       "gigglesquid.tech"
       # "thatferret.blog"
-      # "thatferret.shop"
+      "thatferret.shop"
     ];
     certificateScheme = "acme";
     enablePop3 = false;
@@ -131,6 +134,7 @@ in
     };
 
     loginAccounts = {
+      # gigglesquid.tech
       "postmaster@gigglesquid.tech" = {
         hashedPasswordFile = "${config.sops.secrets."mailserver/pass/postmaster@gigglesquid.tech".path}";
         aliases = [ "abuse@gigglesquid.tech" ];
@@ -140,10 +144,28 @@ in
       };
       "kraken.lan@gigglesquid.tech" = {
         hashedPasswordFile = "${config.sops.secrets."mailserver/pass/kraken.lan@gigglesquid.tech".path}";
+        sendOnly = true;
       };
       "cephalonas.lan@gigglesquid.tech" = {
         hashedPasswordFile = "${config.sops.secrets."mailserver/pass/cephalonas.lan@gigglesquid.tech".path
         }";
+        sendOnly = true;
+      };
+
+      # thatferret.shop
+      "hello@thatferret.shop" = {
+        hashedPasswordFile = "${config.sops.secrets."mailserver/pass/hello@thatferret.shop".path}";
+      };
+      "privacy@thatferret.shop" = {
+        hashedPasswordFile = "${config.sops.secrets."mailserver/pass/privacy@thatferret.shop".path}";
+      };
+      "notifications@thatferret.shop" = {
+        hashedPasswordFile = "${config.sops.secrets."mailserver/pass/notifications@thatferret.shop".path}";
+        sendOnly = true;
+        sendOnlyRejectMessage = "This mailbox cannot receive email. Please send your emails to hello@thatferret.shop";
+      };
+      "jack.connors@thatferret.shop" = {
+        hashedPasswordFile = "${config.sops.secrets."mailserver/pass/jack.connors@thatferret.shop".path}";
       };
     };
     extraVirtualAliases = { };
