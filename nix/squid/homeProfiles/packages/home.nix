@@ -14,36 +14,36 @@ let
 in
 {
   packages = with nixpkgs; [
-    kdePackages.filelight
-    kdePackages.kcalc
-    kdePackages.skanpage
-    isoimagewriter
-    prismlauncher
-    prusa-slicer
+    discord
+    framesh
+    freecad-qt6
     gimp
     gridcoin-research
-    inkscape
-    # monero-gui
-    vintagestory
-    starsector
-    steam-run
-    vlc
     haruna
-    libopus
+    imagemagick
+    inkscape
+    isoimagewriter
     # qt5 qtwebengine is unmaintained upstream since april 2025
     # https://github.com/jellyfin/jellyfin-media-player/issues/282
     jellyfin-media-player
-    discord
-    tidal-hifi
-    packwiz
-    framesh
-    storj-uplink
-    path-of-building
-    scribus
-    freecad-qt6
-    imagemagick
+    kdePackages.filelight
+    kdePackages.kcalc
+    kdePackages.skanpage
+    libopus
     # See: https://github.com/NixOS/nixpkgs/issues/370715
     # https://bugzilla.redhat.com/show_bug.cgi?id=2248131
     # lmms
+    # monero-gui
+    packwiz
+    path-of-building
+    prismlauncher
+    prusa-slicer
+    scribus
+    starsector
+    steam-run
+    storj-uplink
+    tidal-hifi
+    vintagestory
+    vlc
   ];
 }
