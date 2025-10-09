@@ -15,6 +15,7 @@ in
 {
   packages = with nixpkgs; [
     discord
+    dust
     framesh
     freecad-qt6
     gimp
