@@ -20,17 +20,6 @@ in
     };
   });
 
-  flaresolverr = nixpkgs.flaresolverr.overrideAttrs (old: {
-    pname = "flaresolverr";
-    version = "3.3.25";
-    src = nixpkgs.fetchFromGitHub {
-      owner = "FlareSolverr";
-      repo = "FlareSolverr";
-      rev = "6627de4fa6bc4759b1476085101fc91e80bbe356";
-      hash = "sha256-AGRqJOIIePaJH0j0eyMFJ6Kddul3yXF6uw6dPMnskmY=";
-    };
-  });
-
   # wezterm 'nightly'
   wezterm = nixpkgs.wezterm.override (
     let
