@@ -130,16 +130,34 @@ in
     qbittorrent = {
       after = [
         "mnt-media.mount"
+        "pia-vpn.service"
       ];
+      # we don't bother using bindsTo pia-vpn bucause
+      # qbit has an internal network iface setting
     };
-
     nzbget = {
       after = [
         "mnt-media.mount"
         "pia-vpn.service"
       ];
       bindsTo = [ "pia-vpn.service" ];
+      wantedBy = [ "pia-vpn.service" ];
       path = [ nixpkgs.python3 ];
+    };
+    prowlarr = {
+      after = [
+        "pia-vpn.service"
+      ];
+    };
+    radarr = {
+      after = [
+        "pia-vpn.service"
+      ];
+    };
+    sonarr = {
+      after = [
+        "pia-vpn.service"
+      ];
     };
   };
 
