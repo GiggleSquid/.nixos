@@ -10,21 +10,16 @@
 
     git = {
       enable = true;
-      userName = "GiggleSquid";
-      userEmail = "jack.connors@protonmail.com";
-
-      signing = {
-        signByDefault = true;
-        format = "ssh";
-        key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJuSKLhdONlRgnIeGcAbUUT+kZlIOOhJKs3jW/CUxYLT jack.connors@protonmail.com | signing";
-      };
-
-      extraConfig = {
-        init = {
-          defaultBranch = "main";
+      settings = {
+        user = {
+          email = "jack.connors@protonmail.com";
+          name = "GiggleSquid";
         };
         core = {
           editor = "hx";
+        };
+        init = {
+          defaultBranch = "main";
         };
         gpg = {
           format = "ssh";
@@ -33,6 +28,17 @@
           };
         };
       };
+
+      signing = {
+        signByDefault = true;
+        format = "ssh";
+        key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJuSKLhdONlRgnIeGcAbUUT+kZlIOOhJKs3jW/CUxYLT jack.connors@protonmail.com | signing";
+      };
+    };
+
+    git-worktree-switcher = {
+      enable = true;
+      enableFishIntegration = true;
     };
   };
 
