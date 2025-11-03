@@ -1,10 +1,9 @@
 {
   inputs,
   cell,
-  config,
 }:
 let
-  inherit (inputs) common nixpkgs self;
+  inherit (inputs) common nixpkgs;
   inherit (cell) hardwareProfiles serverSuites;
   inherit (inputs.cells.squid) nixosSuites homeSuites;
   lib = nixpkgs.lib // builtins;
@@ -43,97 +42,62 @@ in
     };
   };
 
-  sops = {
-    defaultSopsFile = "${self}/sops/squid-rig.yaml";
-    secrets = {
-      ipv6_prefix_env = {
-        owner = "caddy";
-      };
-      bunny_dns_api_key_caddy = {
-        owner = "caddy";
-      };
-    };
-  };
-
-  systemd.services.caddy = {
-    serviceConfig = {
-      ExecStartPre = ''${lib.getExe' nixpkgs.coreutils "sleep"} 5'';
-      EnvironmentFile = [
-        "${config.sops.secrets.ipv6_prefix_env.path}"
-        "${config.sops.secrets.bunny_dns_api_key_caddy.path}"
-      ];
-    };
-  };
-
   services = {
-    caddy = {
+    caddy-squid = {
       enable = true;
-      package = nixpkgs.caddy.withPlugins {
-        plugins = [
-          "github.com/caddy-dns/bunny@v1.2.0"
+      plugins = {
+        extra = [
           "github.com/mohammed90/caddy-git-fs@v0.0.0-20240805164056-529acecd1830"
         ];
-        hash = "sha256-/MfZ5qHpvTjZnlnnwWOXITMSxDfZj0/SSF0kdWRzSuU=";
+        hash = "sha256-KMfYSwj/kcQgXsQxqhlzK4k54rRVFLo+aJNYqjPmhXY=";
       };
-      logFormat = ''
-        output file /var/log/caddy/access.log {
-          mode 640
-        }
-        level INFO
-      '';
-      email = "jack.connors@protonmail.com";
-      acmeCA = "https://acme-v02.api.letsencrypt.org/directory";
-      globalConfig = # caddyfile
+      extraGlobalConfig = # caddyfile
         ''
-          metrics
           filesystem gigglesquidtech git https://github.com/GiggleSquid/gigglesquidtech {
             refresh_period 60s
           }
         '';
-      extraConfig = # caddyfile
-        ''
-          (bunny_acme_settings) {
-            tls {
-              dns bunny {env.BUNNY_API_KEY}
-              resolvers 9.9.9.9 149.112.112.112
+    };
+    caddy.virtualHosts = {
+      "gigglesquid.tech.lan.gigglesquid.tech" = {
+        extraConfig = # caddyfile
+          ''
+            import bunny_acme_settings
+            import deny_non_local
+            encode zstd gzip
+            @cache-default path_regexp \/.*$
+            @cache-images path_regexp \/.*\.(jpg|jpeg|png|gif|webp|ico|svg)$
+            @cache-assets path_regexp \/assets\/(js\/.*\.js|css\/.*\.css)$
+            @cache-fonts path_regexp \/fonts\/.*\.(ttf|otf|woff|woff2)$
+            header @cache-default Cache-Control no-cache
+            header @cache-images Cache-Control max-age=2628000
+            header @cache-assets Cache-Control max-age=2628000
+            header @cache-fonts Cache-Control max-age=15768000
+
+            header {
+              Cross-Origin-Embedder-Policy "unsafe-none"
+              Cross-Origin-Opener-Policy "same-origin"
+              Cross-Origin-Resource-Policy "same-site"
+              Permissions-Policy "interest-cohort=(), camera=(), microphone=(), geolocation=()"
+              Referrer-Policy "strict-origin-when-cross-origin"
+              Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+              X-Content-Type-Options "nosniff"
+              X-Frame-Options "DENY"
             }
-          }
-          (deny_non_local) {
-            @denied not remote_ip private_ranges {env.IPV6_PREFIX}
-            handle @denied {
-              abort
+
+            handle {
+              root public_html
+              file_server {
+                fs gigglesquidtech
+              }
             }
-          }
-        '';
-      virtualHosts = {
-        "gigglesquid.tech.lan.gigglesquid.tech" = {
-          extraConfig = # caddyfile
-            ''
-              import bunny_acme_settings
-              import deny_non_local
-              encode zstd gzip
-              @cache-default path_regexp \/.*$
-              @cache-images path_regexp \/.*\.(jpg|jpeg|png|gif|webp|ico|svg)$
-              @cache-assets path_regexp \/assets\/(js\/.*\.js|css\/.*\.css)$
-              @cache-fonts path_regexp \/fonts\/.*\.(ttf|otf|woff|woff2)$
-              header @cache-default Cache-Control no-cache
-              header @cache-images Cache-Control max-age=2628000
-              header @cache-assets Cache-Control max-age=2628000
-              header @cache-fonts Cache-Control max-age=15768000
-              handle {
-                root public_html
-                file_server {
-                  fs gigglesquidtech
-                }
+            handle /umami_analytics.js {
+              rewrite * /script.js
+              reverse_proxy https://cloud.umami.is {
+                header_up Host {upstream_hostport}
               }
-              handle /umami_analytics.js {
-                rewrite * /script.js
-                reverse_proxy https://cloud.umami.is {
-                  header_up Host {upstream_hostport}
-                }
-              }
-            '';
-        };
+            }
+          '';
       };
     };
 

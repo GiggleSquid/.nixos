@@ -44,12 +44,6 @@ in
   sops = {
     defaultSopsFile = "${self}/sops/squid-rig.yaml";
     secrets = {
-      ipv6_prefix_env = {
-        owner = "caddy";
-      };
-      bunny_dns_api_key_caddy = {
-        owner = "caddy";
-      };
       prometheus_web_config = {
         owner = "prometheus";
       };
@@ -61,13 +55,6 @@ in
   };
 
   systemd.services = {
-    caddy.serviceConfig = {
-      ExecStartPre = ''${lib.getExe' nixpkgs.coreutils "sleep"} 5'';
-      EnvironmentFile = [
-        "${config.sops.secrets.ipv6_prefix_env.path}"
-        "${config.sops.secrets.bunny_dns_api_key_caddy.path}"
-      ];
-    };
     grafana.serviceConfig = {
       EnvironmentFile = [
         "${config.sops.secrets.prometheus_basic_auth_env_var.path}"
@@ -76,72 +63,39 @@ in
   };
 
   services = {
-    caddy = {
+    caddy-squid = {
       enable = true;
-      package = nixpkgs.caddy.withPlugins {
-        plugins = [
-          "github.com/caddy-dns/bunny@v1.2.0"
-        ];
-        hash = "sha256-0fRaYxb/+HeTOx8PyiX19m3ZoKWoEkzk9pFk1rCcNIE=";
+    };
+    caddy.virtualHosts = {
+      "grafana.otel.lan.gigglesquid.tech" = {
+        extraConfig = # caddyfile
+          ''
+            import bunny_acme_settings
+            import deny_non_local
+            handle {
+              reverse_proxy 127.0.0.1:${toString config.services.grafana.settings.server.http_port}
+            }
+          '';
       };
-      email = "jack.connors@protonmail.com";
-      acmeCA = "https://acme-v02.api.letsencrypt.org/directory";
-      logFormat = ''
-        output file /var/log/caddy/access.log {
-          mode 640
-        }
-        level INFO
-      '';
-      globalConfig = # caddyfile
-        ''
-          metrics
-        '';
-      extraConfig = # caddyfile
-        ''
-          (bunny_acme_settings) {
-            tls {
-              dns bunny {env.BUNNY_API_KEY}
-              resolvers 9.9.9.9 149.112.112.112
+      "prometheus.otel.lan.gigglesquid.tech" = {
+        extraConfig = # caddyfile
+          ''
+            import bunny_acme_settings
+            import deny_non_local
+            handle {
+              reverse_proxy 127.0.0.1:${toString config.services.prometheus.port}
             }
-          }
-          (deny_non_local) {
-            @denied not remote_ip private_ranges {env.IPV6_PREFIX}
-            handle @denied {
-              abort
+          '';
+      };
+      "loki.otel.lan.gigglesquid.tech" = {
+        extraConfig = # caddyfile
+          ''
+            import bunny_acme_settings
+            import deny_non_local
+            handle {
+              reverse_proxy 127.0.0.1:${toString config.services.loki.configuration.server.http_listen_port}
             }
-          }
-        '';
-      virtualHosts = {
-        "grafana.otel.lan.gigglesquid.tech" = {
-          extraConfig = # caddyfile
-            ''
-              import bunny_acme_settings
-              import deny_non_local
-              handle {
-                reverse_proxy 127.0.0.1:${toString config.services.grafana.settings.server.http_port}
-              }
-            '';
-        };
-        "prometheus.otel.lan.gigglesquid.tech" = {
-          extraConfig = # caddyfile
-            ''
-              import bunny_acme_settings
-              import deny_non_local
-              handle {
-                reverse_proxy 127.0.0.1:${toString config.services.prometheus.port}
-              }
-            '';
-        };
-        "loki.otel.lan.gigglesquid.tech" = {
-          extraConfig = # caddyfile
-            ''
-              import bunny_acme_settings
-              import deny_non_local
-              handle {
-                reverse_proxy 127.0.0.1:${toString config.services.loki.configuration.server.http_listen_port}
-              }
-            '';
-        };
+          '';
       };
     };
 
@@ -411,6 +365,7 @@ in
         lib.concatLists [
           nixosSuites.server
           base
+          caddy-server
         ];
     in
     lib.concatLists [

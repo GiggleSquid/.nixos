@@ -31,40 +31,16 @@ in
       "10-lan" = {
         matchConfig.Name = "enp6s18";
         ipv6AcceptRAConfig = {
-          Token = "static:::1:103";
+          Token = "static:::1:104";
         };
         address = [
-          "10.3.1.103/23"
+          "10.3.1.104/23"
         ];
         gateway = [
           "10.3.0.1"
         ];
       };
     };
-  };
-
-  sops = {
-    defaultSopsFile = "${self}/sops/squid-rig.yaml";
-    secrets = {
-      ipv6_prefix_env = {
-        owner = "caddy";
-      };
-      bunny_dns_api_key_caddy = {
-        owner = "caddy";
-      };
-    };
-  };
-
-  systemd.services.caddy.serviceConfig = {
-    ExecStartPre = ''${lib.getExe' nixpkgs.coreutils "sleep"} 5'';
-    EnvironmentFile = [
-      "${config.sops.secrets.ipv6_prefix_env.path}"
-      "${config.sops.secrets.bunny_dns_api_key_caddy.path}"
-    ];
-  };
-
-  users.groups.grav = {
-    members = [ config.services.caddy.user ];
   };
 
   services = {
@@ -78,66 +54,33 @@ in
         };
       };
     };
-    caddy = {
+    caddy-squid = {
       enable = true;
-      package = nixpkgs.caddy.withPlugins {
-        plugins = [
-          "github.com/caddy-dns/bunny@v1.2.0"
-        ];
-        hash = "sha256-0fRaYxb/+HeTOx8PyiX19m3ZoKWoEkzk9pFk1rCcNIE=";
-      };
-      logFormat = ''
-        output file /var/log/caddy/access.log {
-          mode 640
-        }
-        level INFO
-      '';
-      email = "jack.connors@protonmail.com";
-      acmeCA = "https://acme-v02.api.letsencrypt.org/directory";
-      globalConfig = # caddyfile
-        ''
-          metrics
-        '';
-      extraConfig = # caddyfile
-        ''
-          (bunny_acme_settings) {
-            tls {
-              dns bunny {env.BUNNY_API_KEY}
-              resolvers 9.9.9.9 149.112.112.112
+    };
+    caddy.virtualHosts = {
+      "old.cfwrs.org.uk.lan.gigglesquid.tech" = {
+        extraConfig = # caddyfile
+          ''
+            import bunny_acme_settings
+            import deny_non_local
+            encode zstd gzip
+
+            basic_auth {
+              CFWRS $2a$14$fpigMZS1lDCsKWjutjcbO.z467obj2r1HEi8E0kwVMdvvCCe94Y1S
             }
-          }
-          (deny_non_local) {
-            @denied not remote_ip private_ranges {env.IPV6_PREFIX}
-            handle @denied {
-              abort
+
+
+            route /websocket {
+              reverse_proxy localhost:8072 {
+                header_up Host {upstream_hostport}
+              }
             }
-          }
-        '';
-      virtualHosts = {
-        "cfwrs.org.uk.lan.gigglesquid.tech" = {
-          extraConfig = # caddyfile
-            ''
-              import bunny_acme_settings
-              import deny_non_local
-              encode zstd gzip
-
-              basic_auth {
-                CFWRS $2a$14$fpigMZS1lDCsKWjutjcbO.z467obj2r1HEi8E0kwVMdvvCCe94Y1S
+            route {
+              reverse_proxy localhost:8069 {
+                header_up Host {upstream_hostport}
               }
-
-
-              route /websocket {
-                reverse_proxy localhost:8072 {
-                  header_up Host {upstream_hostport}
-                }
-              }
-              route {
-                reverse_proxy localhost:8069 {
-                  header_up Host {upstream_hostport}
-                }
-              }
-            '';
-        };
+            }
+          '';
       };
     };
 

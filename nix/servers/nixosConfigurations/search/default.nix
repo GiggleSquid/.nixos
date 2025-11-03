@@ -47,22 +47,11 @@ in
     defaultSopsFile = "${self}/sops/squid-rig.yaml";
     secrets = {
       "searxng_env_vars" = { };
-      ipv6_prefix_env = {
-        owner = "caddy";
-      };
-      bunny_dns_api_key_caddy = {
-        owner = "caddy";
-      };
     };
   };
 
   systemd.services = {
     caddy.serviceConfig = {
-      ExecStartPre = ''${lib.getExe' nixpkgs.coreutils "sleep"} 5'';
-      EnvironmentFile = [
-        "${config.sops.secrets.ipv6_prefix_env.path}"
-        "${config.sops.secrets.bunny_dns_api_key_caddy.path}"
-      ];
       SupplementaryGroups = [ "searx" ];
     };
     searx-init = {
@@ -125,62 +114,34 @@ in
       };
     };
 
-    caddy = {
+    caddy-squid = {
       enable = true;
-      package = nixpkgs.caddy.withPlugins {
-        plugins = [
-          "github.com/caddy-dns/bunny@v1.2.0"
+      plugins = {
+        extra = [
           "github.com/BadAimWeeb/caddy-uwsgi-transport@v0.0.0-20240317192154-74a1008b9763"
         ];
-        hash = "sha256-bxOhVZsnhYWHgbjZ10OMg9B114E/O3DlFP01bVGG+dU=";
+        hash = "sha256-uO+RFsFsMnORqm5xEW2PQ4ZNGC2Zle/9Ur9SM9ExNPw=";
       };
-      logFormat = ''
-        output file /var/log/caddy/access.log {
-          mode 640
-        }
-        level INFO
-      '';
-      email = "jack.connors@protonmail.com";
-      acmeCA = "https://acme-v02.api.letsencrypt.org/directory";
-      globalConfig = # caddyfile
-        ''
-          metrics
-        '';
-      extraConfig = # caddyfile
-        ''
-          (bunny_acme_settings) {
-            tls {
-              dns bunny {env.BUNNY_API_KEY}
-              resolvers 9.9.9.9 149.112.112.112
-            }
-          }
-          (deny_non_local) {
-            @denied not remote_ip private_ranges {env.IPV6_PREFIX}
-            handle @denied {
-              abort
-            }
-          }
-        '';
-      virtualHosts = {
-        "search.lan.gigglesquid.tech" = {
-          extraConfig = # caddyfile
-            ''
-              import bunny_acme_settings
-              import deny_non_local
-              encode zstd gzip
-              handle {
-                reverse_proxy unix/${config.services.uwsgi.instance.vassals.searx.socket} {
-                  transport uwsgi {
-                    uwsgi_param HTTP_X_SCRIPT_NAME ""
-                  }
+    };
+    caddy.virtualHosts = {
+      "search.lan.gigglesquid.tech" = {
+        extraConfig = # caddyfile
+          ''
+            import bunny_acme_settings
+            import deny_non_local
+            encode zstd gzip
+            handle {
+              reverse_proxy unix/${config.services.uwsgi.instance.vassals.searx.socket} {
+                transport uwsgi {
+                  uwsgi_param HTTP_X_SCRIPT_NAME ""
                 }
               }
-              handle_path /static/ {
-                root "${config.services.searx.package}/share/static/*"
-                file_server
-              }
-            '';
-        };
+            }
+            handle_path /static/ {
+              root "${config.services.searx.package}/share/static/*"
+              file_server
+            }
+          '';
       };
     };
   };
@@ -193,6 +154,7 @@ in
         lib.concatLists [
           nixosSuites.server
           base
+          caddy-server
         ];
     in
     lib.concatLists [

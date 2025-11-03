@@ -46,22 +46,8 @@ in
   sops = {
     defaultSopsFile = "${self}/sops/squid-rig.yaml";
     secrets = {
-      ipv6_prefix_env = {
-        owner = "caddy";
-      };
-      bunny_dns_api_key_caddy = {
-        owner = "caddy";
-      };
       umami_secret = { };
     };
-  };
-
-  systemd.services.caddy.serviceConfig = {
-    ExecStartPre = ''${lib.getExe' nixpkgs.coreutils "sleep"} 5'';
-    EnvironmentFile = [
-      "${config.sops.secrets.ipv6_prefix_env.path}"
-      "${config.sops.secrets.bunny_dns_api_key_caddy.path}"
-    ];
   };
 
   services = {
@@ -76,69 +62,20 @@ in
       };
     };
 
-    caddy = {
+    caddy-squid = {
       enable = true;
-      package = nixpkgs.caddy.withPlugins {
-        plugins = [
-          "github.com/caddy-dns/bunny@v1.2.0"
-          "github.com/fvbommel/caddy-combine-ip-ranges@v0.0.2-0.20240127132546-5624d08f5f9e"
-          "github.com/fvbommel/caddy-dns-ip-range@v0.0.3-0.20230301183658-6facda90c1f7"
-          "github.com/digilolnet/caddy-bunny-ip@v0.0.0-20250118080727-ef607b8e1644"
-        ];
-        hash = "sha256-IiRvvcGd8uSqpw3YHUKAgdS/FE+i4WJ0uqdaPPNfUbg=";
-      };
-      logFormat = ''
-        output file /var/log/caddy/access.log {
-          mode 640
-        }
-        level INFO
-      '';
-      email = "jack.connors@protonmail.com";
-      acmeCA = "https://acme-v02.api.letsencrypt.org/directory";
-      globalConfig = # caddyfile
-        ''
-          metrics
-          servers {
-            trusted_proxies combine {
-              bunny {
-                interval 6h
-                timeout 25s
-              }
-              dns {
-                interval 15m
-                host dmz.caddy.lan.gigglesquid.tech
-                host internal.caddy.lan.gigglesquid.tech
-              }
+    };
+    caddy.virtualHosts = {
+      "umami.lan.gigglesquid.tech" = {
+        extraConfig = # caddyfile
+          ''
+            import bunny_acme_settings
+            import deny_non_local
+            reverse_proxy localhost:3000 {
+              header_up X-Forwarded-Host "umami.gigglesquid.tech"
+              header_down Cross-Origin-Resource-Policy cross-origin
             }
-          }
-        '';
-      extraConfig = # caddyfile
-        ''
-          (bunny_acme_settings) {
-            tls {
-              dns bunny {env.BUNNY_API_KEY}
-              resolvers 9.9.9.9 149.112.112.112
-            }
-          }
-          (deny_non_local) {
-            @denied not remote_ip private_ranges {env.IPV6_PREFIX}
-            handle @denied {
-              abort
-            }
-          }
-        '';
-      virtualHosts = {
-        "umami.lan.gigglesquid.tech" = {
-          extraConfig = # caddyfile
-            ''
-              import bunny_acme_settings
-              import deny_non_local
-              reverse_proxy localhost:3000 {
-                header_up X-Forwarded-Host "umami.gigglesquid.tech"
-                header_down Cross-Origin-Resource-Policy cross-origin
-              }
-            '';
-        };
+          '';
       };
     };
 

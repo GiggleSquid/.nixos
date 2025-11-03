@@ -18,6 +18,7 @@ with nixosProfiles;
 
   caddy-server = [
     caddy
+    nixosModules.caddy-squid
     nixosModules.crowdsec
   ];
 
