@@ -36,7 +36,7 @@ in
     # lmms
     # monero-gui
     packwiz
-    path-of-building
+    rusty-path-of-building
     prismlauncher
     prusa-slicer
     scribus
