@@ -1,10 +1,9 @@
 {
   inputs,
   cell,
-  config,
 }:
 let
-  inherit (inputs) nixos-hardware nixpkgs;
+  inherit (inputs) nixos-hardware nixpkgs self;
 in
 {
   imports = with nixos-hardware.nixosModules; [
@@ -104,7 +103,7 @@ in
       enable = true;
       themePackages = [ (nixpkgs.catppuccin-plymouth.override { variant = "mocha"; }) ];
       theme = "catppuccin-mocha";
-      # logo = "${self}/artwork/SquidNixPlymouth.png";
+      logo = "${self}/artwork/SquidNixPlymouth.png";
     };
   };
 
