@@ -7,7 +7,7 @@ in
     enableDefaultPackages = false;
     packages = with nixpkgs; [
       google-fonts
-      noto-fonts-emoji
+      noto-fonts-color-emoji
       sarasa-gothic
       (iosevka-bin.override { variant = "Etoile"; })
       (iosevka-bin.override { variant = "Aile"; })
