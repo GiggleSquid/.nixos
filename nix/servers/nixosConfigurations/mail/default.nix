@@ -43,6 +43,7 @@ in
     secrets = {
       bunny_dns_api_key = { };
       crowdsec_bouncer_api_keys_env = { };
+      "crowdsec_bouncer_api_keys/mail_firewall" = { };
       "mailserver/pass/postmaster@gigglesquid.tech" = { };
       "mailserver/pass/jack.connors@gigglesquid.tech" = { };
       "mailserver/pass/kraken.lan@gigglesquid.tech" = { };
@@ -237,8 +238,10 @@ in
     crowdsec-firewall-bouncer = {
       enable = true;
       settings = {
-        api_key = ''''${CROWDSEC_MAIL_FIREWALL_API_KEY}'';
         api_url = "https://crowdsec.lan.gigglesquid.tech:8443";
+      };
+      secrets = {
+        apiKeyPath = "${config.sops.secrets."crowdsec_bouncer_api_keys/mail_firewall".path}";
       };
     };
   };
@@ -251,7 +254,6 @@ in
         lib.concatLists [
           nixosSuites.server
           base
-          crowdsec
           snm
         ];
     in

@@ -50,6 +50,7 @@ in
     defaultSopsFile = "${self}/sops/squid-rig.yaml";
     secrets = {
       crowdsec_bouncer_api_keys_env = { };
+      "crowdsec_bouncer_api_keys/caddy_dmz_firewall" = { };
     };
   };
 
@@ -308,8 +309,10 @@ in
     crowdsec-firewall-bouncer = {
       enable = true;
       settings = {
-        api_key = ''''${CROWDSEC_CADDY_DMZ_FIREWALL_API_KEY}'';
         api_url = "https://crowdsec.lan.gigglesquid.tech:8443";
+      };
+      secrets = {
+        apiKeyPath = "${config.sops.secrets."crowdsec_bouncer_api_keys/caddy_dmz_firewall".path}";
       };
     };
   };

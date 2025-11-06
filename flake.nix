@@ -121,11 +121,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    crowdsec = {
-      url = "git+https://codeberg.org/kampka/nix-flake-crowdsec.git";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     nix-pia-vpn = {
       url = "github:rcambrj/nix-pia-vpn";
       inputs.nixpkgs.follows = "nixpkgs";

@@ -12,14 +12,11 @@ with nixosProfiles;
     nixosModules.alloy-squid
   ];
 
-  crowdsec = [ nixosModules.crowdsec ];
-
   dns-server = [ technitium ];
 
   caddy-server = [
     caddy
     nixosModules.caddy-squid
-    nixosModules.crowdsec
   ];
 
   squidbit = [
