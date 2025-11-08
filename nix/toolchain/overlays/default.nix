@@ -10,13 +10,7 @@ in
         { };
   };
 
-  ladybird = nixpkgs.ladybird.overrideAttrs (old: {
-    version = "0-unstable-2024-08-30";
     src = nixpkgs.fetchFromGitHub {
-      owner = "LadybirdWebBrowser";
-      repo = "ladybird";
-      rev = "92a37b3b1a62cf8ed6bc942229cb77bce01ec815";
-      hash = "sha256-IU48PBOe9mNtPNVVq+XfUVeh/nKmULSZBkaPld/510w=";
     };
   });
 

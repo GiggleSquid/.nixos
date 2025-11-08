@@ -52,7 +52,7 @@ in
     };
   };
 
-  programs.ladybird.enable = false;
+  programs.ladybird.enable = true;
 
   imports =
     let
