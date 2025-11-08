@@ -10,7 +10,13 @@ in
         { };
   };
 
+  google-fonts = nixpkgs.google-fonts.overrideAttrs (old: {
+    version = "0-unstable-2025-11-07";
     src = nixpkgs.fetchFromGitHub {
+      owner = "google";
+      repo = "fonts";
+      rev = "4ad8c2096b0507410dac565a0a3cbb37686f216f";
+      hash = "sha256-ZEZbqXw79Y2XuTxPyGKUFuHCFQ7jfThYOePyPhvBQ7Y=";
     };
   });
 
