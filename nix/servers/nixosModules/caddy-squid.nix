@@ -43,6 +43,7 @@ in
         bunny_dns_api_key_caddy = { };
         ipv6_prefix_env = { };
         ipv4_subnet_env = { };
+        ipv4_static_env = { };
       };
     };
 
@@ -53,6 +54,7 @@ in
           "${config.sops.secrets.bunny_dns_api_key_caddy.path}"
           "${config.sops.secrets.ipv6_prefix_env.path}"
           "${config.sops.secrets.ipv4_subnet_env.path}"
+          "${config.sops.secrets.ipv4_static_env.path}"
         ];
       };
     };
@@ -111,7 +113,7 @@ in
           }
         }
         (trusted_ips) {
-          not client_ip private_ranges {env.IPV4_SUBNET} {env.IPV6_PREFIX}
+          not client_ip private_ranges {env.IPV4_STATIC} {env.IPV4_SUBNET} {env.IPV6_PREFIX}
         }
       ''
       + cfg.extraExtraConfig;
