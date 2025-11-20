@@ -75,7 +75,7 @@ in
           "github.com/hslatman/caddy-crowdsec-bouncer@v0.9.2"
           "github.com/mholt/caddy-l4@v0.0.0-20251001194302-2e3e6cf60b25"
         ];
-        hash = "sha256-uC4QfSSW221WdvMlflOSPMX7vUEcOppFGrnU9QbflnU=";
+        hash = "sha256-cosIQBI0KdWkBxWPPVc5YGShv0WA7yJUlb5nniz83wU=";
       };
       extraGlobalConfig = # caddyfile
         ''

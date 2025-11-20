@@ -49,7 +49,7 @@ in
         extra = [
           "github.com/mohammed90/caddy-git-fs@v0.0.0-20240805164056-529acecd1830"
         ];
-        hash = "sha256-KMfYSwj/kcQgXsQxqhlzK4k54rRVFLo+aJNYqjPmhXY=";
+        hash = "sha256-XiF14PiJJlssiuAl1Yoae+Cdak7mEgtPTVv+pZY1+KU=";
       };
       extraGlobalConfig = # caddyfile
         ''

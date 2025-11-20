@@ -86,7 +86,7 @@ in
         extra = [
           "github.com/hslatman/caddy-crowdsec-bouncer@v0.9.2"
         ];
-        hash = "sha256-xxsLh/0aUpNkuv74NtcapToxFJ7FTZfqwQfRaEVFpc8=";
+        hash = "sha256-7n3y8m+zVFw3Kf3bL0/LjAaCq7715Ovi+zizLRX1UZo=";
       };
       extraGlobalConfig = # caddyfile
         ''

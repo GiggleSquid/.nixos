@@ -27,7 +27,7 @@ in
     plugins = {
       hash = lib.mkOption {
         type = lib.types.str;
-        default = "sha256-c9IIAQjdBXHqLZIn/iwjMJHEuFZ7XMLJz7lRXcKjSzc=";
+        default = "sha256-mg+5iy73JbAlCRgq4g/GPQqE70mWApygRtSNqaUDShk=";
       };
       extra = lib.mkOption {
         type = lib.types.listOf lib.types.str;
