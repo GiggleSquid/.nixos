@@ -58,8 +58,6 @@
               "steam-run"
               "steam-original"
               "steam-unwrapped"
-              "nvidia-x11"
-              "nvidia-settings"
               "discord"
               "vintagestory"
               "starsector"
@@ -70,20 +68,6 @@
               "unrar"
             ];
           permittedInsecurePackages = [
-            # vintagestory
-            "dotnet-runtime-wrapped-7.0.20"
-            "dotnet-runtime-7.0.20"
-
-            # arrs
-            # https://github.com/Radarr/Radarr/pull/10258
-            # https://github.com/Prowlarr/Prowlarr/pull/2195
-            # https://github.com/Sonarr/Sonarr/issues/7442
-            # https://github.com/Sonarr/Sonarr/pull/6776
-            "aspnetcore-runtime-wrapped-6.0.36"
-            "aspnetcore-runtime-6.0.36"
-            "dotnet-sdk-wrapped-6.0.428"
-            "dotnet-sdk-6.0.428"
-
             # jellyfin-media-player
             "qtwebengine-5.15.19"
           ];

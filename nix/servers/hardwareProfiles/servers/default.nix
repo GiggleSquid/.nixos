@@ -1,7 +1,6 @@
 { inputs }:
 let
   inherit (inputs) common nixos-hardware nixpkgs;
-  lib = nixpkgs.lib;
 in
 {
   imports = with nixos-hardware.nixosModules; [

@@ -57,7 +57,8 @@ in
     ];
     kernelModules = [ "kvm-intel" ];
     kernel.sysctl = {
-      # Watch https://github.com/NixOS/nixpkgs/pull/351002
+      # Check me
+      # See: https://github.com/NixOS/nixpkgs/pull/351002
       # will be redundant when merged
       "vm.swappiness" = 150;
       "vm.watermark_boost_scale_factor" = 0;
