@@ -49,6 +49,9 @@ in
       "mailserver/pass/kraken.lan@gigglesquid.tech" = { };
       "mailserver/pass/cephalonas.lan@gigglesquid.tech" = { };
       "mailserver/pass/pbs.cephalonas.lan@gigglesquid.tech" = { };
+      "mailserver/pass/hello@thatferret.blog" = { };
+      "mailserver/pass/privacy@thatferret.blog" = { };
+      "mailserver/pass/jack.connors@thatferret.blog" = { };
       "mailserver/pass/hello@thatferret.shop" = { };
       "mailserver/pass/privacy@thatferret.shop" = { };
       "mailserver/pass/notifications@thatferret.shop" = { };
@@ -90,7 +93,7 @@ in
     fqdn = "mail.gigglesquid.tech";
     domains = [
       "gigglesquid.tech"
-      # "thatferret.blog"
+      "thatferret.blog"
       "thatferret.shop"
     ];
     certificateScheme = "acme";
@@ -159,9 +162,22 @@ in
         sendOnly = true;
       };
 
+      # thatferret.blog
+      "hello@thatferret.blog" = {
+        hashedPasswordFile = "${config.sops.secrets."mailserver/pass/hello@thatferret.blog".path}";
+        aliases = [ "contact@thatferret.blog" ];
+      };
+      "privacy@thatferret.blog" = {
+        hashedPasswordFile = "${config.sops.secrets."mailserver/pass/privacy@thatferret.blog".path}";
+      };
+      "jack.connors@thatferret.blog" = {
+        hashedPasswordFile = "${config.sops.secrets."mailserver/pass/jack.connors@thatferret.blog".path}";
+      };
+
       # thatferret.shop
       "hello@thatferret.shop" = {
         hashedPasswordFile = "${config.sops.secrets."mailserver/pass/hello@thatferret.shop".path}";
+        aliases = [ "contact@thatferret.shop" ];
       };
       "privacy@thatferret.shop" = {
         hashedPasswordFile = "${config.sops.secrets."mailserver/pass/privacy@thatferret.shop".path}";
