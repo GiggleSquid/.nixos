@@ -166,19 +166,6 @@ in
             }
           '';
       };
-      "thatferret.blog" = {
-        extraConfig = # caddyfile
-          ''
-            log
-            import bunny_acme_settings
-            route {
-              crowdsec
-              reverse_proxy https://thatferret.blog.internal.caddy.lan.gigglesquid.tech {
-                header_up Host {upstream_hostport}
-              }
-            }
-          '';
-      };
       "thatferret.shop" = {
         extraConfig = # caddyfile
           ''
@@ -192,7 +179,7 @@ in
             }
           '';
       };
-      "gigglesquid.tech" = {
+      "origin.gigglesquid.tech" = {
         extraConfig = # caddyfile
           ''
             log
