@@ -34,6 +34,8 @@ keys:
 
   - &umami age1cth8tyun4jrm4syafscm8hjp0crdkzyujj9f94afzrs42txy0dss85znkn
 
+  - &uptime age1jymk6evw90ux9mzhvfwl2cmrhntrkzzcslcvq76uvxdd9evrn4lqt5mwuj
+
   - &gigglesquidtech age1735wpngc823k4trcp0ayzfnreqntvez8uymz048sv4wy59h0k9jq3r6pmj
   - &thatferretblog age1vghjsjt0rnqw8spwdgqesaqjs8kg725wkvvmhua94j3uaryg0c9snj6u67
   - &thatferretshop age16uf9ff3933s2uyxu74cgm34090k9pr8z4g0n33nlzrt76ha3wfcq0aayzp
@@ -70,6 +72,7 @@ creation_rules:
       - *minesquid
       - *unimatrix
       - *umami
+      - *uptime
       - *gigglesquidtech
       - *thatferretblog
       - *thatferretshop
