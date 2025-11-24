@@ -9,10 +9,21 @@ let
 in
 let
   cfg = config.services.caddy-squid;
+  mkIfElse =
+    p: yes: no:
+    lib.mkMerge [
+      (lib.mkIf p yes)
+      (lib.mkIf (!p) no)
+    ];
 in
 {
   options.services.caddy-squid = {
     enable = lib.mkEnableOption (lib.mdDoc "caddy-squid");
+
+    externalService = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+    };
 
     extraGlobalConfig = lib.mkOption {
       type = lib.types.lines;
@@ -66,8 +77,10 @@ in
           "github.com/caddy-dns/bunny@v1.2.0"
           "github.com/digilolnet/caddy-bunny-ip@v0.0.0-20250118080727-ef607b8e1644"
           "github.com/fvbommel/caddy-dns-ip-range@v0.0.3-0.20250824174532-f6ba728e351a"
-          "github.com/fvbommel/caddy-combine-ip-ranges@v0.0.2-0.20240127132546-5624d08f5f9e"
         ]
+        ++ (lib.lists.optionals (!cfg.externalService) [
+          "github.com/fvbommel/caddy-combine-ip-ranges@v0.0.2-0.20240127132546-5624d08f5f9e"
+        ])
         ++ cfg.plugins.extra;
         hash = cfg.plugins.hash;
       };
@@ -79,24 +92,39 @@ in
         }
         level INFO
       '';
-      globalConfig = # caddyfile
-      ''
-        metrics
-        servers {
-          trusted_proxies combine {
-            bunny {
-              interval 6h
-              timeout 25s
-            }
-            dns {
-              interval 15m
-              host dmz.caddy.lan.gigglesquid.tech
-              host internal.caddy.lan.gigglesquid.tech
-            }
-          }
-        }
-      ''
-      + cfg.extraGlobalConfig;
+      globalConfig =
+        mkIfElse cfg.externalService
+          (
+            ''
+              metrics
+              servers {
+                trusted_proxies bunny {
+                  interval 6h
+                  timeout 25s
+                }
+              }
+            ''
+            + cfg.extraGlobalConfig
+          )
+          (
+            ''
+              metrics
+              servers {
+                trusted_proxies combine {
+                  bunny {
+                    interval 6h
+                    timeout 25s
+                  }
+                  dns {
+                    interval 15m
+                    host dmz.caddy.lan.gigglesquid.tech
+                    host internal.caddy.lan.gigglesquid.tech
+                  }
+                }
+              }
+            ''
+            + cfg.extraGlobalConfig
+          );
 
       extraConfig = # caddyfile
       ''
@@ -106,14 +134,14 @@ in
             resolvers 9.9.9.9 149.112.112.112
           }
         }
+        (trusted_ips) {
+          not client_ip private_ranges {env.IPV4_STATIC} {env.IPV4_SUBNET} {env.IPV6_PREFIX}
+        }
         (deny_non_local) {
-          @denied not remote_ip private_ranges {env.IPV6_PREFIX}
+          @denied not remote_ip private_ranges {env.IPV4_STATIC} {env.IPV4_SUBNET} {env.IPV6_PREFIX}
           handle @denied {
             abort
           }
-        }
-        (trusted_ips) {
-          not client_ip private_ranges {env.IPV4_STATIC} {env.IPV4_SUBNET} {env.IPV6_PREFIX}
         }
       ''
       + cfg.extraExtraConfig;
