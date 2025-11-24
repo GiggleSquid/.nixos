@@ -13,9 +13,9 @@ in
   boot = {
     kernelPackages = nixpkgs.linuxPackages_latest;
     loader = {
-      systemd-boot = {
+      grub = {
         enable = true;
-        consoleMode = "max";
+        device = "/dev/sda";
         configurationLimit = 4;
       };
     };
