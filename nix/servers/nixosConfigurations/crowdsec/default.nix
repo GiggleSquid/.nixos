@@ -32,10 +32,10 @@ in
           Token = "static:::50";
         };
         address = [
-          "10.3.0.50/23"
+          "10.100.0.50/24"
         ];
         gateway = [
-          "10.3.0.1"
+          "10.100.0.1"
         ];
       };
     };
@@ -65,8 +65,11 @@ in
       };
     };
     certs = {
-      "crowdsec.lan.gigglesquid.tech" = {
+      "crowdsec.gigglesquid.tech" = {
         group = "crowdsec";
+        extraDomainNames = [
+          "crowdsec.lan.gigglesquid.tech"
+        ];
       };
     };
   };
@@ -89,8 +92,8 @@ in
           enable = true;
           listen_uri = "0.0.0.0:8443";
           tls = {
-            cert_file = "/var/lib/acme/crowdsec.lan.gigglesquid.tech/cert.pem";
-            key_file = "/var/lib/acme/crowdsec.lan.gigglesquid.tech/key.pem";
+            cert_file = "/var/lib/acme/crowdsec.gigglesquid.tech/cert.pem";
+            key_file = "/var/lib/acme/crowdsec.gigglesquid.tech/key.pem";
             client_verification = "NoClientCert";
           };
         };
@@ -125,8 +128,8 @@ in
         {
           source = "appsec";
           listen_addr = "0.0.0.0:7422";
-          cert_file = "/var/lib/acme/crowdsec.lan.gigglesquid.tech/cert.pem";
-          key_file = "/var/lib/acme/crowdsec.lan.gigglesquid.tech/key.pem";
+          cert_file = "/var/lib/acme/crowdsec.gigglesquid.tech/cert.pem";
+          key_file = "/var/lib/acme/crowdsec.gigglesquid.tech/key.pem";
           appsec_configs = [ "crowdsecurity/appsec-default" ];
           routines = 2;
           labels = {
