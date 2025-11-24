@@ -15,9 +15,10 @@ in
   inherit (common) bee time;
   networking = {
     inherit hostName;
-    domain = "lan.gigglesquid.tech";
+    domain = "gigglesquid.tech";
     firewall = {
       allowedTCPPorts = [
+        80
         443
       ];
       allowedUDPPorts = [
@@ -31,7 +32,7 @@ in
       "10-lan" = {
         matchConfig.Name = "enp1s0";
         address = [
-          "2a01:4f8:1c1a:25f0::1/64"
+          "2a01:4f8:1c1a:25f0::10/64"
           "167.235.72.13/32"
         ];
         routes = [
@@ -41,6 +42,21 @@ in
             GatewayOnLink = true;
           }
         ];
+        dns = [
+          "2620:fe::fe"
+          "2620:fe::9"
+          "9.9.9.9"
+          "149.112.112.112"
+        ];
+      };
+      "11-inter-lan" = {
+        matchConfig.Name = "enp7s0";
+        address = [
+          "10.150.0.10/24"
+        ];
+        routes = [
+          { Gateway = "10.150.0.1"; }
+        ];
       };
     };
   };
@@ -48,11 +64,65 @@ in
   sops = {
     defaultSopsFile = "${self}/sops/squid-rig.yaml";
     secrets = {
-      bunny_dns_api_key = { };
+      crowdsec_bouncer_api_keys_env = { };
+      "crowdsec_bouncer_api_keys/uptime_firewall" = { };
+    };
+  };
+
+  systemd.services = {
+    caddy.serviceConfig = {
+      EnvironmentFile = [
+        "${config.sops.secrets.crowdsec_bouncer_api_keys_env.path}"
+      ];
     };
   };
 
   services = {
+    uptime-kuma = {
+      enable = true;
+    };
+    caddy-squid = {
+      enable = true;
+      externalService = true;
+      plugins = {
+        extra = [
+          "github.com/hslatman/caddy-crowdsec-bouncer@v0.9.2"
+        ];
+        hash = "sha256-zJfDg7vESe9lU/tw0gx5l8GmGiDPOZRd7uHA45+1Nwc=";
+      };
+      extraGlobalConfig = # caddyfile
+        ''
+          crowdsec {
+            api_url https://crowdsec.gigglesquid.tech:8443
+            # appsec_url https://crowdsec.gigglesquid.tech:7422
+            api_key {env.CROWDSEC_UPTIME_CADDY_API_KEY}
+            ticker_interval 15s
+          }
+        '';
+    };
+    caddy.virtualHosts = {
+      "uptime.gigglesquid.tech" = {
+        extraConfig = # caddyfile
+          ''
+            import bunny_acme_settings
+            import deny_non_local
+            encode zstd gzip
+            route {
+              reverse_proxy localhost:3001
+            }
+          '';
+      };
+    };
+
+    crowdsec-firewall-bouncer = {
+      enable = true;
+      settings = {
+        api_url = "https://crowdsec.gigglesquid.tech:8443";
+      };
+      secrets = {
+        apiKeyPath = "${config.sops.secrets."crowdsec_bouncer_api_keys/uptime_firewall".path}";
+      };
+    };
   };
 
   imports =

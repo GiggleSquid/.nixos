@@ -16,9 +16,10 @@ umami_secret: ENC[AES256_GCM,data:+Bm2sMHs62gDVTqbzfcaDnah+7K8i8uvW7J/8cfpISY=,i
 crowdsec_enroll_key: ENC[AES256_GCM,data:uKtIxqIsfrYxEFMuRZTtRuSYNWfcOvSPsw==,iv:dvXdY+BRUinr59WbwodM4EFJJQJ5KzEnyJHKj5p5kX8=,tag:8p0FDMD4CTOs7cDyENA9dA==,type:str]
 crowdsec_bouncer_api_keys:
     caddy_dmz_firewall: ENC[AES256_GCM,data:cx0oek+965sNZQm3V/gB+z3AXJsApmWBmcQSN5CRbGSqIWmGA+vAgb/TUQ==,iv:yZqRWwH9jgGM2y6tqHM8Ii7CuGKIxI7TnFJg+ui2TO4=,tag:LSb5oZXfa/fsMvYFdC5rPg==,type:str]
+    uptime_firewall: ENC[AES256_GCM,data:TNDvcMP6GeMpH3Seby4Dw4HrEsVznfU61d3dZunwW3Mf6zHRBSQ1+q8uaA==,iv:EfWnbfgeJ01+g3gQ+Z5PFQPWLHS/9IP69kNu9slDNUg=,tag:JLF5sFQ42JqevNjCJZ/3WA==,type:str]
     mail_firewall: ENC[AES256_GCM,data:1U2XtHE5bimWAKE1BKWKhqTfiHdDbo8vaW1u3C3LKJC9T6YxEYa4ADWTHg==,iv:iPx7KnDE8T/AGliFww97f5YtJf38B5TjC+lrOeljhYA=,tag:f2CYvgDge8t/A9JhclnoPg==,type:str]
     thatferretshop_wordpress: ENC[AES256_GCM,data:008g6b7K1aZ7qAOUNN83lKpBWRI3LpL+kRitljPeVdMGlHuI7yXdvQcnCQ==,iv:DspsGmA7TCZkVCwEaDy+MpJnkxXqn/r9J4HXMxvINn8=,tag:59NMl6PBU3YWerAv54ayBA==,type:str]
-crowdsec_bouncer_api_keys_env: ENC[AES256_GCM,data:phy0pHmD6uNvtYnxzfkJeQ+K1/JhTU4Gx2VhZDEisB+oB0tEe1zD8ZQWjZHBxk1ZIadUBCajObaH6Vd7HzF9HkUqqu7AS+j+I0moTqw0xuGYDsztr3G4rD11vIhqlCFuR1Vl+1ky7L8N11Ui+SVs3xGLWW5d33JD7ru0MZe9be8zbj3WjhervRwwTcPGi7Ivw5EoDAzoBny1dVXtHYiP,iv:uVJD49Z83ND2bw7oCAyGzE/lJtZ3jay8QDRGEz1OTMQ=,tag:Trrv5BgMcywnSc2YO8IZ0w==,type:str]
+crowdsec_bouncer_api_keys_env: ENC[AES256_GCM,data:O2HdZtnVr6v/Xrvivaxvitc439QIdcrrLL05cQee3mX80+cErbF5kEyO/cRQHD3d/gXQePQxyiQ1M3DmELPRlOy2PDo4CLr3tRx/0NXuM206Dj9jfz7QA1pyViOBpRGWHu1aslzJkbcWTTH+c8qGVXH8wNLopaDJNVqUC2GSquzfFmI0ETbOFkucTnzjZHQCev2Kocetedme/LSIV4MQuGMe2AX9CqyuuVSabTwHoF6xZivLdGdUCWnJ0flK7R45Vqd2/BZDY+s/uamqsCQkuG9viOOAQESaHcqWWSrxHI0hULgwaIHd3nU=,iv:lB5yNT3EYp0+l4FHrxjCzTm1dqmM+ib39lxd+SXX9Pg=,tag:4d4KGmQyTrcnlcnw1iIGvQ==,type:str]
 prometheus_basic_auth: ENC[AES256_GCM,data:BE59OMIYAjTh5NTXxQ4ERrwARxadV+eLB3flaiSOdEk=,iv:W0vdSwvunuget446Rcl4MQGB1C3AJOjcY8tow28zV00=,tag:K3FSluCTtGaqViYzevrncw==,type:str]
 prometheus_basic_auth_env_var: ENC[AES256_GCM,data:slbE2VKKk1Ycz29SWpG3+7GoOFHVegzEtzrQ558jeV6HtIVFkgL0Wu3oVK73ss2Xz+xXRhoi,iv:47wT7001vKmE/4qRaYt22yVsg7q9/O86b05MeNuZCZ8=,tag:eQnHZWrBLrjctHZJQD+F1A==,type:str]
 prometheus_web_config: ENC[AES256_GCM,data:kswqKHEcyZ+g0/F7i59OAFabkPmvcHpgp9WvEOLN41E9pWf7SS+iMvE2Diea9XsJ8Utos0Lxk8Dz3TGaqfMuViRyGUl6WUdJE02urKwBjDnqdaNI8aPKEQ==,iv:ac0CgYZHrllRvsNwlOdOazTzzbcNMdaZHSS0QCfe4hk=,tag:P6q8VQ4trXBJDS7H+z8Lig==,type:str]
@@ -330,7 +331,7 @@ sops:
             RnVaUTlZelJEVFJJNWpkRHgrOENoMlkKucJ+UDNlOgQJ9ye4RcjRAObmQiRXDFzL
             Wp8weKxXfWIRO8UGVkCq4OaObsPD0xaBto5lUJ1fflz2n7UojETrSg==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2025-11-19T10:46:08Z"
-    mac: ENC[AES256_GCM,data:Hig8Qj1bsZ6Dmc5FmYT02j+0t/KcpIO8c9gWQTZgNHTKeF2PHPG6uSmoECzC4B7STZvyMdPFYro46Lg5UQFHAACS9JTy2qgorva8ZkzxW9NUcTyoC1eEQuC45Ii9URVwsMQsr+2QIXiTEIWAAgsmQbOfkMjATa4pOt4xR8c8jAk=,iv:2wZiJCGKOGGSiFnqDO0IOttr0iAOVmhMRnjU6CEDU6o=,tag:PbYW8YIQ65h6qMYQi8xbPw==,type:str]
+    lastmodified: "2025-11-24T13:19:29Z"
+    mac: ENC[AES256_GCM,data:m8xwIFMcrIyjT5BsS4fghAmy2HW3Srf+fERq5wmfWb0WMCi6C148nFYoENbsRhqMphKf0HGAH/hxc19n7Kuy+PWT6eqlsdhZWHFtHHwsrXhnudiEpbQe3zLuO8l4hsPK/YuLJpZIEO6ymT43RlMqF3a+JzzYtcYWrabwcAePdcg=,iv:s9ZRUYaeCWck4/qBKEkt2N3ld07lOAtNJp4P5bbmrO4=,tag:vbSlbvXwvFlPcX8g6mmy4g==,type:str]
     unencrypted_suffix: _unencrypted
     version: 3.11.0
