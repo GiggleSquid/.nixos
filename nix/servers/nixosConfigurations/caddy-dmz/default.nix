@@ -60,11 +60,6 @@ in
         "${config.sops.secrets.crowdsec_bouncer_api_keys_env.path}"
       ];
     };
-    crowdsec-firewall-bouncer.serviceConfig = {
-      EnvironmentFile = [
-        "${config.sops.secrets.crowdsec_bouncer_api_keys_env.path}"
-      ];
-    };
   };
 
   services = {
