@@ -1,16 +1,6 @@
 { inputs, cell }:
 let
   inherit (inputs) nixpkgs;
-
-  prismlauncher = nixpkgs.prismlauncher.override {
-    jdks = with nixpkgs; [
-      jdk25
-      jdk21
-      jdk17
-      jdk8
-    ];
-    # withWaylandGLFW = true;
-  };
   inherit (inputs.cells.toolchain) pkgs;
 in
 {
@@ -39,7 +29,15 @@ in
     # monero-gui
     packwiz
     rusty-path-of-building
-    prismlauncher
+    (prismlauncher.override {
+      jdks = [
+        jdk25
+        jdk21
+        jdk17
+        jdk8
+      ];
+      # withWaylandGLFW = true;
+    })
     prusa-slicer
     scribus
     starsector
