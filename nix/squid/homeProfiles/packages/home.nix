@@ -21,6 +21,7 @@ in
     pkgs.jellyfin-media-player
     kdePackages.filelight
     kdePackages.skanpage
+    kicad
     libopus
     # See: https://github.com/NixOS/nixpkgs/issues/370715
     # https://bugzilla.redhat.com/show_bug.cgi?id=2248131
