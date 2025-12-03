@@ -17,7 +17,9 @@ in
     kdePackages.isoimagewriter
     # Check me
     # qt5 qtwebengine is unmaintained upstream since april 2025
-    # https://github.com/jellyfin/jellyfin-media-player/issues/282
+    # work on qt6 is ongoing upstraem
+    # nixpkgs has a draft https://github.com/NixOS/nixpkgs/pull/465340
+    # so we've taken that pr as an input and overridden the src rev in an overlay
     pkgs.jellyfin-media-player
     kdePackages.filelight
     kdePackages.skanpage
