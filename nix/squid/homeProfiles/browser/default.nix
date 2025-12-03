@@ -11,6 +11,7 @@
         "webgl.disabled" = false;
         "sidebar.revamp" = true;
         "sidebar.verticalTabs" = true;
+        "widget.gtk.libadwaita-colors.enabled" = false;
       };
     };
   };
