@@ -8,8 +8,8 @@ let
   catppuccinLibreOffice = nixpkgs.fetchFromGitHub {
     owner = "catppuccin";
     repo = "libreoffice";
-    rev = "f6120a5c90777a1558f6c2f5f2e29ef11c335769";
-    hash = "sha256-VnQO6113GKCM2C2r/4MV7AK8DBTAWm06zdSwCTYLINQ=";
+    rev = "ffcbb74525eb2837b214cd5a3f2570eb7b1f3dc0";
+    hash = "sha256-NAQJPIbJVUZFkFfdyywv1A38N06gwdLd5Uge6eqPPJM=";
   };
 
   catppuccinLibreOfficeInstallScript = (
@@ -50,7 +50,8 @@ in
     packages = with inputs.nixpkgs; [
       libreoffice-qt6-fresh
       hunspell
-      hunspellDicts.en_GB-ise
+      hunspellDicts.en-gb-ise
+
     ];
     activation = {
       installCatppuccinLibreOfficeTheme =
