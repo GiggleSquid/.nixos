@@ -16,6 +16,7 @@ rec {
 
   gui = [
     terminal
+    cursor
     browser
     libreoffice
     packages

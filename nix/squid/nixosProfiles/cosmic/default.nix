@@ -9,12 +9,11 @@ in
   };
 
   environment = {
-    cosmic.excludePackages = [
-      nixpkgs.networkmanagerapplet
-      nixpkgs.cosmic-term
+    cosmic.excludePackages = with nixpkgs; [
+      networkmanagerapplet
+      cosmic-term
     ];
     systemPackages = with nixpkgs; [
-      catppuccin-cursors.mochaPeach
       (catppuccin-papirus-folders.override {
         flavor = "mocha";
         accent = "peach";
