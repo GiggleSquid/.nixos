@@ -14,10 +14,9 @@ in
       cosmic-term
     ];
     systemPackages = with nixpkgs; [
-      (catppuccin-papirus-folders.override {
-        flavor = "mocha";
-        accent = "peach";
-      })
+      cosmic-ext-applet-minimon
+      cosmic-ext-applet-privacy-indicator
+      papirus-icon-theme
     ];
   };
 }
