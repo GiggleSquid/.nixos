@@ -3,12 +3,13 @@ let
   inherit (inputs) nixpkgs;
 in
 {
+  # Check me
+  # Currently not working in cosmic de
   home.pointerCursor = {
     enable = true;
     package = nixpkgs.catppuccin-cursors.mochaPeach;
-    name = "Catppuccin-Mocha-Peach-Cursors";
+    name = "catppuccin-mocha-peach-cursors";
     size = 32;
     gtk.enable = true;
-    x11.enable = true;
   };
 }
