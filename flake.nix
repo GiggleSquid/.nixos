@@ -92,7 +92,7 @@
     };
 
     nixpkgs-unstable = {
-      url = "github:nixos/nixpkgs/nixos-unstable";
+      url = "github:nixos/nixpkgs/nixos-unstable-small";
     };
 
     simple-nixos-mailserver = {
