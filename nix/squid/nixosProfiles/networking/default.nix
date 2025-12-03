@@ -4,7 +4,10 @@ let
   lib = nixpkgs.lib // builtins;
 in
 {
+  hardware.bluetooth.enable = false;
+
   networking = {
+    networkmanager.enable = false;
     useDHCP = false;
     useHostResolvConf = false;
   };
