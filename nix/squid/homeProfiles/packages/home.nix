@@ -20,7 +20,6 @@ in
     # https://github.com/jellyfin/jellyfin-media-player/issues/282
     pkgs.jellyfin-media-player
     kdePackages.filelight
-    kdePackages.kcalc
     kdePackages.skanpage
     libopus
     # See: https://github.com/NixOS/nixpkgs/issues/370715

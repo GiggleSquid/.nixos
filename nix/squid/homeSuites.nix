@@ -28,4 +28,5 @@ rec {
   ];
 
   plasma6 = gui ++ [ ];
+  cosmic = gui ++ [ ];
 }

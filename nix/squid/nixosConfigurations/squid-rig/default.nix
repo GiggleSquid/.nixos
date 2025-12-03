@@ -64,7 +64,7 @@ in
         with nixosSuites;
         lib.concatLists [
           desktop
-          plasma6
+          cosmic
         ];
     in
     lib.concatLists [
@@ -86,7 +86,7 @@ in
               with homeSuites;
               lib.concatLists [
                 squid
-                plasma6
+                cosmic
               ];
           in
           lib.concatLists [

@@ -45,4 +45,5 @@ rec {
   laptop = pc ++ [ games ];
 
   plasma6 = [ nixosProfiles.plasma6 ];
+  cosmic = [ nixosProfiles.cosmic ];
 }
