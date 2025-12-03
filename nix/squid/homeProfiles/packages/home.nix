@@ -23,7 +23,7 @@ in
     haruna
     imagemagick
     inkscape
-    isoimagewriter
+    kdePackages.isoimagewriter
     # Check me
     # qt5 qtwebengine is unmaintained upstream since april 2025
     # https://github.com/jellyfin/jellyfin-media-player/issues/282
