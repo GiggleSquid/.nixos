@@ -67,10 +67,7 @@
               "castlabs-electron"
               "unrar"
             ];
-          permittedInsecurePackages = [
-            # jellyfin-media-player
-            "qtwebengine-5.15.19"
-          ];
+          permittedInsecurePackages = [ ];
         };
       }
       {
@@ -88,6 +85,8 @@
       };
 
   inputs = {
+    nixpkgs-jmp-qt6.url = "github:picnoir/nixpkgs/pic/jellyfin-qt6";
+
     nixpkgs = {
       follows = "nixpkgs-unstable";
     };

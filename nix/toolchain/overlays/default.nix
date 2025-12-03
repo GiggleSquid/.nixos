@@ -1,6 +1,6 @@
 { inputs, cell }:
 let
-  inherit (inputs) nixpkgs nixos-hardware;
+  inherit (inputs) nixpkgs nixos-hardware nixpkgs-jmp-qt6;
   inherit (inputs.cells.toolchain) pkgs packages;
 in
 {
@@ -9,6 +9,18 @@ in
       nixpkgs.callPackage "${nixos-hardware.nixosModules.raspberry-pi-4}/apply-overlays-dtmerge.nix"
         { };
   };
+
+  jellyfin-media-player =
+    nixpkgs-jmp-qt6.legacyPackages.jellyfin-media-player.overrideAttrs
+      (old: rec {
+        version = "107ab1affcb6d3525a6071ec46c11ca256f448a2";
+        src = nixpkgs.fetchFromGitHub {
+          owner = "jellyfin";
+          repo = "jellyfin-media-player";
+          rev = "${version}";
+          sha256 = "sha256-ug1AtNlk9NDnsbq+VkR8eqtuAc9X2bnGxHMq0wzJpRw=";
+        };
+      });
 
   google-fonts = nixpkgs.google-fonts.overrideAttrs (old: {
     version = "0-unstable-2025-11-07";
