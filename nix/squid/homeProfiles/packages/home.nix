@@ -14,7 +14,6 @@ in
     haruna
     imagemagick
     inkscape
-    kdePackages.isoimagewriter
     # Check me
     # qt5 qtwebengine is unmaintained upstream since april 2025
     # work on qt6 is ongoing upstraem
@@ -22,6 +21,7 @@ in
     # so we've taken that pr as an input and overridden the src rev in an overlay
     pkgs.jellyfin-media-player
     kdePackages.filelight
+    kdePackages.isoimagewriter
     kdePackages.skanpage
     kicad
     libopus
@@ -30,7 +30,6 @@ in
     # lmms
     # monero-gui
     packwiz
-    rusty-path-of-building
     (prismlauncher.override {
       jdks = [
         jdk25
@@ -41,6 +40,7 @@ in
       # withWaylandGLFW = true;
     })
     prusa-slicer
+    rusty-path-of-building
     scribus
     starsector
     steam-run
