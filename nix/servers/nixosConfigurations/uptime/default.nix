@@ -7,6 +7,7 @@ let
   inherit (inputs) common nixpkgs self;
   inherit (cell) hardwareProfiles serverSuites;
   inherit (inputs.cells.squid) nixosSuites homeSuites;
+  inherit (inputs.cells.toolchain) pkgs;
 
   lib = nixpkgs.lib // builtins;
   hostName = "uptime";
@@ -80,6 +81,7 @@ in
   services = {
     uptime-kuma = {
       enable = true;
+      package = pkgs.uptime-kuma;
     };
     caddy-squid = {
       enable = true;
@@ -88,7 +90,7 @@ in
         extra = [
           "github.com/hslatman/caddy-crowdsec-bouncer@v0.9.2"
         ];
-        hash = "sha256-zJfDg7vESe9lU/tw0gx5l8GmGiDPOZRd7uHA45+1Nwc=";
+        hash = "sha256-upxqOJdnxMG40jme4ZdiQSfxIPklOHriLc6SA8n7ylw=";
       };
       extraGlobalConfig = # caddyfile
         ''
@@ -104,11 +106,26 @@ in
       "uptime.gigglesquid.tech" = {
         extraConfig = # caddyfile
           ''
+            import logging uptime.gigglesquid.tech
             import bunny_acme_settings
-            import deny_non_local
             encode zstd gzip
             route {
-              reverse_proxy localhost:3001
+              reverse_proxy localhost:3001 {
+                header_up Host {upstream_hostport}
+              }
+            }
+          '';
+      };
+      "status.thatferret.blog" = {
+        extraConfig = # caddyfile
+          ''
+            import logging status.thatferret.blog
+            import bunny_acme_settings
+            encode zstd gzip
+            route {
+              reverse_proxy localhost:3001 {
+                header_up Host {upstream_hostport}
+              }
             }
           '';
       };

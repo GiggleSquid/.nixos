@@ -69,6 +69,7 @@ in
       "umami.lan.gigglesquid.tech" = {
         extraConfig = # caddyfile
           ''
+            import logging umami.lan.gigglesquid.tech
             import bunny_acme_settings
             import deny_non_local
             reverse_proxy localhost:3000 {
@@ -103,7 +104,7 @@ in
 
           local.file_match "caddy_access_log" {
             path_targets = [
-              {"__path__" = "/var/log/caddy/access.log"},
+              {"__path__" = "/var/log/caddy/*.log"},
             ]
             sync_period = "15s"
           }
@@ -118,11 +119,13 @@ in
             stage.json {
               expressions = {
                 level = "",
+                ts = "",
                 logger = "",
                 host = "request.host",
                 method = "request.method",
                 proto = "request.proto",
-                ts = "",
+                duration = "",
+                status = "",
               }
             }
 
@@ -133,6 +136,8 @@ in
                 host = "",
                 method = "",
                 proto = "",
+                duration = "",
+                status = "",
               }
             }
 

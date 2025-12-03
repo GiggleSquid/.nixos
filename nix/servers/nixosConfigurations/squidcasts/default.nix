@@ -50,6 +50,7 @@ in
       "squidcasts.lan.gigglesquid.tech" = {
         extraConfig = # caddyfile
           ''
+            import logging squidcasts.lan.gigglesquid.tech
             import bunny_acme_settings
             import deny_non_local
             encode zstd gzip

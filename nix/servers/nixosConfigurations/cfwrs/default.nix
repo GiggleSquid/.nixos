@@ -61,6 +61,7 @@ in
       "old.cfwrs.org.uk.lan.gigglesquid.tech" = {
         extraConfig = # caddyfile
           ''
+            import logging old.cfwrs.org.uk.lan.gigglesquid.tech
             import bunny_acme_settings
             import deny_non_local
             encode zstd gzip
@@ -108,7 +109,7 @@ in
 
           local.file_match "caddy_access_log" {
             path_targets = [
-              {"__path__" = "/var/log/caddy/access.log"},
+              {"__path__" = "/var/log/caddy/*.log"},
             ]
             sync_period = "15s"
           }
@@ -123,11 +124,13 @@ in
             stage.json {
               expressions = {
                 level = "",
+                ts = "",
                 logger = "",
                 host = "request.host",
                 method = "request.method",
                 proto = "request.proto",
-                ts = "",
+                duration = "",
+                status = "",
               }
             }
 
@@ -138,6 +141,8 @@ in
                 host = "",
                 method = "",
                 proto = "",
+                duration = "",
+                status = "",
               }
             }
 

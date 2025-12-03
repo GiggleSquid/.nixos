@@ -38,7 +38,7 @@ in
     plugins = {
       hash = lib.mkOption {
         type = lib.types.str;
-        default = "sha256-mg+5iy73JbAlCRgq4g/GPQqE70mWApygRtSNqaUDShk=";
+        default = "sha256-nPum0sNaoWWlrroZlvJ4cUVNC4zWFac/t78QFpp+06Y=";
       };
       extra = lib.mkOption {
         type = lib.types.listOf lib.types.str;
@@ -87,10 +87,11 @@ in
       email = lib.mkDefault "jack.connors@protonmail.com";
       acmeCA = lib.mkDefault "https://acme-v02.api.letsencrypt.org/directory";
       logFormat = lib.mkDefault ''
-        output file /var/log/caddy/access-global.log {
+        output file /var/log/caddy/global.log {
           mode 640
         }
         level INFO
+        format json
       '';
       globalConfig =
         mkIfElse cfg.externalService
@@ -99,7 +100,7 @@ in
               metrics
               servers {
                 trusted_proxies bunny {
-                  interval 6h
+                  interval 3h
                   timeout 25s
                 }
               }
@@ -112,7 +113,7 @@ in
               servers {
                 trusted_proxies combine {
                   bunny {
-                    interval 6h
+                    interval 3h
                     timeout 25s
                   }
                   dns {
@@ -134,8 +135,8 @@ in
             resolvers 9.9.9.9 149.112.112.112
           }
         }
-        (trusted_ips) {
-          not client_ip private_ranges {env.IPV4_STATIC} {env.IPV4_SUBNET} {env.IPV6_PREFIX}
+        (not_trusted_ips) {
+          not client_ip private_ranges {env.IPV4_STATIC} {env.IPV4_SUBNET} {env.IPV6_PREFIX} 167.235.72.13 2a01:4f8:1c1a:25f0::10
         }
         (deny_non_local) {
           @denied not remote_ip private_ranges {env.IPV4_STATIC} {env.IPV4_SUBNET} {env.IPV6_PREFIX}
@@ -143,8 +144,34 @@ in
             abort
           }
         }
+        (logging) {
+          log {
+            output file /var/log/caddy/access-{args[0]}.log {
+              mode 640
+            }
+            level INFO
+            format json
+          }
+        }
+        (common_well-known) {
+          handle /.well-known/traffic-advice {
+            header Content-Type application/trafficadvice+json
+            respond `[{"user_agent":"prefetch-proxy","google_prefetch_proxy_eap":{"fraction":1}}]`
+          }
+        }
       ''
       + cfg.extraExtraConfig;
+
+      virtualHosts = {
+        ":80, :443" = {
+          extraConfig = ''
+            import logging :80,_:443
+            respond "Forbidden" 403 {
+             close
+            }
+          '';
+        };
+      };
     };
   };
 }

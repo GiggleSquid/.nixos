@@ -86,7 +86,7 @@ in
         extra = [
           "github.com/hslatman/caddy-crowdsec-bouncer@v0.9.2"
         ];
-        hash = "sha256-7n3y8m+zVFw3Kf3bL0/LjAaCq7715Ovi+zizLRX1UZo=";
+        hash = "sha256-HFvhKGVg0kBSnxt1NmI0slmXZjMcLLXphFPtxjjDYFs=";
       };
       extraGlobalConfig = # caddyfile
         ''
@@ -101,7 +101,7 @@ in
       "search.lan.gigglesquid.tech" = {
         extraConfig = # caddyfile
           ''
-            log
+            import logging search.lan.gigglesquid.tech
             import bunny_acme_settings
             import deny_non_local
             route {
@@ -115,7 +115,7 @@ in
       "squidjelly.internal.caddy.lan.gigglesquid.tech" = {
         extraConfig = # caddyfile
           ''
-            log
+            import logging squidjelly.internal.caddy.lan.gigglesquid.tech
             import bunny_acme_settings
             route {
               crowdsec
@@ -126,7 +126,7 @@ in
       "squidseerr.internal.caddy.lan.gigglesquid.tech" = {
         extraConfig = # caddyfile
           ''
-            log
+            import logging squidseerr.internal.caddy.lan.gigglesquid.tech
             import bunny_acme_settings
             route {
               crowdsec
@@ -139,7 +139,7 @@ in
       "squidcasts.internal.caddy.lan.gigglesquid.tech" = {
         extraConfig = # caddyfile
           ''
-            log
+            import logging squidcasts.internal.caddy.lan.gigglesquid.tech
             import bunny_acme_settings
             import deny_non_local
             route {
@@ -153,7 +153,7 @@ in
       "qbittorrent.squidbit.lan.gigglesquid.tech" = {
         extraConfig = # caddyfile
           ''
-            log
+            import logging qbittorrent.squidbit.lan.gigglesquid.tech
             import bunny_acme_settings
             import deny_non_local
             route {
@@ -167,7 +167,7 @@ in
       "nzbget.squidbit.lan.gigglesquid.tech" = {
         extraConfig = # caddyfile
           ''
-            log
+            import logging nzbget.squidbit.lan.gigglesquid.tech
             import bunny_acme_settings
             import deny_non_local
             route {
@@ -181,7 +181,7 @@ in
       "radarr.squidbit.lan.gigglesquid.tech" = {
         extraConfig = # caddyfile
           ''
-            log
+            import logging radarr.squidbit.lan.gigglesquid.tech
             import bunny_acme_settings
             import deny_non_local
             route {
@@ -195,7 +195,7 @@ in
       "sonarr.squidbit.lan.gigglesquid.tech" = {
         extraConfig = # caddyfile
           ''
-            log
+            import logging sonarr.squidbit.lan.gigglesquid.tech
             import bunny_acme_settings
             import deny_non_local
             route {
@@ -209,7 +209,7 @@ in
       "prowlarr.squidbit.lan.gigglesquid.tech" = {
         extraConfig = # caddyfile
           ''
-            log
+            import logging prowlarr.squidbit.lan.gigglesquid.tech
             import bunny_acme_settings
             import deny_non_local
             route {
@@ -223,7 +223,7 @@ in
       "storj-node.cephalonas.lan.gigglesquid.tech" = {
         extraConfig = # caddyfile
           ''
-            log
+            import logging storj-node.cephalonas.lan.gigglesquid.tech
             import bunny_acme_settings
             import deny_non_local
             route {
@@ -237,7 +237,7 @@ in
       "scrutiny.cephalonas.lan.gigglesquid.tech" = {
         extraConfig = # caddyfile
           ''
-            log
+            import logging scrutiny.cephalonas.lan.gigglesquid.tech
             import bunny_acme_settings
             import deny_non_local
             route {
@@ -251,7 +251,7 @@ in
       "warrior-1.archiveteam.lan.gigglesquid.tech" = {
         extraConfig = # caddyfile
           ''
-            log
+            import logging warrior-1.archiveteam.lan.gigglesquid.tech
             import bunny_acme_settings
             import deny_non_local
             route {
@@ -265,7 +265,7 @@ in
       "warrior-2.archiveteam.lan.gigglesquid.tech" = {
         extraConfig = # caddyfile
           ''
-            log
+            import logging warrior-2.archiveteam.lan.gigglesquid.tech
             import bunny_acme_settings
             import deny_non_local
             route {
@@ -279,7 +279,7 @@ in
       "warrior-3.archiveteam.lan.gigglesquid.tech" = {
         extraConfig = # caddyfile
           ''
-            log
+            import logging warrior-3.archiveteam.lan.gigglesquid.tech
             import bunny_acme_settings
             import deny_non_local
             route {
@@ -293,7 +293,7 @@ in
       "warrior-4.archiveteam.lan.gigglesquid.tech" = {
         extraConfig = # caddyfile
           ''
-            log
+            import logging warrior-4.archiveteam.lan.gigglesquid.tech
             import bunny_acme_settings
             import deny_non_local
             route {
@@ -307,7 +307,7 @@ in
       "warrior-5.archiveteam.lan.gigglesquid.tech" = {
         extraConfig = # caddyfile
           ''
-            log
+            import logging warrior-5.archiveteam.lan.gigglesquid.tech
             import bunny_acme_settings
             import deny_non_local
             route {
@@ -321,7 +321,7 @@ in
       "thatferret.blog.internal.caddy.lan.gigglesquid.tech" = {
         extraConfig = # caddyfile
           ''
-            log
+            import logging thatferret.blog.internal.caddy.lan.gigglesquid.tech
             import bunny_acme_settings
             route {
               crowdsec
@@ -334,7 +334,7 @@ in
       "thatferret.shop.internal.caddy.lan.gigglesquid.tech" = {
         extraConfig = # caddyfile
           ''
-            log
+            import logging thatferret.shop.internal.caddy.lan.gigglesquid.tech
             import bunny_acme_settings
             route {
               crowdsec
@@ -347,7 +347,7 @@ in
       "http://thatferret.local.lan.gigglesquid.tech" = {
         extraConfig = # caddyfile
           ''
-            log
+            import logging http:__thatferret.local.lan.gigglesquid.tech
             import deny_non_local
             route {
               reverse_proxy http://10.10.0.10:1313 {
@@ -359,7 +359,7 @@ in
       "gigglesquid.tech.internal.caddy.lan.gigglesquid.tech" = {
         extraConfig = # caddyfile
           ''
-            log
+            import logging gigglesquid.tech.internal.caddy.lan.gigglesquid.tech
             import bunny_acme_settings
             route {
               crowdsec
@@ -372,7 +372,7 @@ in
       "old.cfwrs.org.uk.internal.caddy.lan.gigglesquid.tech" = {
         extraConfig = # caddyfile
           ''
-            log
+            import logging old.cfwrs.org.uk.internal.caddy.lan.gigglesquid.tech
             import bunny_acme_settings
             route {
               crowdsec
@@ -385,7 +385,7 @@ in
       "cfwrs.org.uk.internal.caddy.lan.gigglesquid.tech" = {
         extraConfig = # caddyfile
           ''
-            log
+            import logging cfwrs.org.uk.internal.caddy.lan.gigglesquid.tech
             import bunny_acme_settings
             route {
               crowdsec
@@ -398,7 +398,7 @@ in
       "umami.internal.caddy.lan.gigglesquid.tech" = {
         extraConfig = # caddyfile
           ''
-            log
+            import logging umami.internal.caddy.lan.gigglesquid.tech
             import bunny_acme_settings
             route {
               crowdsec
@@ -411,7 +411,7 @@ in
       "idm.internal.caddy.lan.gigglesquid.tech" = {
         extraConfig = # caddyfile
           ''
-            log
+            import logging idm.internal.caddy.lan.gigglesquid.tech
             import bunny_acme_settings
             route {
               crowdsec
@@ -424,7 +424,7 @@ in
       "dash.lan.gigglesquid.tech" = {
         extraConfig = # caddyfile
           ''
-            log
+            import logging dash.lan.gigglesquid.tech
             import bunny_acme_settings
             route {
               crowdsec
@@ -460,11 +460,11 @@ in
 
           local.file_match "caddy_access_log" {
             path_targets = [
-              {"__path__" = "/var/log/caddy/access-global.log"},
+              {"__path__" = "/var/log/caddy/*.log"},
             ]
             sync_period = "15s"
           }
-           
+
           loki.source.file "caddy_access_log" {
             targets    = local.file_match.caddy_access_log.targets
             forward_to = [loki.process.caddy_add_labels.receiver]
@@ -475,11 +475,13 @@ in
             stage.json {
               expressions = {
                 level = "",
+                ts = "",
                 logger = "",
                 host = "request.host",
                 method = "request.method",
                 proto = "request.proto",
-                ts = "",
+                duration = "",
+                status = "",
               }
             }
 
@@ -490,6 +492,8 @@ in
                 host = "",
                 method = "",
                 proto = "",
+                duration = "",
+                status = "",
               }
             }
 

@@ -121,7 +121,7 @@ in
       "thatferret.shop.lan.gigglesquid.tech" = {
         extraConfig = # caddyfile
           ''
-            log
+            import logging thatferret.shop.lan.gigglesquid.tech
             import bunny_acme_settings
             import deny_non_local
 
@@ -214,7 +214,7 @@ in
             error @forbidden "403 - Forbidden" 403
 
             @blacklist {
-              import trusted_ips
+              import not_trusted_ips
               path /wp-login.php
             }
             error @blacklist "403 - Forbidden" 403
@@ -251,7 +251,7 @@ in
 
           local.file_match "caddy_access_log" {
             path_targets = [
-              {"__path__" = "/var/log/caddy/access-global.log"},
+              {"__path__" = "/var/log/caddy/*.log"},
             ]
             sync_period = "15s"
           }
@@ -266,11 +266,13 @@ in
             stage.json {
               expressions = {
                 level = "",
+                ts = "",
                 logger = "",
                 host = "request.host",
                 method = "request.method",
                 proto = "request.proto",
-                ts = "",
+                duration = "",
+                status = "",
               }
             }
 
@@ -281,6 +283,8 @@ in
                 host = "",
                 method = "",
                 proto = "",
+                duration = "",
+                status = "",
               }
             }
 

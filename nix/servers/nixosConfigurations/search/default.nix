@@ -120,13 +120,14 @@ in
         extra = [
           "github.com/BadAimWeeb/caddy-uwsgi-transport@v0.0.0-20240317192154-74a1008b9763"
         ];
-        hash = "sha256-wN2/xeGW8SCrZognGLydWWdmOooQgHckKXwOqoj+MIg=";
+        hash = "sha256-SXmQSoZTrty1dMd7DVXQWjAd9lGlZdzoFIOAfrOdvqE=";
       };
     };
     caddy.virtualHosts = {
       "search.lan.gigglesquid.tech" = {
         extraConfig = # caddyfile
           ''
+            import logging search.gigglesquid.tech
             import bunny_acme_settings
             import deny_non_local
             encode zstd gzip

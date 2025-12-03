@@ -69,8 +69,9 @@ in
         extra = [
           "github.com/hslatman/caddy-crowdsec-bouncer@v0.9.2"
           "github.com/mholt/caddy-l4@v0.0.0-20251001194302-2e3e6cf60b25"
+          "github.com/tuzzmaniandevil/caddy-dynamic-clientip@v1.0.5"
         ];
-        hash = "sha256-cosIQBI0KdWkBxWPPVc5YGShv0WA7yJUlb5nniz83wU=";
+        hash = "sha256-pGBd+ohkM9HaWHVugXtYxPma4aBUbij/4nrcS7iFs40=";
       };
       extraGlobalConfig = # caddyfile
         ''
@@ -81,12 +82,27 @@ in
             ticker_interval 15s
           }
         '';
+      extraExtraConfig = # caddyfile
+        ''
+          (deny_not_bunny_edge) {
+            @denied {
+              not dynamic_client_ip bunny {
+                interval 1h
+                timeout 25s
+              }
+              import not_trusted_ips
+            }
+            handle @denied {
+              abort
+            }
+          }
+        '';
     };
     caddy.virtualHosts = {
       "squidjelly.gigglesquid.tech" = {
         extraConfig = # caddyfile
           ''
-            log
+            import logging squidjelly.gigglesquid.tech
             import bunny_acme_settings
             route {
               crowdsec
@@ -99,7 +115,7 @@ in
       "squidseerr.gigglesquid.tech" = {
         extraConfig = # caddyfile
           ''
-            log
+            import logging squidseerr.gigglesquid.tech
             import bunny_acme_settings
             route {
               crowdsec
@@ -112,7 +128,7 @@ in
       "squidcasts.gigglesquid.tech" = {
         extraConfig = # caddyfile
           ''
-            log
+            import logging squidcasts.gigglesquid.tech
             import bunny_acme_settings
             route {
               crowdsec
@@ -125,7 +141,7 @@ in
       "old.cfwrs.gigglesquid.tech" = {
         extraConfig = # caddyfile
           ''
-            log
+            import logging old.cfwrs.gigglesquid.tech
             import bunny_acme_settings
             route {
               crowdsec
@@ -138,7 +154,7 @@ in
       "cfwrs.gigglesquid.tech" = {
         extraConfig = # caddyfile
           ''
-            log
+            import logging cfwrs.gigglesquid.tech
             import bunny_acme_settings
             route {
               crowdsec
@@ -151,8 +167,10 @@ in
       "origin.thatferret.blog" = {
         extraConfig = # caddyfile
           ''
-            log
+            import logging origin.thatferret.blog
             import bunny_acme_settings
+            import common_well-known
+            # import deny_not_bunny_edge
             route {
               crowdsec
               reverse_proxy https://thatferret.blog.internal.caddy.lan.gigglesquid.tech {
@@ -164,8 +182,9 @@ in
       "thatferret.shop" = {
         extraConfig = # caddyfile
           ''
-            log
+            import logging thatferret.shop
             import bunny_acme_settings
+            import common_well-known
             route {
               crowdsec
               reverse_proxy https://thatferret.shop.internal.caddy.lan.gigglesquid.tech {
@@ -177,8 +196,10 @@ in
       "origin.gigglesquid.tech" = {
         extraConfig = # caddyfile
           ''
-            log
+            import logging origin.gigglesquid.tech
             import bunny_acme_settings
+            import common_well-known
+            # import deny_not_bunny_edge
             route {
               crowdsec
               reverse_proxy https://gigglesquid.tech.internal.caddy.lan.gigglesquid.tech {
@@ -190,7 +211,7 @@ in
       "umami.gigglesquid.tech" = {
         extraConfig = # caddyfile
           ''
-            log
+            import logging umami.gigglesquid.tech
             import bunny_acme_settings
             route {
               crowdsec
@@ -203,7 +224,7 @@ in
       "idm.gigglesquid.tech" = {
         extraConfig = # caddyfile
           ''
-            log
+            import logging idm.gigglesquid.tech
             import bunny_acme_settings
             route {
               crowdsec
@@ -239,7 +260,7 @@ in
 
           local.file_match "caddy_access_log" {
             path_targets = [
-              {"__path__" = "/var/log/caddy/access-global.log"},
+              {"__path__" = "/var/log/caddy/*.log"},
             ]
             sync_period = "15s"
           }
@@ -254,11 +275,13 @@ in
             stage.json {
               expressions = {
                 level = "",
+                ts = "",
                 logger = "",
                 host = "request.host",
                 method = "request.method",
                 proto = "request.proto",
-                ts = "",
+                duration = "",
+                status = "",
               }
             }
 
@@ -269,6 +292,8 @@ in
                 host = "",
                 method = "",
                 proto = "",
+                duration = "",
+                status = "",
               }
             }
 

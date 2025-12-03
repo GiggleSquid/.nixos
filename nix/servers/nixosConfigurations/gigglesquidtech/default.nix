@@ -49,7 +49,7 @@ in
         extra = [
           "github.com/mohammed90/caddy-git-fs@v0.0.0-20240805164056-529acecd1830"
         ];
-        hash = "sha256-XiF14PiJJlssiuAl1Yoae+Cdak7mEgtPTVv+pZY1+KU=";
+        hash = "sha256-MJZhhtmZ9R4QLotOUC0kqBDjkbvfGjhTPuRrU9z0ECE=";
       };
       extraGlobalConfig = # caddyfile
         ''
@@ -62,6 +62,7 @@ in
       "gigglesquid.tech.lan.gigglesquid.tech" = {
         extraConfig = # caddyfile
           ''
+            import logging gigglesquid.tech.lan.gigglesquid.tech
             import bunny_acme_settings
             import deny_non_local
             encode zstd gzip
@@ -125,7 +126,7 @@ in
 
           local.file_match "caddy_access_log" {
             path_targets = [
-              {"__path__" = "/var/log/caddy/access.log"},
+              {"__path__" = "/var/log/caddy/*.log"},
             ]
             sync_period = "15s"
           }
@@ -140,11 +141,13 @@ in
             stage.json {
               expressions = {
                 level = "",
+                ts = "",
                 logger = "",
                 host = "request.host",
                 method = "request.method",
                 proto = "request.proto",
-                ts = "",
+                duration = "",
+                status = "",
               }
             }
 
@@ -155,6 +158,8 @@ in
                 host = "",
                 method = "",
                 proto = "",
+                duration = "",
+                status = "",
               }
             }
 
