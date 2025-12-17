@@ -29,10 +29,10 @@ in
       "10-lan" = {
         matchConfig.Name = "enp6s18";
         ipv6AcceptRAConfig = {
-          Token = "static:::1:102";
+          Token = "static:::1:104";
         };
         address = [
-          "10.3.1.102/23"
+          "10.3.1.104/23"
         ];
         gateway = [
           "10.3.0.1"

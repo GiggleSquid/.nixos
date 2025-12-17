@@ -31,10 +31,10 @@ in
       "10-lan" = {
         matchConfig.Name = "eth0";
         ipv6AcceptRAConfig = {
-          Token = "static:::1:90";
+          Token = "static:::1:100";
         };
         address = [
-          "10.3.1.90/23"
+          "10.3.1.100/23"
         ];
         gateway = [
           "10.3.0.1"
