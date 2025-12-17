@@ -1,6 +1,7 @@
 { inputs }:
 let
   inherit (inputs) nixpkgs;
+  lib = nixpkgs.lib;
 in
 {
   nix = {
@@ -30,8 +31,8 @@ in
   };
 
   zramSwap = {
-    enable = true;
-    memoryPercent = 100;
+    enable = lib.mkDefault true;
+    memoryPercent = 50;
     priority = 5;
   };
 
