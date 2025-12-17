@@ -7,7 +7,7 @@ in
     common-pc
     common-pc-ssd
     common-cpu-intel-cpu-only
-    (nixpkgs + "/nixos/modules/virtualisation/proxmox-image.nix")
+    "${modulesPath}/virtualisation/proxmox-image.nix"
   ];
 
   proxmox = {

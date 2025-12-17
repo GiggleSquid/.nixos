@@ -7,7 +7,7 @@ in
     common-pc
     common-pc-ssd
     common-cpu-intel-cpu-only
-    (nixpkgs + "/nixos/modules/virtualisation/proxmox-lxc.nix")
+    "${modulesPath}/virtualisation/proxmox-lxc.nix"
   ];
 
   proxmoxLXC = {
@@ -16,7 +16,7 @@ in
     manageHostName = true;
   };
 
-  services.chrony.enable = lib.mkForce false;
+  services.chrony.enable = nixpkgs.lib.mkForce false;
 
   inherit (common) hardware;
 

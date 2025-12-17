@@ -1,13 +1,13 @@
 { inputs }:
 let
-  inherit (inputs) common nixpkgs;
+  inherit (inputs) commonFixed-25_11 nixpkgs;
   inherit (inputs.cells.servers) hardwareProfiles;
   inherit (inputs.cells.squid) nixosSuites;
   lib = nixpkgs.lib // builtins;
   hostName = "nixos-lxc";
 in
 {
-  inherit (common) bee time;
+  inherit (commonFixed-25_11) bee time;
   networking = {
     inherit hostName;
   };

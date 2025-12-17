@@ -1,15 +1,9 @@
 { inputs, cell }:
 let
-  inherit (inputs) nixpkgs nixos-hardware nixpkgs-jmp-qt6;
+  inherit (inputs) nixpkgs nixpkgs-jmp-qt6;
   inherit (inputs.cells.toolchain) pkgs packages;
 in
 {
-  deviceTree = nixpkgs.deviceTree // {
-    applyOverlays =
-      nixpkgs.callPackage "${nixos-hardware.nixosModules.raspberry-pi-4}/apply-overlays-dtmerge.nix"
-        { };
-  };
-
   jellyfin-media-player =
     nixpkgs-jmp-qt6.legacyPackages.jellyfin-media-player.overrideAttrs
       (old: rec {

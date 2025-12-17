@@ -1,6 +1,7 @@
 { inputs }:
 let
   inherit (inputs) common nixos-hardware nixpkgs;
+  lib = nixpkgs.lib;
 in
 {
   imports = with nixos-hardware.nixosModules; [
@@ -12,6 +13,8 @@ in
     bluetooth.enable = false;
   };
 
+  environment.defaultPackages = [ ];
+  documentation.info.enable = false;
   console.enable = false;
 
   boot = {
@@ -39,6 +42,10 @@ in
         "reset-raspberrypi" # required for vl805 firmware to load
       ];
     };
+    # It's an rpi, do we want zfs tooling?
+    supportedFilesystems.zfs = lib.mkForce false;
+    swraid.enable = false;
+    enableContainers = false;
   };
 
   fileSystems = {

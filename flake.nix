@@ -95,6 +95,10 @@
       url = "github:nixos/nixpkgs/nixos-unstable-small";
     };
 
+    nixpkgs-25_11 = {
+      url = "github:nixos/nixpkgs/nixos-25.11-small";
+    };
+
     simple-nixos-mailserver = {
       url = "gitlab:simple-nixos-mailserver/nixos-mailserver/master";
     };

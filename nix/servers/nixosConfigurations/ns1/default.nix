@@ -75,9 +75,7 @@ in
 
   imports =
     let
-      profiles = [
-        hardwareProfiles.ns1
-      ];
+      profiles = [ hardwareProfiles.rpi4 ];
       suites =
         with serverSuites;
         lib.concatLists [
@@ -108,14 +106,14 @@ in
             profiles
             suites
           ];
-        home.stateVersion = "25.05";
+        home.stateVersion = "26.05";
       };
       nixos = {
         imports = with homeSuites; nixos;
-        home.stateVersion = "25.05";
+        home.stateVersion = "26.05";
       };
     };
   };
 
-  system.stateVersion = "25.05";
+  system.stateVersion = "26.05";
 }

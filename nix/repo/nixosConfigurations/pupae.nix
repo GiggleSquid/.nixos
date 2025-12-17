@@ -1,13 +1,13 @@
 { inputs }:
 let
-  inherit (inputs) common nixpkgs;
+  inherit (inputs) commonFixed-25_11 nixpkgs;
   inherit (inputs.cells.servers) hardwareProfiles;
   inherit (inputs.cells.squid) nixosSuites;
   lib = nixpkgs.lib // builtins;
   hostName = "nixos-vm";
 in
 {
-  inherit (common) bee time;
+  inherit (commonFixed-25_11) bee time;
   networking = {
     inherit hostName;
   };
@@ -22,5 +22,5 @@ in
       suites
     ];
 
-  system.stateVersion = "25.05";
+  system.stateVersion = "25.11";
 }

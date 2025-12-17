@@ -324,13 +324,6 @@ in
     };
   };
 
-  fileSystems = {
-    "/" = {
-      device = "/dev/disk/by-label/NIXOS_SD";
-      fsType = "ext4";
-    };
-  };
-
   imports =
     let
       profiles = [ hardwareProfiles.rpi4 ];
