@@ -11,7 +11,6 @@ in
     targetHost = "dmz.caddy.lan.gigglesquid.tech";
     tags = (rpi.deployment.tags) ++ [
       "caddy"
-      "webserver"
     ];
   };
 }

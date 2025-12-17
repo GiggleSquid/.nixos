@@ -9,7 +9,6 @@ in
   deployment = common.deployment // {
     targetHost = "squidbit.lan.gigglesquid.tech";
     tags = (common.deployment.tags) ++ [
-      "media"
       "squidbit"
     ];
   };

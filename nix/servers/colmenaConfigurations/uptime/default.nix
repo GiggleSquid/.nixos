@@ -9,6 +9,7 @@ in
   deployment = common.deployment // {
     targetHost = "uptime.gigglesquid.tech";
     tags = (common.deployment.tags) ++ [
+      "caddy"
       "uptime"
     ];
   };

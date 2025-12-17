@@ -9,6 +9,7 @@ in
   deployment = common.deployment // {
     targetHost = "otel.lan.gigglesquid.tech";
     tags = (common.deployment.tags) ++ [
+      "caddy"
       "otel"
     ];
   };

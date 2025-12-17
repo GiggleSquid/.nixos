@@ -19,7 +19,6 @@ let
     bee = {
       system = "aarch64-linux";
       pkgs = inputs.cells.toolchain.pkgs;
-      # pkgs = inputs.nixpkgs;
     };
     deployment = {
       allowLocalDeployment = false;

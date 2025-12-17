@@ -10,7 +10,6 @@ in
     targetHost = "internal.caddy.lan.gigglesquid.tech";
     tags = (common.deployment.tags) ++ [
       "caddy"
-      "webserver"
     ];
   };
 }

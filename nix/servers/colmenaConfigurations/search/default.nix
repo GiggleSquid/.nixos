@@ -9,6 +9,7 @@ in
   deployment = common.deployment // {
     targetHost = "search.lan.gigglesquid.tech";
     tags = (common.deployment.tags) ++ [
+      "caddy"
       "searxng"
       "search"
     ];

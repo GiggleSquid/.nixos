@@ -9,8 +9,8 @@ in
   deployment = common.deployment // {
     targetHost = "umami.lan.gigglesquid.tech";
     tags = (common.deployment.tags) ++ [
+      "caddy"
       "umami"
-      "webserver"
     ];
   };
 }

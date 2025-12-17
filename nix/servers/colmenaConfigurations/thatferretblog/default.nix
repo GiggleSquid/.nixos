@@ -10,7 +10,6 @@ in
     targetHost = "thatferret.blog.lan.gigglesquid.tech";
     tags = (common.deployment.tags) ++ [
       "caddy"
-      "webserver"
       "thatferretblog"
     ];
   };
