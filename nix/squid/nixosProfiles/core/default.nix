@@ -16,6 +16,14 @@ in
         "root"
         "@wheel"
       ];
+      substituters = [
+        "https://nix-cache.lan.gigglesquid.tech"
+        "https://local.nix-cache.lan.gigglesquid.tech/attic"
+      ];
+      trusted-public-keys = [
+        "nix-cache.lan.gigglesquid.tech:2kaBJ3MDge9Q/ZcBYJ6C6SP1jQVUQ8Y7XjCKn6A38gs="
+        "attic:4reipGK1ubbnLAmGWWtjD2bpuqSWTEsaYuREMEcz7Ro="
+      ];
       experimental-features = "nix-command flakes";
     };
     registry.nixpkgs.flake = nixpkgs;

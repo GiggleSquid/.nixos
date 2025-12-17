@@ -8,6 +8,7 @@ rec {
     core
     ssh
     networking
+    attic-nix-cache
     nixosModules.sops
     userProfiles.root
   ];

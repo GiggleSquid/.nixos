@@ -49,6 +49,9 @@ keys:
 
   - &warrior-archiveteam age15dnpa7pl8u7660dpl5n8h69tdqx3jptv5wmrp337qn8qz7akcy8s4xrepd
 
+  - &attic age16mrp5d9asz6fcwe26k6wgya7805ltg2q8r8lskdrjnkw0s2sv4cs6dcxgs
+  - &ncps age1d4qfwa6aqdardzprjgqn66uet7nr2vcfg57z0uuameut9grrxessxngt8l
+
 creation_rules:
   - path_regex: sops/[^/]+\.yaml$
     key_groups:
@@ -81,3 +84,5 @@ creation_rules:
       - *searxng
       - *atuin
       - *warrior-archiveteam
+      - *attic
+      - *ncps

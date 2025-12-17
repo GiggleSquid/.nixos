@@ -188,16 +188,12 @@
     extra-experimental-features = "nix-command flakes";
 
     extra-substituters = [
-      "https://colmena.cachix.org"
-      "https://helix.cachix.org"
-      "https://nixpkgs-wayland.cachix.org"
-      "https://nix-community.cachix.org"
+      "https://nix-cache.lan.gigglesquid.tech"
+      "https://local.nix-cache.lan.gigglesquid.tech/attic"
     ];
     extra-trusted-public-keys = [
-      "colmena.cachix.org-1:7BzpDnjjH8ki2CT3f6GdOk7QAzPOl+1t3LvTLXqYcSg="
-      "helix.cachix.org-1:ejp9KQpR1FBI2onstMQ34yogDm4OgU2ru6lIwPvuCVs="
-      "nixpkgs-wayland.cachix.org-1:3lwxaILxMRkVhehr5StQprHdEo4IrE8sRho9R9HOLYA="
-      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+      "nix-cache.lan.gigglesquid.tech:2kaBJ3MDge9Q/ZcBYJ6C6SP1jQVUQ8Y7XjCKn6A38gs="
+      "attic:4reipGK1ubbnLAmGWWtjD2bpuqSWTEsaYuREMEcz7Ro="
     ];
   };
 }

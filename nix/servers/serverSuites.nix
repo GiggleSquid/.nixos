@@ -34,5 +34,4 @@ with nixosProfiles;
   minesquid = [ nixosModules.nix-minecraft ];
 
   arion = [ nixosModules.arion ];
-
 }
