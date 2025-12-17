@@ -4,11 +4,11 @@
   config,
 }:
 let
-  inherit (inputs) common nixpkgs;
+  inherit (inputs) common nixpkgs self;
   inherit (cell) hardwareProfiles serverSuites;
   inherit (inputs.cells.squid) nixosSuites homeSuites;
   lib = nixpkgs.lib // builtins;
-  hostName = "squidcasts";
+  hostName = "old-cfwrs";
 in
 {
   inherit (common) bee time;
@@ -17,6 +17,7 @@ in
     domain = "lan.gigglesquid.tech";
     firewall = {
       allowedTCPPorts = [
+        80
         443
       ];
       allowedUDPPorts = [
@@ -30,10 +31,10 @@ in
       "10-lan" = {
         matchConfig.Name = "enp6s18";
         ipv6AcceptRAConfig = {
-          Token = "static:::1:32";
+          Token = "static:::1:106";
         };
         address = [
-          "10.3.1.32/23"
+          "10.3.1.106/23"
         ];
         gateway = [
           "10.3.0.1"
@@ -43,11 +44,21 @@ in
   };
 
   services = {
+    odoo = {
+      enable = true;
+      autoInit = true;
+      autoInitExtraFlags = [ "--without-demo=all" ];
+      settings = {
+        options = {
+          proxy_mode = lib.mkForce true;
+        };
+      };
+    };
     caddy-squid = {
       enable = true;
     };
     caddy.virtualHosts = {
-      "squidcasts.lan.gigglesquid.tech" =
+      "old.cfwrs.org.uk.lan.gigglesquid.tech" =
         { name, ... }:
         {
           logFormat = ''
@@ -64,36 +75,42 @@ in
               import bunny_acme_settings
               import deny_non_local
               encode zstd gzip
-              handle {
-                reverse_proxy http://127.0.0.1:${toString config.services.audiobookshelf.port}
+
+              basic_auth {
+                CFWRS $2a$14$fpigMZS1lDCsKWjutjcbO.z467obj2r1HEi8E0kwVMdvvCCe94Y1S
+              }
+
+
+              route /websocket {
+                reverse_proxy localhost:8072 {
+                  header_up Host {upstream_hostport}
+                }
+              }
+              route {
+                reverse_proxy localhost:8069 {
+                  header_up Host {upstream_hostport}
+                }
               }
             '';
         };
     };
 
-    audiobookshelf = {
+    alloy-squid = {
       enable = true;
-      port = 8080;
-      host = "127.0.0.1";
-      group = "media";
-    };
-  };
-
-  fileSystems = {
-    "/mnt/media" = {
-      device = "cephalonas.lan.gigglesquid.tech:/mnt/main/media";
-      fsType = "nfs";
-      noCheck = true;
-      options = [
-        "x-systemd.automount"
-        "noauto"
-      ];
+      export = {
+        caddy = {
+          metrics = true;
+          logs = true;
+        };
+      };
     };
   };
 
   imports =
     let
-      profiles = [ hardwareProfiles.vms ];
+      profiles = [
+        hardwareProfiles.vms
+      ];
       suites =
         with serverSuites;
         lib.concatLists [
@@ -124,14 +141,14 @@ in
             profiles
             suites
           ];
-        home.stateVersion = "24.05";
+        home.stateVersion = "25.05";
       };
       nixos = {
         imports = with homeSuites; nixos;
-        home.stateVersion = "24.05";
+        home.stateVersion = "25.05";
       };
     };
   };
 
-  system.stateVersion = "24.05";
+  system.stateVersion = "25.05";
 }

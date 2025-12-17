@@ -3,14 +3,13 @@ let
   inherit (inputs) common;
 in
 {
-  imports = [ cell.nixosConfigurations.cfwrs ];
+  imports = [ cell.nixosConfigurations.old-cfwrs ];
   inherit (common) bee;
 
   deployment = common.deployment // {
-    targetHost = "cfwrs.org.uk.lan.gigglesquid.tech";
+    targetHost = "old.cfwrs.org.uk.lan.gigglesquid.tech";
     tags = (common.deployment.tags) ++ [
       "caddy"
-      "webserver"
       "cfwrs"
     ];
   };

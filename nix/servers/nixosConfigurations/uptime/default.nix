@@ -103,32 +103,52 @@ in
         '';
     };
     caddy.virtualHosts = {
-      "uptime.gigglesquid.tech" = {
-        extraConfig = # caddyfile
-          ''
-            import logging uptime.gigglesquid.tech
-            import bunny_acme_settings
-            encode zstd gzip
-            route {
-              reverse_proxy localhost:3001 {
-                header_up Host {upstream_hostport}
-              }
+      "uptime.gigglesquid.tech" =
+        { name, ... }:
+        {
+          logFormat = ''
+            output file ${config.services.caddy.logDir}/access-${
+              lib.replaceStrings [ "/" " " ] [ "_" "_" ] name
+            }.log {
+              mode 640
             }
+            level INFO
+            format json
           '';
-      };
-      "status.thatferret.blog" = {
-        extraConfig = # caddyfile
-          ''
-            import logging status.thatferret.blog
-            import bunny_acme_settings
-            encode zstd gzip
-            route {
-              reverse_proxy localhost:3001 {
-                header_up Host {upstream_hostport}
+          extraConfig = # caddyfile
+            ''
+              import bunny_acme_settings
+              encode zstd gzip
+              route {
+                reverse_proxy localhost:3001 {
+                  header_up Host {upstream_hostport}
+                }
               }
+            '';
+        };
+      "status.thatferret.blog" =
+        { name, ... }:
+        {
+          logFormat = ''
+            output file ${config.services.caddy.logDir}/access-${
+              lib.replaceStrings [ "/" " " ] [ "_" "_" ] name
+            }.log {
+              mode 640
             }
+            level INFO
+            format json
           '';
-      };
+          extraConfig = # caddyfile
+            ''
+              import bunny_acme_settings
+              encode zstd gzip
+              route {
+                reverse_proxy localhost:3001 {
+                  header_up Host {upstream_hostport}
+                }
+              }
+            '';
+        };
     };
 
     crowdsec-firewall-bouncer = {

@@ -8,7 +8,7 @@ let
   inherit (cell) serverSuites hardwareProfiles;
   inherit (inputs.cells.squid) nixosSuites homeSuites;
   lib = nixpkgs.lib // builtins;
-  hostName = "dmz";
+  hostName = "dmz-0";
 in
 {
   inherit (rpi) bee time;
@@ -51,6 +51,8 @@ in
     secrets = {
       crowdsec_bouncer_api_keys_env = { };
       "crowdsec_bouncer_api_keys/caddy_dmz_firewall" = { };
+      "valkey/caddy-dmz/env" = { };
+      "valkey/caddy-dmz/pass" = { };
     };
   };
 
@@ -58,23 +60,89 @@ in
     caddy.serviceConfig = {
       EnvironmentFile = [
         "${config.sops.secrets.crowdsec_bouncer_api_keys_env.path}"
+        "${config.sops.secrets."valkey/caddy-dmz/env".path}"
       ];
     };
   };
 
   services = {
+    redis = {
+      package = nixpkgs.valkey;
+      servers = {
+        dmz-0-a = {
+          enable = true;
+          port = 6380;
+          appendOnly = true;
+          requirePassFile = "${config.sops.secrets."valkey/caddy-dmz/pass".path}";
+          settings = {
+            cluster-enabled = true;
+            cluster-databases = 1;
+            cluster-announce-hostname = "valkey-a.dmz-0.caddy.lan.gigglesquid.tech";
+            cluster-preferred-endpoint-type = "hostname";
+          };
+        };
+        dmz-0-b = {
+          enable = true;
+          port = 6381;
+          appendOnly = true;
+          requirePassFile = "${config.sops.secrets."valkey/caddy-dmz/pass".path}";
+          settings = {
+            cluster-enabled = true;
+            cluster-databases = 1;
+            cluster-announce-hostname = "valkey-b.dmz-0.caddy.lan.gigglesquid.tech";
+            cluster-preferred-endpoint-type = "hostname";
+          };
+        };
+        dmz-0-c = {
+          port = 6382;
+          enable = true;
+          appendOnly = true;
+          requirePassFile = "${config.sops.secrets."valkey/caddy-dmz/pass".path}";
+          settings = {
+            cluster-enabled = true;
+            cluster-databases = 1;
+            cluster-announce-hostname = "valkey-c.dmz-0.caddy.lan.gigglesquid.tech";
+            cluster-preferred-endpoint-type = "hostname";
+          };
+        };
+      };
+    };
     caddy-squid = {
       enable = true;
       plugins = {
         extra = [
+          "github.com/pberkel/caddy-storage-redis@v1.5.0"
           "github.com/hslatman/caddy-crowdsec-bouncer@v0.9.2"
           "github.com/mholt/caddy-l4@v0.0.0-20251001194302-2e3e6cf60b25"
           "github.com/tuzzmaniandevil/caddy-dynamic-clientip@v1.0.5"
         ];
-        hash = "sha256-pGBd+ohkM9HaWHVugXtYxPma4aBUbij/4nrcS7iFs40=";
+        hash = "sha256-aOcRv3eQBxIUpA6YrPLK3vVb7CzltAe/yh3++9mncsU=";
       };
       extraGlobalConfig = # caddyfile
         ''
+          # storage redis cluster {
+          #   address {
+          #     valkey-a.dmz-0.caddy.lan.gigglesquid.tech:6380
+          #     valkey-b.dmz-0.caddy.lan.gigglesquid.tech:6381
+          #     valkey-c.dmz-0.caddy.lan.gigglesquid.tech:6382
+          #     valkey-a.dmz-1.caddy.lan.gigglesquid.tech:6380
+          #     valkey-b.dmz-1.caddy.lan.gigglesquid.tech:6381
+          #     valkey-c.dmz-1.caddy.lan.gigglesquid.tech:6382
+          #     valkey-a.dmz-2.caddy.lan.gigglesquid.tech:6380
+          #     valkey-b.dmz-2.caddy.lan.gigglesquid.tech:6381
+          #     valkey-c.dmz-2.caddy.lan.gigglesquid.tech:6382
+          #   }
+          #   username {env.CADDY_DMZ_VALKEY_USER}
+          #   password {env.CADDY_DMZ_VALKEY_PASS}
+          #   db 0
+          #   timeout 5
+          #   key_prefix "caddy"
+          #   encryption_key ""
+          #   compression true
+          #   tls_enabled true
+          #   tls_insecure false
+          # }
+
           crowdsec {
             api_url https://crowdsec.lan.gigglesquid.tech:8443
             # appsec_url https://crowdsec.lan.gigglesquid.tech:7422
@@ -99,218 +167,251 @@ in
         '';
     };
     caddy.virtualHosts = {
-      "squidjelly.gigglesquid.tech" = {
-        extraConfig = # caddyfile
-          ''
-            import logging squidjelly.gigglesquid.tech
-            import bunny_acme_settings
-            route {
-              crowdsec
-              reverse_proxy https://squidjelly.internal.caddy.lan.gigglesquid.tech {
-                header_up Host {upstream_hostport}
-              }
+      "squidjelly.gigglesquid.tech" =
+        { name, ... }:
+        {
+          logFormat = ''
+            output file ${config.services.caddy.logDir}/access-${
+              lib.replaceStrings [ "/" " " ] [ "_" "_" ] name
+            }.log {
+              mode 640
             }
+            level INFO
+            format json
           '';
-      };
-      "squidseerr.gigglesquid.tech" = {
-        extraConfig = # caddyfile
-          ''
-            import logging squidseerr.gigglesquid.tech
-            import bunny_acme_settings
-            route {
-              crowdsec
-              reverse_proxy https://squidseerr.internal.caddy.lan.gigglesquid.tech {
-                header_up Host {upstream_hostport}
+          extraConfig = # caddyfile
+            ''
+              import bunny_acme_settings
+              route {
+                crowdsec
+                reverse_proxy https://squidjelly.internal.caddy.lan.gigglesquid.tech {
+                  header_up Host {upstream_hostport}
+                }
               }
+            '';
+        };
+      "squidseerr.gigglesquid.tech" =
+        { name, ... }:
+        {
+          logFormat = ''
+            output file ${config.services.caddy.logDir}/access-${
+              lib.replaceStrings [ "/" " " ] [ "_" "_" ] name
+            }.log {
+              mode 640
             }
+            level INFO
+            format json
           '';
-      };
-      "squidcasts.gigglesquid.tech" = {
-        extraConfig = # caddyfile
-          ''
-            import logging squidcasts.gigglesquid.tech
-            import bunny_acme_settings
-            route {
-              crowdsec
-              reverse_proxy https://squidcasts.internal.caddy.lan.gigglesquid.tech {
-                header_up Host {upstream_hostport}
+          extraConfig = # caddyfile
+            ''
+              import bunny_acme_settings
+              route {
+                crowdsec
+                reverse_proxy https://squidseerr.internal.caddy.lan.gigglesquid.tech {
+                  header_up Host {upstream_hostport}
+                }
               }
+            '';
+        };
+      "squidcasts.gigglesquid.tech" =
+        { name, ... }:
+        {
+          logFormat = ''
+            output file ${config.services.caddy.logDir}/access-${
+              lib.replaceStrings [ "/" " " ] [ "_" "_" ] name
+            }.log {
+              mode 640
             }
+            level INFO
+            format json
           '';
-      };
-      "old.cfwrs.gigglesquid.tech" = {
-        extraConfig = # caddyfile
-          ''
-            import logging old.cfwrs.gigglesquid.tech
-            import bunny_acme_settings
-            route {
-              crowdsec
-              reverse_proxy https://old.cfwrs.org.uk.internal.caddy.lan.gigglesquid.tech {
-                header_up Host {upstream_hostport}
+          extraConfig = # caddyfile
+            ''
+              import bunny_acme_settings
+              route {
+                crowdsec
+                reverse_proxy https://squidcasts.internal.caddy.lan.gigglesquid.tech {
+                  header_up Host {upstream_hostport}
+                }
               }
+            '';
+        };
+      "old.cfwrs.gigglesquid.tech" =
+        { name, ... }:
+        {
+          logFormat = ''
+            output file ${config.services.caddy.logDir}/access-${
+              lib.replaceStrings [ "/" " " ] [ "_" "_" ] name
+            }.log {
+              mode 640
             }
+            level INFO
+            format json
           '';
-      };
-      "cfwrs.gigglesquid.tech" = {
-        extraConfig = # caddyfile
-          ''
-            import logging cfwrs.gigglesquid.tech
-            import bunny_acme_settings
-            route {
-              crowdsec
-              reverse_proxy https://cfwrs.org.uk.internal.caddy.lan.gigglesquid.tech {
-                header_up Host {upstream_hostport}
+          extraConfig = # caddyfile
+            ''
+              import bunny_acme_settings
+              route {
+                crowdsec
+                reverse_proxy https://old.cfwrs.org.uk.internal.caddy.lan.gigglesquid.tech {
+                  header_up Host {upstream_hostport}
+                }
               }
+            '';
+        };
+      "cfwrs.gigglesquid.tech" =
+        { name, ... }:
+        {
+          logFormat = ''
+            output file ${config.services.caddy.logDir}/access-${
+              lib.replaceStrings [ "/" " " ] [ "_" "_" ] name
+            }.log {
+              mode 640
             }
+            level INFO
+            format json
           '';
-      };
-      "origin.thatferret.blog" = {
-        extraConfig = # caddyfile
-          ''
-            import logging origin.thatferret.blog
-            import bunny_acme_settings
-            import common_well-known
-            # import deny_not_bunny_edge
-            route {
-              crowdsec
-              reverse_proxy https://thatferret.blog.internal.caddy.lan.gigglesquid.tech {
-                header_up Host {upstream_hostport}
+          extraConfig = # caddyfile
+            ''
+              import bunny_acme_settings
+              route {
+                crowdsec
+                reverse_proxy https://cfwrs.org.uk.internal.caddy.lan.gigglesquid.tech {
+                  header_up Host {upstream_hostport}
+                }
               }
+            '';
+        };
+      "origin.thatferret.blog" =
+        { name, ... }:
+        {
+          logFormat = ''
+            output file ${config.services.caddy.logDir}/access-${
+              lib.replaceStrings [ "/" " " ] [ "_" "_" ] name
+            }.log {
+              mode 640
             }
+            level INFO
+            format json
           '';
-      };
-      "thatferret.shop" = {
-        extraConfig = # caddyfile
-          ''
-            import logging thatferret.shop
-            import bunny_acme_settings
-            import common_well-known
-            route {
-              crowdsec
-              reverse_proxy https://thatferret.shop.internal.caddy.lan.gigglesquid.tech {
-                header_up Host {upstream_hostport}
+          extraConfig = # caddyfile
+            ''
+              import bunny_acme_settings
+              import common_well-known
+              # import deny_not_bunny_edge
+              route {
+                crowdsec
+                reverse_proxy https://thatferret.blog.internal.caddy.lan.gigglesquid.tech {
+                  header_up Host {upstream_hostport}
+                }
               }
+            '';
+        };
+      "thatferret.shop" =
+        { name, ... }:
+        {
+          logFormat = ''
+            output file ${config.services.caddy.logDir}/access-${
+              lib.replaceStrings [ "/" " " ] [ "_" "_" ] name
+            }.log {
+              mode 640
             }
+            level INFO
+            format json
           '';
-      };
-      "origin.gigglesquid.tech" = {
-        extraConfig = # caddyfile
-          ''
-            import logging origin.gigglesquid.tech
-            import bunny_acme_settings
-            import common_well-known
-            # import deny_not_bunny_edge
-            route {
-              crowdsec
-              reverse_proxy https://gigglesquid.tech.internal.caddy.lan.gigglesquid.tech {
-                header_up Host {upstream_hostport}
+          extraConfig = # caddyfile
+            ''
+              import bunny_acme_settings
+              import common_well-known
+              route {
+                crowdsec
+                reverse_proxy https://thatferret.shop.internal.caddy.lan.gigglesquid.tech {
+                  header_up Host {upstream_hostport}
+                }
               }
+            '';
+        };
+      "origin.gigglesquid.tech" =
+        { name, ... }:
+        {
+          logFormat = ''
+            output file ${config.services.caddy.logDir}/access-${
+              lib.replaceStrings [ "/" " " ] [ "_" "_" ] name
+            }.log {
+              mode 640
             }
+            level INFO
+            format json
           '';
-      };
-      "umami.gigglesquid.tech" = {
-        extraConfig = # caddyfile
-          ''
-            import logging umami.gigglesquid.tech
-            import bunny_acme_settings
-            route {
-              crowdsec
-              reverse_proxy https://umami.internal.caddy.lan.gigglesquid.tech {
-                header_up Host {upstream_hostport}
+          extraConfig = # caddyfile
+            ''
+              import bunny_acme_settings
+              import common_well-known
+              # import deny_not_bunny_edge
+              route {
+                crowdsec
+                reverse_proxy https://gigglesquid.tech.internal.caddy.lan.gigglesquid.tech {
+                  header_up Host {upstream_hostport}
+                }
               }
+            '';
+        };
+      "umami.gigglesquid.tech" =
+        { name, ... }:
+        {
+          logFormat = ''
+            output file ${config.services.caddy.logDir}/access-${
+              lib.replaceStrings [ "/" " " ] [ "_" "_" ] name
+            }.log {
+              mode 640
             }
+            level INFO
+            format json
           '';
-      };
-      "idm.gigglesquid.tech" = {
-        extraConfig = # caddyfile
-          ''
-            import logging idm.gigglesquid.tech
-            import bunny_acme_settings
-            route {
-              crowdsec
-              reverse_proxy https://idm.internal.caddy.lan.gigglesquid.tech {
-                header_up Host {upstream_hostport}
+          extraConfig = # caddyfile
+            ''
+              import bunny_acme_settings
+              route {
+                crowdsec
+                reverse_proxy https://umami.internal.caddy.lan.gigglesquid.tech {
+                  header_up Host {upstream_hostport}
+                }
               }
+            '';
+        };
+      "idm.gigglesquid.tech" =
+        { name, ... }:
+        {
+          logFormat = ''
+            output file ${config.services.caddy.logDir}/access-${
+              lib.replaceStrings [ "/" " " ] [ "_" "_" ] name
+            }.log {
+              mode 640
             }
+            level INFO
+            format json
           '';
-      };
+          extraConfig = # caddyfile
+            ''
+              import bunny_acme_settings
+              route {
+                crowdsec
+                reverse_proxy https://idm.internal.caddy.lan.gigglesquid.tech {
+                  header_up Host {upstream_hostport}
+                }
+              }
+            '';
+        };
     };
 
     alloy-squid = {
       enable = true;
-      supplementaryGroups = [ "caddy" ];
-      alloyConfig = # river
-        ''
-          discovery.relabel "caddy" {
-            targets = [{
-              __address__ = "localhost:2019",
-            }]
-            rule {
-              target_label = "instance"
-              replacement  = constants.hostname
-            }
-          }
-
-          prometheus.scrape "caddy" {
-            targets         = discovery.relabel.caddy.output
-            forward_to      = [prometheus.remote_write.metrics_service.receiver]
-            scrape_interval = "15s"
-            job_name   = "caddy.metrics.scrape"
-          }
-
-          local.file_match "caddy_access_log" {
-            path_targets = [
-              {"__path__" = "/var/log/caddy/*.log"},
-            ]
-            sync_period = "15s"
-          }
-
-          loki.source.file "caddy_access_log" {
-            targets    = local.file_match.caddy_access_log.targets
-            forward_to = [loki.process.caddy_add_labels.receiver]
-            tail_from_end = true
-          }
-
-          loki.process "caddy_add_labels" {
-            stage.json {
-              expressions = {
-                level = "",
-                ts = "",
-                logger = "",
-                host = "request.host",
-                method = "request.method",
-                proto = "request.proto",
-                duration = "",
-                status = "",
-              }
-            }
-
-            stage.labels {
-              values = {
-                level = "",
-                logger = "",
-                host = "",
-                method = "",
-                proto = "",
-                duration = "",
-                status = "",
-              }
-            }
-
-            stage.static_labels {
-              values = {
-                job = "loki.source.file.caddy_access_log",
-              }
-            }
-
-            stage.timestamp {
-              source = "ts"
-              format = "unix"
-            }
-           
-            forward_to = [loki.write.grafana_loki.receiver]
-          }
-        '';
+      export = {
+        caddy = {
+          metrics = true;
+          logs = true;
+        };
+      };
     };
 
     crowdsec-firewall-bouncer = {

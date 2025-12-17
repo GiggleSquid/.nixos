@@ -24,14 +24,27 @@ in
       default = 12345;
     };
 
-    exportLocalMetrics = lib.mkOption {
-      type = lib.types.bool;
-      default = true;
-    };
+    export = {
+      localMetrics = lib.mkOption {
+        type = lib.types.bool;
+        default = true;
+      };
 
-    exportJournalLogs = lib.mkOption {
-      type = lib.types.bool;
-      default = true;
+      journalLogs = lib.mkOption {
+        type = lib.types.bool;
+        default = true;
+      };
+
+      caddy = {
+        metrics = lib.mkOption {
+          type = lib.types.bool;
+          default = false;
+        };
+        logs = lib.mkOption {
+          type = lib.types.bool;
+          default = false;
+        };
+      };
     };
 
     alloyConfig = lib.mkOption {
@@ -55,33 +68,45 @@ in
     };
 
     environment.etc."alloy/config.alloy".text =
-      (lib.optionalString cfg.exportLocalMetrics
+      # river
+      ''
+        prometheus.remote_write "prometheus_service" {
+          endpoint {
+            url = "https://prometheus.otel.lan.gigglesquid.tech/api/v1/write"
+            basic_auth {
+              username = "admin"
+              password_file = "${config.sops.secrets.prometheus_basic_auth.path}"
+            }
+          }
+        }
+
+        loki.write "loki_service" {
+          endpoint {
+            url = "https://loki.otel.lan.gigglesquid.tech/loki/api/v1/push"
+            //basic_auth {
+            //  username = "admin"
+            //  password_file = ""
+            //}
+          }
+        }
+      ''
+      + (lib.optionalString cfg.export.localMetrics
         # river
         ''
           prometheus.exporter.unix "local_system" { }
 
           prometheus.scrape "scrape_metrics" {
             targets         = prometheus.exporter.unix.local_system.targets
-            forward_to      = [prometheus.remote_write.metrics_service.receiver]
+            forward_to      = [prometheus.remote_write.prometheus_service.receiver]
             scrape_interval = "15s"
-          }
-
-          prometheus.remote_write "metrics_service" {
-            endpoint {
-              url = "https://prometheus.otel.lan.gigglesquid.tech/api/v1/write"
-              basic_auth {
-                username = "admin"
-                password_file = "${config.sops.secrets.prometheus_basic_auth.path}"
-              }
-            }
           }
         ''
       )
-      + (lib.optionalString cfg.exportJournalLogs
+      + (lib.optionalString cfg.export.journalLogs
         # river
         ''
           loki.source.journal "journal" {
-            forward_to = [loki.write.grafana_loki.receiver]
+            forward_to = [loki.write.loki_service.receiver]
             relabel_rules = loki.relabel.journal.rules
           }
 
@@ -98,24 +123,78 @@ in
               replacement   = "${config.networking.fqdn}"
             }
           }
-
-          loki.write "grafana_loki" {
-            endpoint {
-              url = "https://loki.otel.lan.gigglesquid.tech/loki/api/v1/push"
-              //basic_auth {
-              //  username = "admin"
-              //  password_file = ""
-              //}
+        ''
+      )
+      + (lib.optionalString cfg.export.caddy.metrics
+        # river
+        ''
+          discovery.relabel "caddy" {
+            targets = [{
+              __address__ = "localhost:2019",
+            }]
+            rule {
+              target_label = "instance"
+              replacement  = constants.hostname
             }
+          }
+
+          prometheus.scrape "caddy" {
+            targets         = discovery.relabel.caddy.output
+            forward_to      = [prometheus.remote_write.prometheus_service.receiver]
+            scrape_interval = "15s"
+            job_name   = "caddy.metrics.scrape"
+          }
+        ''
+      )
+      + (lib.optionalString cfg.export.caddy.logs
+        # river
+        ''
+          local.file_match "caddy_access_log" {
+            path_targets = [
+              {"__path__" = "/var/log/caddy/*.log"},
+            ]
+            sync_period = "15s"
+          }
+
+          loki.source.file "caddy_access_log" {
+            targets    = local.file_match.caddy_access_log.targets
+            forward_to = [loki.process.caddy_process_logs.receiver]
+            tail_from_end = true
+          }
+
+          loki.process "caddy_process_logs" {
+            stage.json {
+              expressions = {
+                ts = "",
+              }
+            }
+
+            stage.timestamp {
+              source = "ts"
+              format = "unix"
+            }
+
+            stage.static_labels {
+              values = {
+                job = "loki.source.file.caddy_access_log",
+                host   = "${config.networking.fqdn}",
+              }
+            }
+            
+            forward_to = [loki.write.loki_service.receiver]
           }
         ''
       )
       + cfg.alloyConfig;
 
     systemd.services.alloy.serviceConfig = {
-      SupplementaryGroups = cfg.supplementaryGroups ++ [
+      SupplementaryGroups = [
         "alloy"
-      ];
+      ]
+      ++ (lib.lists.optionals (cfg.export.caddy.logs) [
+        "caddy"
+      ])
+      ++ cfg.supplementaryGroups;
     };
 
     sops = {

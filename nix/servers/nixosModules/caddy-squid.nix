@@ -97,7 +97,9 @@ in
         mkIfElse cfg.externalService
           (
             ''
-              metrics
+              metrics {
+                per_host
+              }
               servers {
                 trusted_proxies bunny {
                   interval 3h
@@ -144,15 +146,6 @@ in
             abort
           }
         }
-        (logging) {
-          log {
-            output file /var/log/caddy/access-{args[0]}.log {
-              mode 640
-            }
-            level INFO
-            format json
-          }
-        }
         (common_well-known) {
           handle /.well-known/traffic-advice {
             header Content-Type application/trafficadvice+json
@@ -163,14 +156,24 @@ in
       + cfg.extraExtraConfig;
 
       virtualHosts = {
-        ":80, :443" = {
-          extraConfig = ''
-            import logging :80,_:443
-            respond "Forbidden" 403 {
-             close
-            }
-          '';
-        };
+        ":80, :443" =
+          { name, ... }:
+          {
+            logFormat = ''
+              output file ${config.services.caddy.logDir}/access-${
+                lib.replaceStrings [ "/" " " ] [ "_" "_" ] name
+              }.log {
+                mode 640
+              }
+              level INFO
+              format json
+            '';
+            extraConfig = ''
+              respond "Forbidden" 403 {
+               close
+              }
+            '';
+          };
       };
     };
   };

@@ -66,95 +66,38 @@ in
       enable = true;
     };
     caddy.virtualHosts = {
-      "umami.lan.gigglesquid.tech" = {
-        extraConfig = # caddyfile
-          ''
-            import logging umami.lan.gigglesquid.tech
-            import bunny_acme_settings
-            import deny_non_local
-            reverse_proxy localhost:3000 {
-              header_up X-Forwarded-Host "umami.gigglesquid.tech"
-              header_down Cross-Origin-Resource-Policy cross-origin
+      "umami.lan.gigglesquid.tech" =
+        { name, ... }:
+        {
+          logFormat = ''
+            output file ${config.services.caddy.logDir}/access-${
+              lib.replaceStrings [ "/" " " ] [ "_" "_" ] name
+            }.log {
+              mode 640
             }
+            level INFO
+            format json
           '';
-      };
+          extraConfig = # caddyfile
+            ''
+              import bunny_acme_settings
+              import deny_non_local
+              reverse_proxy localhost:3000 {
+                header_up X-Forwarded-Host "umami.gigglesquid.tech"
+                header_down Cross-Origin-Resource-Policy cross-origin
+              }
+            '';
+        };
     };
 
     alloy-squid = {
       enable = true;
-      supplementaryGroups = [ "caddy" ];
-      alloyConfig = # river
-        ''
-          discovery.relabel "caddy" {
-            targets = [{
-              __address__ = "localhost:2019",
-            }]
-            rule {
-              target_label = "instance"
-              replacement  = constants.hostname
-            }
-          }
-
-          prometheus.scrape "caddy" {
-            targets         = discovery.relabel.caddy.output
-            forward_to      = [prometheus.remote_write.metrics_service.receiver]
-            scrape_interval = "15s"
-            job_name   = "caddy.metrics.scrape"
-          }
-
-          local.file_match "caddy_access_log" {
-            path_targets = [
-              {"__path__" = "/var/log/caddy/*.log"},
-            ]
-            sync_period = "15s"
-          }
-
-          loki.source.file "caddy_access_log" {
-            targets    = local.file_match.caddy_access_log.targets
-            forward_to = [loki.process.caddy_add_labels.receiver]
-            tail_from_end = true
-          }
-
-          loki.process "caddy_add_labels" {
-            stage.json {
-              expressions = {
-                level = "",
-                ts = "",
-                logger = "",
-                host = "request.host",
-                method = "request.method",
-                proto = "request.proto",
-                duration = "",
-                status = "",
-              }
-            }
-
-            stage.labels {
-              values = {
-                level = "",
-                logger = "",
-                host = "",
-                method = "",
-                proto = "",
-                duration = "",
-                status = "",
-              }
-            }
-
-            stage.static_labels {
-              values = {
-                job = "loki.source.file.caddy_access_log",
-              }
-            }
-
-            stage.timestamp {
-              source = "ts"
-              format = "unix"
-            }
-           
-            forward_to = [loki.write.grafana_loki.receiver]
-          }
-        '';
+      export = {
+        caddy = {
+          metrics = true;
+          logs = true;
+        };
+      };
     };
   };
 

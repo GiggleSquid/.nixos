@@ -51,6 +51,7 @@ in
         owner = "prometheus";
       };
       prometheus_exporters_pve = { };
+      prometheus_exporters_idrac = { };
     };
   };
 
@@ -67,39 +68,69 @@ in
       enable = true;
     };
     caddy.virtualHosts = {
-      "grafana.otel.lan.gigglesquid.tech" = {
-        extraConfig = # caddyfile
-          ''
-            import logging grafana.otel.lan.gigglesquid.tech
-            import bunny_acme_settings
-            import deny_non_local
-            handle {
-              reverse_proxy 127.0.0.1:${toString config.services.grafana.settings.server.http_port}
+      "grafana.otel.lan.gigglesquid.tech" =
+        { name, ... }:
+        {
+          logFormat = ''
+            output file ${config.services.caddy.logDir}/access-${
+              lib.replaceStrings [ "/" " " ] [ "_" "_" ] name
+            }.log {
+              mode 640
             }
+            level INFO
+            format json
           '';
-      };
-      "prometheus.otel.lan.gigglesquid.tech" = {
-        extraConfig = # caddyfile
-          ''
-            import logging prometheus.otel.lan.gigglesquid.tech
-            import bunny_acme_settings
-            import deny_non_local
-            handle {
-              reverse_proxy 127.0.0.1:${toString config.services.prometheus.port}
+          extraConfig = # caddyfile
+            ''
+              import bunny_acme_settings
+              import deny_non_local
+              handle {
+                reverse_proxy 127.0.0.1:${toString config.services.grafana.settings.server.http_port}
+              }
+            '';
+        };
+      "prometheus.otel.lan.gigglesquid.tech" =
+        { name, ... }:
+        {
+          logFormat = ''
+            output file ${config.services.caddy.logDir}/access-${
+              lib.replaceStrings [ "/" " " ] [ "_" "_" ] name
+            }.log {
+              mode 640
             }
+            level INFO
+            format json
           '';
-      };
-      "loki.otel.lan.gigglesquid.tech" = {
-        extraConfig = # caddyfile
-          ''
-            import logging loki.otel.lan.gigglesquid.tech
-            import bunny_acme_settings
-            import deny_non_local
-            handle {
-              reverse_proxy 127.0.0.1:${toString config.services.loki.configuration.server.http_listen_port}
+          extraConfig = # caddyfile
+            ''
+              import bunny_acme_settings
+              import deny_non_local
+              handle {
+                reverse_proxy 127.0.0.1:${toString config.services.prometheus.port}
+              }
+            '';
+        };
+      "loki.otel.lan.gigglesquid.tech" =
+        { name, ... }:
+        {
+          logFormat = ''
+            output file ${config.services.caddy.logDir}/access-${
+              lib.replaceStrings [ "/" " " ] [ "_" "_" ] name
+            }.log {
+              mode 640
             }
+            level INFO
+            format json
           '';
-      };
+          extraConfig = # caddyfile
+            ''
+              import bunny_acme_settings
+              import deny_non_local
+              handle {
+                reverse_proxy 127.0.0.1:${toString config.services.loki.configuration.server.http_listen_port}
+              }
+            '';
+        };
     };
 
     grafana = {
@@ -158,6 +189,10 @@ in
           enable = true;
           configFile = "${config.sops.secrets.prometheus_exporters_pve.path}";
         };
+        idrac = {
+          enable = true;
+          configurationPath = "${config.sops.secrets.prometheus_exporters_idrac.path}";
+        };
       };
       scrapeConfigs = [
         {
@@ -188,6 +223,30 @@ in
             }
           ];
         }
+        {
+          job_name = "idrac";
+          http_sd_configs = [
+            {
+              url = "http://127.0.0.1:9348/discover";
+            }
+          ];
+          relabel_configs = [
+            {
+              source_labels = [ "__address__" ];
+              target_label = "__param_target";
+            }
+            {
+              source_labels = [ "__param_target" ];
+              target_label = "instance";
+            }
+            {
+              source_labels = [ "__meta_url__" ];
+              target_label = "__address__";
+              regex = "(https?.{3})([^\/]+)(.+)";
+              replacement = "$2";
+            }
+          ];
+        }
       ];
     };
 
@@ -213,8 +272,9 @@ in
           };
           chunk_idle_period = "1h";
           max_chunk_age = "1h";
-          chunk_target_size = 999999;
+          chunk_target_size = 1572864;
           chunk_retain_period = "30s";
+          chunk_encoding = "zstd";
         };
 
         schema_config = {
@@ -262,94 +322,28 @@ in
           retention_period = "90d";
           reject_old_samples = true;
           reject_old_samples_max_age = "1w";
-        };
-
-        table_manager = {
-          retention_deletes_enabled = false;
-          retention_period = "0s";
+          max_global_streams_per_user = 10000;
         };
       };
     };
 
     alloy-squid = {
       enable = true;
-      supplementaryGroups = [ "caddy" ];
-      alloyConfig = # river
-        ''
-          discovery.relabel "caddy" {
-            targets = [{
-              __address__ = "localhost:2019",
-            }]
-            rule {
-              target_label = "instance"
-              replacement  = constants.hostname
-            }
-          }
-
-          prometheus.scrape "caddy" {
-            targets         = discovery.relabel.caddy.output
-            forward_to      = [prometheus.remote_write.metrics_service.receiver]
-            scrape_interval = "15s"
-            job_name   = "caddy.metrics.scrape"
-          }
-
-          local.file_match "caddy_access_log" {
-            path_targets = [
-              {"__path__" = "/var/log/caddy/*.log"},
-            ]
-            sync_period = "15s"
-          }
-
-          loki.source.file "caddy_access_log" {
-            targets    = local.file_match.caddy_access_log.targets
-            forward_to = [loki.process.caddy_add_labels.receiver]
-            tail_from_end = true
-          }
-
-          loki.process "caddy_add_labels" {
-            stage.json {
-              expressions = {
-                level = "",
-                ts = "",
-                logger = "",
-                host = "request.host",
-                method = "request.method",
-                proto = "request.proto",
-                duration = "",
-                status = "",
-              }
-            }
-
-            stage.labels {
-              values = {
-                level = "",
-                logger = "",
-                host = "",
-                method = "",
-                proto = "",
-                duration = "",
-                status = "",
-              }
-            }
-            
-            stage.static_labels {
-              values = {
-                job = "loki.source.file.caddy_access_log",
-              }
-            }
-
-            stage.timestamp {
-              source = "ts"
-              format = "unix"
-            }
-           
-            forward_to = [loki.write.grafana_loki.receiver]
-          }
-        '';
+      export = {
+        caddy = {
+          metrics = true;
+          logs = true;
+        };
+      };
     };
   };
 
   environment.etc = {
+    "grafana-dashboards/idrac-via-prometheus.json" = {
+      source = ./. + "/_grafana-dashboards/idrac-via-prometheus.json";
+      user = "grafana";
+      group = "grafana";
+    };
     "grafana-dashboards/proxmox-via-prometheus.json" = {
       source = ./. + "/_grafana-dashboards/10347-proxmox-via-prometheus.json";
       user = "grafana";

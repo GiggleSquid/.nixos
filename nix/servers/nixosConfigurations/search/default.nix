@@ -124,26 +124,36 @@ in
       };
     };
     caddy.virtualHosts = {
-      "search.lan.gigglesquid.tech" = {
-        extraConfig = # caddyfile
-          ''
-            import logging search.gigglesquid.tech
-            import bunny_acme_settings
-            import deny_non_local
-            encode zstd gzip
-            handle {
-              reverse_proxy unix/${config.services.uwsgi.instance.vassals.searx.socket} {
-                transport uwsgi {
-                  uwsgi_param HTTP_X_SCRIPT_NAME ""
+      "search.lan.gigglesquid.tech" =
+        { name, ... }:
+        {
+          logFormat = ''
+            output file ${config.services.caddy.logDir}/access-${
+              lib.replaceStrings [ "/" " " ] [ "_" "_" ] name
+            }.log {
+              mode 640
+            }
+            level INFO
+            format json
+          '';
+          extraConfig = # caddyfile
+            ''
+              import bunny_acme_settings
+              import deny_non_local
+              encode zstd gzip
+              handle {
+                reverse_proxy unix/${config.services.uwsgi.instance.vassals.searx.socket} {
+                  transport uwsgi {
+                    uwsgi_param HTTP_X_SCRIPT_NAME ""
+                  }
                 }
               }
-            }
-            handle_path /static/ {
-              root "${config.services.searx.package}/share/static/*"
-              file_server
-            }
-          '';
-      };
+              handle_path /static/ {
+                root "${config.services.searx.package}/share/static/*"
+                file_server
+              }
+            '';
+        };
     };
   };
 
