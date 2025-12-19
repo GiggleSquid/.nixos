@@ -2,6 +2,9 @@ result
 *.qcow2
 *.bin
 *.img
+*.tar.xz
+*.img.zst
+*.vma.zst
 .cache
 .config
 .data
