@@ -26,23 +26,21 @@ in
     desktopManager.plasma6.enable = true;
   };
 
-  environment.systemPackages = with nixpkgs; [
-    kdePackages.sddm-kcm
-    kdePackages.kio-admin
-    (catppuccin.override {
-      themeList = [ "k9s" ];
-      variant = "mocha";
-      accent = "peach";
-    })
-    (catppuccin-kde.override {
-      flavour = [ "mocha" ];
-      accents = [ "peach" ];
-      winDecStyles = [ "modern" ];
-    })
-    catppuccin-cursors.mochaPeach
-    (catppuccin-papirus-folders.override {
-      flavor = "mocha";
-      accent = "peach";
-    })
-  ];
+  environment = {
+    plasma6.excludePackages = with nixpkgs; [ kdePackages.konsole ];
+    systemPackages = with nixpkgs; [
+      kdePackages.sddm-kcm
+      kdePackages.kio-admin
+      (catppuccin-kde.override {
+        flavour = [ "mocha" ];
+        accents = [ "peach" ];
+        winDecStyles = [ "modern" ];
+      })
+      catppuccin-cursors.mochaPeach
+      (catppuccin-papirus-folders.override {
+        flavor = "mocha";
+        accent = "peach";
+      })
+    ];
+  };
 }
