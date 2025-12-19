@@ -3,12 +3,12 @@ let
   inherit (inputs) rpi;
 in
 {
-  imports = [ cell.nixosConfigurations.caddy-dmz ];
+  imports = [ cell.nixosConfigurations.caddy-dmz-0 ];
 
   inherit (rpi) bee;
 
   deployment = rpi.deployment // {
-    targetHost = "dmz.caddy.lan.gigglesquid.tech";
+    targetHost = "dmz-0.caddy.lan.gigglesquid.tech";
     tags = (rpi.deployment.tags) ++ [
       "caddy"
     ];
