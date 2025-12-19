@@ -110,7 +110,6 @@ in
             ''
               import bunny_acme_settings
               import deny_non_local
-              encode zstd gzip
               route {
                 reverse_proxy localhost:8080
               }
