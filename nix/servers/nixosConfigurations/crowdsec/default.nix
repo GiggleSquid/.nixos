@@ -27,7 +27,7 @@ in
   systemd.network = {
     networks = {
       "10-lan" = {
-        matchConfig.Name = "eth0";
+        matchConfig.Name = "enp6s18";
         ipv6AcceptRAConfig = {
           Token = "static:::50";
         };
@@ -173,9 +173,7 @@ in
 
   imports =
     let
-      profiles = [
-        hardwareProfiles.servers
-      ];
+      profiles = [ hardwareProfiles.vms ];
       suites =
         with serverSuites;
         lib.concatLists [
@@ -205,14 +203,14 @@ in
             profiles
             suites
           ];
-        home.stateVersion = "25.05";
+        home.stateVersion = "25.11";
       };
       nixos = {
         imports = with homeSuites; nixos;
-        home.stateVersion = "25.05";
+        home.stateVersion = "25.11";
       };
     };
   };
 
-  system.stateVersion = "25.05";
+  system.stateVersion = "25.11";
 }
