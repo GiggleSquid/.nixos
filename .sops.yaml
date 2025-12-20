@@ -54,6 +54,8 @@ keys:
   - &attic age16mrp5d9asz6fcwe26k6wgya7805ltg2q8r8lskdrjnkw0s2sv4cs6dcxgs
   - &ncps age1d4qfwa6aqdardzprjgqn66uet7nr2vcfg57z0uuameut9grrxessxngt8l
 
+  - &vaultwarden age1pv8l33zaz2zteffj0expa4ax7gz9w67v93u33ufql5526luxggqswpjfj4
+
 creation_rules:
   - path_regex: sops/[^/]+\.yaml$
     key_groups:
@@ -89,3 +91,4 @@ creation_rules:
       - *warrior-archiveteam
       - *attic
       - *ncps
+      - *vaultwarden

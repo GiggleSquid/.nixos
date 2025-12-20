@@ -49,6 +49,7 @@ in
       "mailserver/pass/kraken.lan@gigglesquid.tech" = { };
       "mailserver/pass/cephalonas.lan@gigglesquid.tech" = { };
       "mailserver/pass/pbs.cephalonas.lan@gigglesquid.tech" = { };
+      "mailserver/pass/vaultwarden.lan@gigglesquid.tech" = { };
       "mailserver/pass/hello@thatferret.blog" = { };
       "mailserver/pass/privacy@thatferret.blog" = { };
       "mailserver/pass/jack.connors@thatferret.blog" = { };
@@ -158,6 +159,11 @@ in
       };
       "pbs.cephalonas.lan@gigglesquid.tech" = {
         hashedPasswordFile = "${config.sops.secrets."mailserver/pass/pbs.cephalonas.lan@gigglesquid.tech".path
+        }";
+        sendOnly = true;
+      };
+      "vaultwarden.lan@gigglesquid.tech" = {
+        hashedPasswordFile = "${config.sops.secrets."mailserver/pass/vaultwarden.lan@gigglesquid.tech".path
         }";
         sendOnly = true;
       };
