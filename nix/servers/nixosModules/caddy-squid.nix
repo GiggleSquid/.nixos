@@ -120,7 +120,9 @@ in
                   }
                   dns {
                     interval 15m
-                    host dmz.caddy.lan.gigglesquid.tech
+                    host dmz-0.caddy.lan.gigglesquid.tech
+                    host dmz-1.caddy.lan.gigglesquid.tech
+                    host dmz-2.caddy.lan.gigglesquid.tech
                     host internal.caddy.lan.gigglesquid.tech
                   }
                 }
