@@ -20,6 +20,11 @@ in
   options.services.caddy-squid = {
     enable = lib.mkEnableOption (lib.mdDoc "caddy-squid");
 
+    supplementaryGroups = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      default = [ ];
+    };
+
     externalService = lib.mkOption {
       type = lib.types.bool;
       default = false;
@@ -67,6 +72,7 @@ in
           "${config.sops.secrets.ipv4_subnet_env.path}"
           "${config.sops.secrets.ipv4_static_env.path}"
         ];
+        SupplementaryGroups = cfg.supplementaryGroups;
       };
     };
 
