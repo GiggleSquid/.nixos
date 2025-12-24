@@ -117,11 +117,15 @@ in
       theme = "catppuccin-mocha";
       logo = "${self}/artwork/SquidNixPlymouth.png";
     };
+
+    # We use the last of the 3 swap devs as the resume dev.
+    # This dev has the lowest priority, so is most likely empty.
+    resumeDevice = "/dev/dm-7";
   };
 
   # We use 3 swap devs simply because my main disks are a btrfs raid of 3
   # and when I decided to partition them, I wanted it to be even.
-  # This does mean that I now have a rediculous 90 GiB of swap space.
+  # This does mean that I now have a ridiculous 90 GiB of swap space.
   swapDevices = [
     {
       device = "/dev/mapper/swap0";
