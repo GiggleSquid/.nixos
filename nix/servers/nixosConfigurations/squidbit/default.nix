@@ -24,10 +24,16 @@ in
     # "security" and/or "pirvicy" "reasons".
     enableIPv6 = false;
   };
+
   systemd.network = {
     networks = {
       "10-lan" = {
         matchConfig.Name = "enp6s18";
+        networkConfig = lib.mkForce {
+          # networkd sets link local by default which forces networkd
+          # to set net.ipv6.conf.<interface>.disable_ipv6 = 0 at boot
+          LinkLocalAddressing = "no";
+        };
         address = [
           "10.3.1.30/23"
         ];
