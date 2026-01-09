@@ -181,6 +181,7 @@ in
       port = 3020;
       webExternalUrl = "https://prometheus.otel.lan.gigglesquid.tech";
       webConfigFile = "${config.sops.secrets.prometheus_web_config.path}";
+      retentionTime = "90d";
       extraFlags = [
         "--web.enable-remote-write-receiver"
       ];
