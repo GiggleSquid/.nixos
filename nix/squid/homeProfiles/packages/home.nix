@@ -22,6 +22,7 @@ in
     pkgs.jellyfin-media-player
     kdePackages.filelight
     kdePackages.isoimagewriter
+    kdePackages.kmymoney
     kdePackages.skanpage
     kicad
     libopus
