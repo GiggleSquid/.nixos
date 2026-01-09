@@ -26,13 +26,13 @@ in
       "10-lan" = {
         matchConfig.Name = "enp6s18";
         ipv6AcceptRAConfig = {
-          Token = "static:::20";
+          Token = "static:::10";
         };
         address = [
-          "10.100.0.20/24"
+          "10.102.0.10/24"
         ];
         gateway = [
-          "10.100.0.1"
+          "10.102.0.1"
         ];
       };
     };
@@ -57,6 +57,10 @@ in
       "mailserver/pass/privacy@thatferret.shop" = { };
       "mailserver/pass/notifications@thatferret.shop" = { };
       "mailserver/pass/jack.connors@thatferret.shop" = { };
+      "mailserver/pass/contact@cfwrs.org.uk" = { };
+      "mailserver/pass/privacy@cfwrs.org.uk" = { };
+      "mailserver/pass/notifications@cfwrs.org.uk" = { };
+      "mailserver/pass/jack.connors@cfwrs.org.uk" = { };
     };
   };
 
@@ -76,7 +80,7 @@ in
       };
     };
     certs = {
-      "mail.gigglesquid.tech" = { };
+      "${config.mailserver.fqdn}" = { };
     };
   };
 
@@ -96,13 +100,14 @@ in
       "gigglesquid.tech"
       "thatferret.blog"
       "thatferret.shop"
+      "cfwrs.org"
     ];
-    certificateScheme = "acme";
+    x509.useACMEHost = config.mailserver.fqdn;
     enablePop3 = false;
     enablePop3Ssl = false;
     enableImap = false;
     enableImapSsl = true;
-    enableSubmission = true;
+    enableSubmission = false;
     enableSubmissionSsl = true;
 
     hierarchySeparator = "/";
@@ -196,6 +201,23 @@ in
       "jack.connors@thatferret.shop" = {
         hashedPasswordFile = "${config.sops.secrets."mailserver/pass/jack.connors@thatferret.shop".path}";
       };
+      # cfwrs.org.uk
+      # "contact@cfwrs.org.uk" = {
+      #   hashedPasswordFile = "${config.sops.secrets."mailserver/pass/contact@cfwrs.org.uk".path}";
+      #   aliases = [ "hello@cfwrs.org.uk" ];
+      # };
+      # "privacy@cfwrs.org.uk" = {
+      #   hashedPasswordFile = "${config.sops.secrets."mailserver/pass/privacy@cfwrs.org.uk".path}";
+      # };
+      # testing on temp domain
+      "notifications@cfwrs.org" = {
+        hashedPasswordFile = "${config.sops.secrets."mailserver/pass/notifications@cfwrs.org.uk".path}";
+        sendOnly = true;
+        sendOnlyRejectMessage = "This mailbox cannot receive email. Please send your emails to contact@cfwrs.org.uk";
+      };
+      # "jack.connors@cfwrs.org.uk" = {
+      #   hashedPasswordFile = "${config.sops.secrets."mailserver/pass/jack.connors@cfwrs.org.uk".path}";
+      # };
     };
     extraVirtualAliases = { };
     borgbackup = { };
