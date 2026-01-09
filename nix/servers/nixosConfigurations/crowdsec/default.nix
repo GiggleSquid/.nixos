@@ -29,13 +29,13 @@ in
       "10-lan" = {
         matchConfig.Name = "enp6s18";
         ipv6AcceptRAConfig = {
-          Token = "static:::50";
+          Token = "static:::10";
         };
         address = [
-          "10.100.0.50/24"
+          "10.103.0.10/24"
         ];
         gateway = [
-          "10.100.0.1"
+          "10.103.0.1"
         ];
       };
     };
@@ -46,6 +46,7 @@ in
     secrets = {
       bunny_dns_api_key = { };
       crowdsec_enroll_key = { };
+      "crowdsec_bouncer_api_keys/crowdsec_firewall" = { };
     };
   };
 
@@ -74,100 +75,117 @@ in
     };
   };
 
-  services.crowdsec = {
-    enable = true;
-    autoUpdateService = true;
-    settings = {
-      console = {
-        tokenFile = "${config.sops.secrets.crowdsec_enroll_key.path}";
+  services = {
+    crowdsec = {
+      enable = true;
+      autoUpdateService = true;
+      settings = {
+        console = {
+          tokenFile = "${config.sops.secrets.crowdsec_enroll_key.path}";
+        };
+        capi = {
+          credentialsFile = "/var/lib/crowdsec/online_api_credentials.yaml";
+        };
+        lapi = {
+          credentialsFile = "/var/lib/crowdsec/local_api_credentials.yaml";
+        };
+        general = {
+          api.server = {
+            enable = true;
+            listen_uri = "0.0.0.0:8443";
+            tls = {
+              cert_file = "/var/lib/acme/crowdsec.gigglesquid.tech/cert.pem";
+              key_file = "/var/lib/acme/crowdsec.gigglesquid.tech/key.pem";
+              client_verification = "NoClientCert";
+            };
+          };
+          crowdsec_service = {
+            parser_routines = 4;
+            buckets_routines = 4;
+            output_routines = 2;
+          };
+        };
       };
-      capi = {
-        credentialsFile = "/var/lib/crowdsec/online_api_credentials.yaml";
+      hub = {
+        scenarios = [ ];
+        postOverflows = [ ];
+        parsers = [
+          "crowdsecurity/whitelists"
+        ];
+        collections = [
+          "crowdsecurity/linux"
+          "crowdsecurity/caddy"
+          "crowdsecurity/postfix"
+          "crowdsecurity/dovecot"
+          "crowdsecurity/appsec-generic-rules"
+          "crowdsecurity/appsec-virtual-patching"
+          "crowdsecurity/appsec-wordpress"
+          "crowdsecurity/wordpress"
+        ];
+        appSecRules = [ ];
+        appSecConfigs = [ ];
       };
-      lapi = {
-        credentialsFile = "/var/lib/crowdsec/local_api_credentials.yaml";
-      };
-      general = {
-        api.server = {
-          enable = true;
-          listen_uri = "0.0.0.0:8443";
-          tls = {
+      localConfig = {
+        acquisitions = [
+          {
+            source = "appsec";
+            listen_addr = "0.0.0.0:7422";
             cert_file = "/var/lib/acme/crowdsec.gigglesquid.tech/cert.pem";
             key_file = "/var/lib/acme/crowdsec.gigglesquid.tech/key.pem";
-            client_verification = "NoClientCert";
-          };
-        };
-        crowdsec_service = {
-          parser_routines = 4;
-          buckets_routines = 4;
-          output_routines = 2;
-        };
+            appsec_configs = [ "crowdsecurity/appsec-default" ];
+            routines = 2;
+            labels = {
+              type = "appsec";
+            };
+          }
+          {
+            source = "loki";
+            url = "https://loki.otel.lan.gigglesquid.tech";
+            # auth = {
+            #   username = "something";
+            #   password = "secret";
+            # };
+            log_level = "info";
+            limit = 1000;
+            query = ''
+              {job="loki.source.file.caddy_access_log"}
+            '';
+            labels = {
+              type = "caddy";
+            };
+          }
+          {
+            source = "loki";
+            url = "https://loki.otel.lan.gigglesquid.tech";
+            # auth = {
+            #   username = "something";
+            #   password = "secret";
+            # };
+            limit = 1000;
+            query = ''
+              {job="loki.source.journal.journal", systemd_unit=~"sshd.*.service"}
+            '';
+            labels = {
+              type = "sshd";
+            };
+          }
+        ];
       };
     };
-    hub = {
-      scenarios = [ ];
-      postOverflows = [ ];
-      parsers = [
-        "crowdsecurity/whitelists"
-      ];
-      collections = [
-        "crowdsecurity/linux"
-        "crowdsecurity/caddy"
-        "crowdsecurity/postfix"
-        "crowdsecurity/dovecot"
-        "crowdsecurity/appsec-generic-rules"
-        "crowdsecurity/appsec-virtual-patching"
-        "crowdsecurity/appsec-wordpress"
-        "crowdsecurity/wordpress"
-      ];
-      appSecRules = [ ];
-      appSecConfigs = [ ];
+
+    alloy-squid = {
+      enable = true;
     };
-    localConfig = {
-      acquisitions = [
-        {
-          source = "appsec";
-          listen_addr = "0.0.0.0:7422";
-          cert_file = "/var/lib/acme/crowdsec.gigglesquid.tech/cert.pem";
-          key_file = "/var/lib/acme/crowdsec.gigglesquid.tech/key.pem";
-          appsec_configs = [ "crowdsecurity/appsec-default" ];
-          routines = 2;
-          labels = {
-            type = "appsec";
-          };
-        }
-        {
-          source = "loki";
-          url = "https://loki.otel.lan.gigglesquid.tech";
-          # auth = {
-          #   username = "something";
-          #   password = "secret";
-          # };
-          log_level = "info";
-          limit = 1000;
-          query = ''
-            {job="loki.source.file.caddy_access_log"}
-          '';
-          labels = {
-            type = "caddy";
-          };
-        }
-        {
-          source = "loki";
-          url = "https://loki.otel.lan.gigglesquid.tech";
-          # auth = {
-          #   username = "something";
-          #   password = "secret";
-          # };
-          limit = 1000;
-          query = ''
-            {job="loki.source.journal.journal", systemd_unit=~"sshd.*.service"}
-          '';
-          labels = {
-            type = "sshd";
-          };
-        }
-      ];
+
+    crowdsec-firewall-bouncer = {
+      enable = true;
+      settings = {
+        api_url = "https://crowdsec.lan.gigglesquid.tech:8443";
+      };
+      registerBouncer.enable = false;
+      secrets = {
+        apiKeyPath = "${config.sops.secrets."crowdsec_bouncer_api_keys/crowdsec_firewall".path}";
+      };
     };
   };
 
