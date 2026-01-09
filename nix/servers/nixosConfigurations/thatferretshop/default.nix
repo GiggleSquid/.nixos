@@ -100,10 +100,11 @@ in
       phpOptions = ''
         auto_prepend_file = /srv/www/thatferretshop/wp-content/plugins/crowdsec/inc/standalone-bounce.php
         expose_php off
-        max_input_vars 1000
-        memory_limit 256M
-        post_max_size 64M
-        upload_max_filesize 32M
+        max_input_vars 2000
+        max_execution_time = 120
+        memory_limit 1024M
+        post_max_size 256M
+        upload_max_filesize 128M
       '';
       settings = {
         "listen.owner" = config.services.caddy.user;
@@ -219,7 +220,7 @@ in
                 path /wp-content/uploads/*.php
                 path /wp-content/uploads/crowdsec/logs/*
                 path /wp-content/uploads/crowdsec/cache/*
-                path /wp-content/uploads/crowdsec/inc/standalone-settings.php
+                path /wp-content/plugins/crowdsec/inc/standalone-settings*
               }
               error @forbidden "403 - Forbidden" 403
 
