@@ -46,7 +46,8 @@ keys:
   - &gigglesquidtech age1735wpngc823k4trcp0ayzfnreqntvez8uymz048sv4wy59h0k9jq3r6pmj
   - &thatferretblog age1vghjsjt0rnqw8spwdgqesaqjs8kg725wkvvmhua94j3uaryg0c9snj6u67
   - &thatferretshop age16uf9ff3933s2uyxu74cgm34090k9pr8z4g0n33nlzrt76ha3wfcq0aayzp
-  - &cfwrs age1as0xm26nvwdvxqyw6wg0je8zhwvjt8szqedzm88svwaw7uea6dds7q8n3z
+  - &cfwrs age1rpxdjmullylzmwwxm6l3zn002ep23txuyt37updfcma4w42rtc5q627ar4
+  - &old-cfwrs age1as0xm26nvwdvxqyw6wg0je8zhwvjt8szqedzm88svwaw7uea6dds7q8n3z
 
   - &boinc-tentacle0 age13mk5pue6mlr3rjkrppxafcc2wz8wsygdhnt4jx335wxwaph5yads057hej
 
@@ -96,6 +97,7 @@ creation_rules:
       - *thatferretblog
       - *thatferretshop
       - *cfwrs
+      - *old-cfwrs
       - *boinc-tentacle0
       - *searxng
       - *atuin
