@@ -50,16 +50,11 @@ in
           "149.112.112.112"
         ];
       };
-      "11-inter-lan" = {
-        matchConfig.Name = "enp7s0";
-        address = [
-          "10.150.0.10/24"
-        ];
-        routes = [
-          { Gateway = "10.150.0.1"; }
-        ];
-      };
     };
+  };
+
+  zramSwap = {
+    memoryPercent = 25;
   };
 
   sops = {

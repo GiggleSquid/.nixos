@@ -32,7 +32,7 @@ in
 
   zramSwap = {
     enable = lib.mkDefault true;
-    memoryPercent = 50;
+    memoryPercent = lib.mkDefault 50;
     priority = 5;
   };
 
