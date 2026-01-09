@@ -720,6 +720,7 @@ in
           extraConfig = # caddyfile
             ''
               import bunny_acme_settings
+              import deny_non_local
               route {
                 crowdsec
                 reverse_proxy https://homepage.lan.gigglesquid.tech {
@@ -743,6 +744,7 @@ in
           extraConfig = # caddyfile
             ''
               import bunny_acme_settings
+              import deny_non_local
               route {
                 crowdsec
                 reverse_proxy https://ncps.lan.gigglesquid.tech {
@@ -766,6 +768,7 @@ in
           extraConfig = # caddyfile
             ''
               import bunny_acme_settings
+              import deny_non_local
               route {
                 crowdsec
                 reverse_proxy https://attic.lan.gigglesquid.tech {
@@ -789,9 +792,34 @@ in
           extraConfig = # caddyfile
             ''
               import bunny_acme_settings
+              import deny_non_local
               route {
                 crowdsec
                 reverse_proxy https://vaultwarden.lan.gigglesquid.tech {
+                  header_up Host {upstream_hostport}
+                }
+              }
+            '';
+        };
+      "service.atuin.lan.gigglesquid.tech" =
+        { name, ... }:
+        {
+          logFormat = ''
+            output file ${config.services.caddy.logDir}/access-${
+              lib.replaceStrings [ "/" " " ] [ "_" "_" ] name
+            }.log {
+              mode 640
+            }
+            level INFO
+            format json
+          '';
+          extraConfig = # caddyfile
+            ''
+              import bunny_acme_settings
+              import deny_non_local
+              route {
+                crowdsec
+                reverse_proxy https://atuin.lan.gigglesquid.tech {
                   header_up Host {upstream_hostport}
                 }
               }

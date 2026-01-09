@@ -44,7 +44,7 @@ in
       settings = {
         auto_sync = true;
         dialect = "uk";
-        sync_address = "http://atuin.lan.gigglesquid.tech:8080";
+        sync_address = "https://service.atuin.lan.gigglesquid.tech";
         sync_frequency = "10m";
         inline_height = 0;
         search_mode = "fuzzy";

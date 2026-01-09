@@ -1,6 +1,7 @@
 {
   inputs,
   cell,
+  config,
 }:
 let
   inherit (inputs) common nixpkgs;
@@ -41,9 +42,35 @@ in
     atuin = {
       enable = true;
       openRegistration = false;
-      host = "0.0.0.0";
-      port = 8080;
-      openFirewall = true;
+      host = "::1";
+    };
+
+    caddy-squid = {
+      enable = true;
+    };
+    caddy.virtualHosts = {
+      "atuin.lan.gigglesquid.tech" =
+        { name, ... }:
+        {
+          logFormat = ''
+            output file ${config.services.caddy.logDir}/access-${
+              lib.replaceStrings [ "/" " " ] [ "_" "_" ] name
+            }.log {
+              mode 640
+            }
+            level INFO
+            format json
+          '';
+          extraConfig = # caddyfile
+            ''
+              import bunny_acme_settings
+              import deny_non_local
+              encode zstd gzip
+              handle {
+                reverse_proxy http://[::1]:${builtins.toString config.services.atuin.port}
+              }
+            '';
+        };
     };
   };
 
@@ -55,6 +82,7 @@ in
         lib.concatLists [
           nixosSuites.server
           base
+          caddy-server
         ];
     in
     lib.concatLists [
