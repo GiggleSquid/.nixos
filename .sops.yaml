@@ -8,7 +8,12 @@ keys:
   - &squid-rig age1qvktpvzde3rfnjnt3y9s9fvt9m23cgzqmp5qhgtrwgwqp70m7ewqnkkup4
   - &squid-top age1mfe5l2x5prlvdxzy9vnfau7grl8xyapnzud9qqk6hx9uagj0sppsjlt0v0
 
-  - &caddy-dmz age1uuuqrhvn5kx4qd92xjv0qmj85ve2c53g85gypvzku77m67qm2pasflluqq
+  - &lb-0 age1r5qzkfq3dpsw3kyu9rmc7rrc87f57ewgxef55gnwfnujl8rteuesyulxw9
+  - &lb-1 age1lvzz3s64c697vhqtu7yyxzu7e6dc05rmwcqnt65kwmkrc4q8kdlsqrktfs
+
+  - &caddy-dmz-0 age1uuuqrhvn5kx4qd92xjv0qmj85ve2c53g85gypvzku77m67qm2pasflluqq
+  - &caddy-dmz-1 age1gu5r9hkqnsdkzdde2sq64p60w053wyzla2htn7kg03eay9fry3gq8cr0dj
+  - &caddy-dmz-2 age1gxx2m52glzmkw9pctzv6mqd2v0fhyyghdtlsu8wxr30jglquju3q3ymnkc
   - &caddy-internal age1k8wmvwravcdk5gsh2k6rhe003ardaup476nn8mafdmzrs30f6vasf2mgae
 
   - &timesquid-0 age1m6qkmvryf4fmmus2nrmrauphlsqtt6q8flzd2wyn30xgplvse9msk0tarv
@@ -65,7 +70,11 @@ creation_rules:
       - *squid
       - *squid-rig
       - *squid-top
-      - *caddy-dmz
+      - *lb-0
+      - *lb-1
+      - *caddy-dmz-0
+      - *caddy-dmz-1
+      - *caddy-dmz-2
       - *caddy-internal
       - *timesquid-0
       - *ns1

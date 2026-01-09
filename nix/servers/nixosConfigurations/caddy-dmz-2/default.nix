@@ -8,9 +8,9 @@ let
   inherit (cell) serverSuites hardwareProfiles nixosProfiles;
   inherit (inputs.cells.squid) nixosSuites homeSuites;
   lib = nixpkgs.lib // builtins;
-  hostName = "dmz-0";
-  hostIPv4 = "10.101.0.40";
-  hostIPv6 = "2a0b:9401:64:101::40";
+  hostName = "dmz-2";
+  hostIPv4 = "10.101.0.42";
+  hostIPv6 = "2a0b:9401:64:101::42";
   valkeyHostname-a = "valkey-a.${hostName}.caddy.lan.gigglesquid.tech";
   valkeyHostname-b = "valkey-b.${hostName}.caddy.lan.gigglesquid.tech";
   valkeyHostname-c = "valkey-c.${hostName}.caddy.lan.gigglesquid.tech";
@@ -43,7 +43,7 @@ in
       "10-lan" = {
         matchConfig.Name = "end0";
         ipv6AcceptRAConfig = {
-          Token = "static:::40";
+          Token = "static:::42";
         };
         address = [
           "${hostIPv4}/24"
@@ -81,7 +81,7 @@ in
     secrets = {
       bunny_dns_api_key = { };
       crowdsec_bouncer_api_keys_env = { };
-      "crowdsec_bouncer_api_keys/caddy_dmz-0_firewall" = { };
+      "crowdsec_bouncer_api_keys/caddy_dmz-2_firewall" = { };
       "valkey/caddy-dmz/env" = { };
       "valkey/caddy-dmz/acl" = {
         group = "valkey";
@@ -192,7 +192,6 @@ in
           bind = "127.0.0.1 ::1 ${hostIPv4} ${hostIPv6}";
           port = 6381;
           appendOnly = true;
-          # requirePassFile = "${config.sops.secrets."valkey/caddy-dmz/pass".path}";
           settings = {
             # # TLS
             # tls-port = 6381;
@@ -258,7 +257,7 @@ in
         api_url = "https://crowdsec.lan.gigglesquid.tech:8443";
       };
       secrets = {
-        apiKeyPath = "${config.sops.secrets."crowdsec_bouncer_api_keys/caddy_dmz-0_firewall".path}";
+        apiKeyPath = "${config.sops.secrets."crowdsec_bouncer_api_keys/caddy_dmz-2_firewall".path}";
       };
     };
   };
@@ -298,14 +297,14 @@ in
             profiles
             suites
           ];
-        home.stateVersion = "25.05";
+        home.stateVersion = "26.05";
       };
       nixos = {
         imports = with homeSuites; nixos;
-        home.stateVersion = "25.05";
+        home.stateVersion = "26.05";
       };
     };
   };
 
-  system.stateVersion = "25.05";
+  system.stateVersion = "26.05";
 }

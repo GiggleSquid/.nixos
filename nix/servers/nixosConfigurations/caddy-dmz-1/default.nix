@@ -8,9 +8,9 @@ let
   inherit (cell) serverSuites hardwareProfiles nixosProfiles;
   inherit (inputs.cells.squid) nixosSuites homeSuites;
   lib = nixpkgs.lib // builtins;
-  hostName = "dmz-0";
-  hostIPv4 = "10.101.0.40";
-  hostIPv6 = "2a0b:9401:64:101::40";
+  hostName = "dmz-1";
+  hostIPv4 = "10.101.0.41";
+  hostIPv6 = "2a0b:9401:64:101::41";
   valkeyHostname-a = "valkey-a.${hostName}.caddy.lan.gigglesquid.tech";
   valkeyHostname-b = "valkey-b.${hostName}.caddy.lan.gigglesquid.tech";
   valkeyHostname-c = "valkey-c.${hostName}.caddy.lan.gigglesquid.tech";
@@ -43,7 +43,7 @@ in
       "10-lan" = {
         matchConfig.Name = "end0";
         ipv6AcceptRAConfig = {
-          Token = "static:::40";
+          Token = "static:::41";
         };
         address = [
           "${hostIPv4}/24"
@@ -81,7 +81,7 @@ in
     secrets = {
       bunny_dns_api_key = { };
       crowdsec_bouncer_api_keys_env = { };
-      "crowdsec_bouncer_api_keys/caddy_dmz-0_firewall" = { };
+      "crowdsec_bouncer_api_keys/caddy_dmz-1_firewall" = { };
       "valkey/caddy-dmz/env" = { };
       "valkey/caddy-dmz/acl" = {
         group = "valkey";
@@ -258,7 +258,7 @@ in
         api_url = "https://crowdsec.lan.gigglesquid.tech:8443";
       };
       secrets = {
-        apiKeyPath = "${config.sops.secrets."crowdsec_bouncer_api_keys/caddy_dmz-0_firewall".path}";
+        apiKeyPath = "${config.sops.secrets."crowdsec_bouncer_api_keys/caddy_dmz-1_firewall".path}";
       };
     };
   };
@@ -298,14 +298,14 @@ in
             profiles
             suites
           ];
-        home.stateVersion = "25.05";
+        home.stateVersion = "26.05";
       };
       nixos = {
         imports = with homeSuites; nixos;
-        home.stateVersion = "25.05";
+        home.stateVersion = "26.05";
       };
     };
   };
 
-  system.stateVersion = "25.05";
+  system.stateVersion = "26.05";
 }

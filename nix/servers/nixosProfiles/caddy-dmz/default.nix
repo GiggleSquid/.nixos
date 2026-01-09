@@ -21,32 +21,33 @@ in
           "github.com/mholt/caddy-l4@v0.0.0-20251001194302-2e3e6cf60b25"
           "github.com/tuzzmaniandevil/caddy-dynamic-clientip@v1.0.5"
         ];
-        hash = "sha256-aOcRv3eQBxIUpA6YrPLK3vVb7CzltAe/yh3++9mncsU=";
+        hash = "sha256-Isvl+4qcMgmfRUtPfhvxtz2Mb5V/gB8kI2oBrkwIpk4=";
       };
       extraGlobalConfig = # caddyfile
         ''
-          # storage redis cluster {
-          #   address {
-          #     valkey-a.dmz-0.caddy.lan.gigglesquid.tech:6380
-          #     valkey-b.dmz-0.caddy.lan.gigglesquid.tech:6381
-          #     valkey-c.dmz-0.caddy.lan.gigglesquid.tech:6382
-          #     valkey-a.dmz-1.caddy.lan.gigglesquid.tech:6380
-          #     valkey-b.dmz-1.caddy.lan.gigglesquid.tech:6381
-          #     valkey-c.dmz-1.caddy.lan.gigglesquid.tech:6382
-          #     valkey-a.dmz-2.caddy.lan.gigglesquid.tech:6380
-          #     valkey-b.dmz-2.caddy.lan.gigglesquid.tech:6381
-          #     valkey-c.dmz-2.caddy.lan.gigglesquid.tech:6382
-          #   }
-          #   username {env.CADDY_DMZ_VALKEY_USER}
-          #   password {env.CADDY_DMZ_VALKEY_PASS}
-          #   db 0
-          #   timeout 5
-          #   key_prefix "caddy"
-          #   encryption_key ""
-          #   compression true
-          #   tls_enabled true
-          #   tls_insecure false
-          # }
+          storage redis cluster {
+            address {
+              valkey-a.dmz-0.caddy.lan.gigglesquid.tech:6380
+              valkey-b.dmz-0.caddy.lan.gigglesquid.tech:6381
+              valkey-c.dmz-0.caddy.lan.gigglesquid.tech:6382
+              valkey-a.dmz-1.caddy.lan.gigglesquid.tech:6380
+              valkey-b.dmz-1.caddy.lan.gigglesquid.tech:6381
+              valkey-c.dmz-1.caddy.lan.gigglesquid.tech:6382
+              valkey-a.dmz-2.caddy.lan.gigglesquid.tech:6380
+              valkey-b.dmz-2.caddy.lan.gigglesquid.tech:6381
+              valkey-c.dmz-2.caddy.lan.gigglesquid.tech:6382
+            }
+            username {$CADDY_DMZ_VALKEY_USER}
+            password {$CADDY_DMZ_VALKEY_PASS}
+            db 0
+            timeout 5
+            key_prefix "caddy"
+            encryption_key {$CADDY_DMZ_VALKEY_CRYPT_KEY}
+            compression true
+            route_by_latency true
+            # tls_enabled true
+            # tls_insecure false
+          }
 
           crowdsec {
             api_url https://crowdsec.lan.gigglesquid.tech:8443
@@ -164,29 +165,29 @@ in
               }
             '';
         };
-      "cfwrs.gigglesquid.tech" =
-        { name, ... }:
-        {
-          logFormat = ''
-            output file ${config.services.caddy.logDir}/access-${
-              lib.replaceStrings [ "/" " " ] [ "_" "_" ] name
-            }.log {
-              mode 640
-            }
-            level INFO
-            format json
-          '';
-          extraConfig = # caddyfile
-            ''
-              import bunny_acme_settings
-              route {
-                crowdsec
-                reverse_proxy https://cfwrs.org.uk.internal.caddy.lan.gigglesquid.tech {
-                  header_up Host {upstream_hostport}
-                }
-              }
-            '';
-        };
+      # "cfwrs.gigglesquid.tech" =
+      #   { name, ... }:
+      #   {
+      #     logFormat = ''
+      #       output file ${config.services.caddy.logDir}/access-${
+      #         lib.replaceStrings [ "/" " " ] [ "_" "_" ] name
+      #       }.log {
+      #         mode 640
+      #       }
+      #       level INFO
+      #       format json
+      #     '';
+      #     extraConfig = # caddyfile
+      #       ''
+      #         import bunny_acme_settings
+      #         route {
+      #           crowdsec
+      #           reverse_proxy https://cfwrs.org.uk.internal.caddy.lan.gigglesquid.tech {
+      #             header_up Host {upstream_hostport}
+      #           }
+      #         }
+      #       '';
+      #   };
       "origin.thatferret.blog" =
         { name, ... }:
         {

@@ -25,6 +25,17 @@ in
       default = [ ];
     };
 
+    openFirewall = {
+      http = lib.mkOption {
+        type = lib.types.bool;
+        default = true;
+      };
+      https = lib.mkOption {
+        type = lib.types.bool;
+        default = true;
+      };
+    };
+
     externalService = lib.mkOption {
       type = lib.types.bool;
       default = false;
@@ -63,9 +74,15 @@ in
       };
     };
 
+    networking.firewall = {
+      allowedTCPPorts =
+        (lib.lists.optional cfg.openFirewall.http 80) ++ (lib.lists.optional cfg.openFirewall.https 443);
+      allowedUDPPorts = (lib.lists.optional cfg.openFirewall.https 443);
+    };
+
     systemd.services = {
       caddy.serviceConfig = {
-        ExecStartPre = ''${lib.getExe' nixpkgs.coreutils "sleep"} 10'';
+        ExecStartPre = ''${lib.getExe' nixpkgs.coreutils "sleep"} 15'';
         EnvironmentFile = [
           "${config.sops.secrets.bunny_dns_api_key_caddy.path}"
           "${config.sops.secrets.ipv6_prefix_env.path}"
