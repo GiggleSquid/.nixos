@@ -5,6 +5,7 @@ let
 in
 {
   nix = {
+    package = nixpkgs.nixVersions.latest;
     gc = {
       automatic = true;
       dates = "daily";
