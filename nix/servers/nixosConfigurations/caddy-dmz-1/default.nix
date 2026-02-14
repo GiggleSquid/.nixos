@@ -116,7 +116,7 @@ in
       dnsProvider = "bunny";
       credentialFiles = {
         "BUNNY_API_KEY_FILE" = "${config.sops.secrets.bunny_dns_api_key.path}";
-        "BUNNY_PROPAGATION_TIMEOUT_FILE" = nixpkgs.writeText "BUNNY_PROPAGATION_TIMEOUT" ''360'';
+        "BUNNY_PROPAGATION_TIMEOUT_FILE" = nixpkgs.writeText "BUNNY_PROPAGATION_TIMEOUT" "360";
       };
     };
     certs = {
@@ -144,16 +144,17 @@ in
           "${config.sops.secrets.crowdsec_bouncer_api_keys_env.path}"
           "${config.sops.secrets."valkey/caddy-dmz/env".path}"
         ];
+        ExecStartPre = [ "${lib.getExe' nixpkgs.coreutils "sleep"} 10" ];
       };
     };
     "redis-${hostName}-a".serviceConfig = {
-      ExecStartPre = [ ''${lib.getExe' nixpkgs.coreutils "sleep"} 10'' ];
+      ExecStartPre = [ "${lib.getExe' nixpkgs.coreutils "sleep"} 20" ];
     };
     "redis-${hostName}-b".serviceConfig = {
-      ExecStartPre = [ ''${lib.getExe' nixpkgs.coreutils "sleep"} 10'' ];
+      ExecStartPre = [ "${lib.getExe' nixpkgs.coreutils "sleep"} 20" ];
     };
     "redis-${hostName}-c".serviceConfig = {
-      ExecStartPre = [ ''${lib.getExe' nixpkgs.coreutils "sleep"} 10'' ];
+      ExecStartPre = [ "${lib.getExe' nixpkgs.coreutils "sleep"} 20" ];
     };
   };
 
