@@ -8,7 +8,7 @@ in
     defaultEditor = true;
     extraPackages = with nixpkgs; [
       nixd
-      nixfmt-rfc-style
+      nixfmt
       nodePackages.prettier
       prettier-plugin-go-template
       vscode-langservers-extracted
