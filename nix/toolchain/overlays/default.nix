@@ -14,6 +14,15 @@ in
     };
   });
 
+  gridcoin-research = nixpkgs.gridcoin-research.overrideAttrs (old: {
+    patches = [
+      (nixpkgs.fetchpatch2 {
+        url = "https://github.com/gridcoin-community/Gridcoin-Research/commit/bab91e95ca8c83f06dcc505e6b3f8b44dc6d50d4.patch";
+        sha256 = "sha256-GzurVlR7Tk3pmQfgO9WtHXjX6xHqNzdYqOdbJND7MpA=";
+      })
+    ];
+  });
+
   # wezterm 'nightly'
   wezterm = nixpkgs.wezterm.override (
     let
