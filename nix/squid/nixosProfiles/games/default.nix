@@ -8,7 +8,7 @@ in
   environment.systemPackages = with nixpkgs; [
     protonup-qt
     protontricks
-    wineWowPackages.staging
+    wineWow64Packages.staging
     lutris
   ];
 
