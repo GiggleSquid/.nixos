@@ -68,7 +68,7 @@ in
     };
 
     environment.etc."alloy/config.alloy".text =
-      # river
+      # alloy
       ''
         prometheus.remote_write "prometheus_service" {
           endpoint {
@@ -91,9 +91,15 @@ in
         }
       ''
       + (lib.optionalString cfg.export.localMetrics
-        # river
+        # alloy
         ''
-          prometheus.exporter.unix "local_system" { }
+          prometheus.exporter.unix "local_system" {
+            enable_collectors = ["systemd"]
+            systemd {
+              start_time = true
+              unit_exclude = ".+\\.(automount|device|scope|slice)"
+            }
+          }
 
           prometheus.scrape "scrape_metrics" {
             targets         = prometheus.exporter.unix.local_system.targets
@@ -103,7 +109,7 @@ in
         ''
       )
       + (lib.optionalString cfg.export.journalLogs
-        # river
+        # alloy
         ''
           loki.source.journal "journal" {
             forward_to = [loki.write.loki_service.receiver]
@@ -126,7 +132,7 @@ in
         ''
       )
       + (lib.optionalString cfg.export.caddy.metrics
-        # river
+        # alloy
         ''
           discovery.relabel "caddy" {
             targets = [{
@@ -147,7 +153,7 @@ in
         ''
       )
       + (lib.optionalString cfg.export.caddy.logs
-        # river
+        # alloy
         ''
           local.file_match "caddy_access_log" {
             path_targets = [
