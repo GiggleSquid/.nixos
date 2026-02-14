@@ -23,7 +23,7 @@ in
         "https://local.nix-cache.lan.gigglesquid.tech/attic"
       ];
       trusted-public-keys = [
-        "nix-cache.lan.gigglesquid.tech:2kaBJ3MDge9Q/ZcBYJ6C6SP1jQVUQ8Y7XjCKn6A38gs="
+        "nix-cache.lan.gigglesquid.tech:sQW0gKIG9hooFPBoFDoiDbToJXPhFWpTI4NqNY1MYaA="
         "attic:4reipGK1ubbnLAmGWWtjD2bpuqSWTEsaYuREMEcz7Ro="
       ];
       experimental-features = "nix-command flakes";
