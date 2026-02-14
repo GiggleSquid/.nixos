@@ -30,15 +30,15 @@ in
             args
             // rec {
               pname = "wezterm";
-              version = "0-unstable-2025-12-01";
+              version = "0-unstable-2026-01-17";
               src = nixpkgs.fetchFromGitHub {
                 owner = "wez";
                 repo = pname;
-                rev = "d3b0fdad453e8b5f12b583c5d6849b33d975c19c";
+                rev = "05343b387085842b434d267f91b6b0ec157e4331";
                 fetchSubmodules = true;
-                hash = "sha256-UmhJ0Z9A9AnbHG8/fADbXIjNm+Mpt2+h6xznJs39M8E=";
+                hash = "sha256-V6WvkNZryYofarsyfcmsuvtpNJ/c3O+DmOKNvoYPbmA=";
               };
-              cargoHash = "sha256-o6VEpAzNUPtONbtI63DXyGWiLDVU9q8IZethlzz5duk=";
+              cargoHash = "sha256-waXq0U2Ud7FhlJn3evO7bZSBsOAA39ObiVWHycNQXmA=";
             }
           );
       };
