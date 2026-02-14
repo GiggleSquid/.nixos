@@ -15,9 +15,9 @@ in
     imagemagick
     inkscape
     jellyfin-desktop
+    kmymoney
     kdePackages.filelight
     kdePackages.isoimagewriter
-    kdePackages.kmymoney
     kdePackages.skanpage
     kicad
     libopus
