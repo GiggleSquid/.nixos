@@ -57,6 +57,9 @@ in
       lego_pfx_pass = { };
       "pia/pia_env" = { };
       "pia/ca.rsa.4096.crt" = { };
+      "prowlarr/env" = { };
+      "radarr/env" = { };
+      "sonarr/env" = { };
       radarr_api_key = {
         mode = "0440";
         group = "media";
@@ -81,7 +84,7 @@ in
       dnsProvider = "bunny";
       credentialFiles = {
         "BUNNY_API_KEY_FILE" = "${config.sops.secrets.bunny_dns_api_key.path}";
-        "BUNNY_PROPAGATION_TIMEOUT_FILE" = nixpkgs.writeText "BUNNY_PROPAGATION_TIMEOUT" ''360'';
+        "BUNNY_PROPAGATION_TIMEOUT_FILE" = nixpkgs.writeText "BUNNY_PROPAGATION_TIMEOUT" "360";
       };
     };
     certs = {
@@ -127,12 +130,9 @@ in
     };
   };
 
-  systemd.services = {
-    recyclarr.serviceConfig.LoadCredential = [
-      "radarr_api_key:${config.sops.secrets.radarr_api_key.path}"
-      "sonarr_api_key:${config.sops.secrets.sonarr_api_key.path}"
-    ];
+  users.groups.media = { };
 
+  systemd.services = {
     qbittorrent = {
       after = [
         "mnt-media.mount"
@@ -150,26 +150,49 @@ in
       wantedBy = [ "pia-vpn.service" ];
       path = [ nixpkgs.python3 ];
     };
-    prowlarr = {
-      after = [
-        "pia-vpn.service"
-      ];
-    };
-    radarr = {
-      after = [
-        "pia-vpn.service"
-      ];
-    };
-    sonarr = {
-      after = [
-        "pia-vpn.service"
-      ];
-    };
+    prowlarr.after = [
+      "mnt-media.mount"
+      "pia-vpn.service"
+      "postgresql.target"
+    ];
+    radarr.after = [
+      "mnt-media.mount"
+      "pia-vpn.service"
+      "postgresql.target"
+    ];
+    sonarr.after = [
+      "mnt-media.mount"
+      "pia-vpn.service"
+      "postgresql.target"
+    ];
+    cross-seed.after = [
+      "mnt-media.mount"
+      "pia-vpn.service"
+      "postgresql.target"
+      "sonarr.service"
+      "radarr.service"
+      "qbittorrent.service"
+    ];
   };
 
-  users.groups.media = { };
-
   services = {
+    postgresql = {
+      enable = true;
+      package = nixpkgs.postgresql_17;
+      ensureDatabases = [
+        "prowlarr-main"
+        "prowlarr-log"
+        "radarr-main"
+        "radarr-log"
+        "sonarr-main"
+        "sonarr-log"
+      ];
+      ensureUsers = [
+        { name = "prowlarr"; }
+        { name = "radarr"; }
+        { name = "sonarr"; }
+      ];
+    };
     qbittorrent = {
       enable = true;
       package = nixpkgs.qbittorrent-nox;
@@ -191,14 +214,17 @@ in
     };
     prowlarr = {
       enable = true;
+      environmentFiles = [ config.sops.secrets."prowlarr/env".path ];
     };
     radarr = {
       enable = true;
       group = "media";
+      environmentFiles = [ config.sops.secrets."radarr/env".path ];
     };
     sonarr = {
       enable = true;
       group = "media";
+      environmentFiles = [ config.sops.secrets."sonarr/env".path ];
     };
     cross-seed = {
       enable = true;
@@ -238,9 +264,7 @@ in
       configuration = {
         radarr = {
           main-radarr = {
-            api_key = {
-              _secret = "/run/credentials/recyclarr.service/radarr_api_key";
-            };
+            api_key._secret = config.sops.secrets.radarr_api_key.path;
             base_url = "https://radarr.squidbit.lan.gigglesquid.tech";
             delete_old_custom_formats = true;
             replace_existing_custom_formats = true;
@@ -338,9 +362,7 @@ in
         };
         sonarr = {
           main-sonarr = {
-            api_key = {
-              _secret = "/run/credentials/recyclarr.service/sonarr_api_key";
-            };
+            api_key._secret = config.sops.secrets.sonarr_api_key.path;
             base_url = "https://sonarr.squidbit.lan.gigglesquid.tech";
             delete_old_custom_formats = true;
             replace_existing_custom_formats = true;
