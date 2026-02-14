@@ -18,10 +18,10 @@ in
         extra = [
           "github.com/pberkel/caddy-storage-redis@v1.5.0"
           "github.com/hslatman/caddy-crowdsec-bouncer@v0.9.2"
-          "github.com/mholt/caddy-l4@v0.0.0-20251001194302-2e3e6cf60b25"
+          "github.com/mholt/caddy-l4@v0.0.0-20260104223739-97fa8c1b6618"
           "github.com/tuzzmaniandevil/caddy-dynamic-clientip@v1.0.5"
         ];
-        hash = "sha256-Isvl+4qcMgmfRUtPfhvxtz2Mb5V/gB8kI2oBrkwIpk4=";
+        hash = "sha256-0W5I2d9BUwALRFULbpWgyGRZNiX4iwITGI/znk98UgM=";
       };
       extraGlobalConfig = # caddyfile
         ''
