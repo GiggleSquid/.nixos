@@ -44,6 +44,10 @@ in
         ocl-icd
       ];
     };
+
+    alloy-squid = {
+      enable = true;
+    };
   };
 
   systemd.tmpfiles.rules = [

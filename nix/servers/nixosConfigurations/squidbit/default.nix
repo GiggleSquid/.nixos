@@ -530,6 +530,10 @@ in
           '';
       };
     };
+
+    alloy-squid = {
+      enable = true;
+    };
   };
 
   environment.systemPackages = with nixpkgs; [

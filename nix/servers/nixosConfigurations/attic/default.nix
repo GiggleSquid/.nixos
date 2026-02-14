@@ -116,6 +116,10 @@ in
             '';
         };
     };
+
+    alloy-squid = {
+      enable = true;
+    };
   };
 
   imports =

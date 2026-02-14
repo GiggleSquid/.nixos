@@ -77,6 +77,16 @@ in
       host = "127.0.0.1";
       group = "media";
     };
+
+    alloy-squid = {
+      enable = true;
+      export = {
+        caddy = {
+          metrics = true;
+          logs = true;
+        };
+      };
+    };
   };
 
   fileSystems = {

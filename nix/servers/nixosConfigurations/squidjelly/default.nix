@@ -85,6 +85,10 @@ in
       port = 5055;
       openFirewall = true;
     };
+
+    alloy-squid = {
+      enable = true;
+    };
   };
 
   fileSystems = {

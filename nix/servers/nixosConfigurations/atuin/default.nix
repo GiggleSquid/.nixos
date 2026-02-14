@@ -72,6 +72,16 @@ in
             '';
         };
     };
+
+    alloy-squid = {
+      enable = true;
+      export = {
+        caddy = {
+          metrics = true;
+          logs = true;
+        };
+      };
+    };
   };
 
   imports =

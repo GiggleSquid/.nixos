@@ -146,6 +146,16 @@ in
         };
     };
 
+    alloy-squid = {
+      enable = true;
+      export = {
+        caddy = {
+          metrics = true;
+          logs = true;
+        };
+      };
+    };
+
     crowdsec-firewall-bouncer = {
       enable = true;
       settings = {

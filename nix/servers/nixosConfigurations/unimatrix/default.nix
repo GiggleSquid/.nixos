@@ -33,16 +33,22 @@ in
     };
   };
 
-  services.borgbackup.repos = {
-    squid-rig = {
-      path = "/mnt/borg/repos/squid-rig_borg";
-      authorizedKeys = [
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIkE7ErVvMkeIHhAMl4zoQ8N2IhvEOl1+4zgFLFb16Pi"
-      ];
+  services = {
+    borgbackup.repos = {
+      squid-rig = {
+        path = "/mnt/borg/repos/squid-rig_borg";
+        authorizedKeys = [
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIkE7ErVvMkeIHhAMl4zoQ8N2IhvEOl1+4zgFLFb16Pi"
+        ];
+      };
+      squid-top = {
+        path = "/mnt/borg/repos/squid-top_borg";
+        authorizedKeys = [ "" ];
+      };
     };
-    squid-top = {
-      path = "/mnt/borg/repos/squid-top_borg";
-      authorizedKeys = [ "" ];
+
+    alloy-squid = {
+      enable = true;
     };
   };
 

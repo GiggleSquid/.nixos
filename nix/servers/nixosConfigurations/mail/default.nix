@@ -224,6 +224,9 @@ in
   };
 
   services = {
+    alloy-squid = {
+      enable = true;
+    };
     # alloy-squid = {
     #   enable = true;
     #   supplementaryGroups = [ ];
