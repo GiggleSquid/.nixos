@@ -2,7 +2,7 @@
 let
   inherit (inputs) common nixpkgs self;
   inherit (cell) hardwareProfiles serverSuites;
-  inherit (inputs.cells.squid) nixosSuites homeSuites;
+  inherit (inputs.cells.squid) nixosSuites homeSuites nixosProfiles;
   lib = nixpkgs.lib // builtins;
   hostName = "boinc";
 in
@@ -39,6 +39,8 @@ in
       enable = true;
       package = nixpkgs.boinc-headless;
       extraEnvPackages = with nixpkgs; [
+        virtualbox
+        podman
         libglvnd
         brotli
         ocl-icd
@@ -56,7 +58,10 @@ in
 
   imports =
     let
-      profiles = [ hardwareProfiles.servers ];
+      profiles = [
+        hardwareProfiles.servers
+        nixosProfiles.virtualisation
+      ];
       suites =
         with serverSuites;
         lib.concatLists [
