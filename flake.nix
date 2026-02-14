@@ -63,7 +63,6 @@
               "starsector"
               "rar"
               "minecraft-server"
-              "Oracle_VirtualBox_Extension_Pack"
               "castlabs-electron"
               "unrar"
             ];
