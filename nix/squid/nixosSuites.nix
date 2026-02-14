@@ -8,7 +8,6 @@ rec {
     core
     ssh
     networking
-    attic-nix-cache
     nixosModules.sops
     userProfiles.root
   ];
@@ -20,11 +19,18 @@ rec {
   ];
 
   server = base ++ [
+    attic-nix-cache
+    userProfiles.nixos
+    userProfiles.squid
+  ];
+
+  server-non-local = base ++ [
     userProfiles.nixos
     userProfiles.squid
   ];
 
   pc = base ++ [
+    attic-nix-cache
     fonts
     gpg
     userProfiles.squid

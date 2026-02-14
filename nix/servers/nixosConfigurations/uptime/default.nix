@@ -57,6 +57,16 @@ in
     memoryPercent = 25;
   };
 
+  # Disable 'local' substituters as this machine is not local
+  nix = {
+    settings = {
+      substituters = lib.mkForce [ "https://cache.nixos.org/" ];
+      trusted-public-keys = lib.mkForce [
+        "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+      ];
+    };
+  };
+
   sops = {
     defaultSopsFile = "${self}/sops/squid-rig.yaml";
     secrets = {
@@ -173,7 +183,7 @@ in
       suites =
         with serverSuites;
         lib.concatLists [
-          nixosSuites.server
+          nixosSuites.server-non-local
           base
           caddy-server
         ];
