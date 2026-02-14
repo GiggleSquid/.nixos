@@ -24,7 +24,7 @@ in
       '';
     };
     timesyncd.enable = false;
-    resolved.fallbackDns = [ ];
+    resolved.settings.Resolve.FallbackDNS = [ ];
   };
 
   systemd.network = {
