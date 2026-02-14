@@ -76,7 +76,7 @@ in
       dnsProvider = "bunny";
       credentialFiles = {
         "BUNNY_API_KEY_FILE" = "${config.sops.secrets.bunny_dns_api_key.path}";
-        "BUNNY_PROPAGATION_TIMEOUT_FILE" = nixpkgs.writeText "BUNNY_PROPAGATION_TIMEOUT" ''360'';
+        "BUNNY_PROPAGATION_TIMEOUT_FILE" = nixpkgs.writeText "BUNNY_PROPAGATION_TIMEOUT" "360";
       };
     };
     certs = {
