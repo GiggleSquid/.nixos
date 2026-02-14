@@ -85,8 +85,6 @@
       };
 
   inputs = {
-    nixpkgs-jmp-qt6.url = "github:picnoir/nixpkgs/pic/jellyfin-qt6";
-
     nixpkgs = {
       follows = "nixpkgs-unstable";
     };
