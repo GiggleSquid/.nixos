@@ -197,19 +197,19 @@ in
 
             case $ENDSTATE in
                 "BACKUP") # Perform action for transition to BACKUP state
-                   ${lib.getExe nixpkgs.ipvsadm} --start-daemon backup --syncid 2 --mcast-interface=$IFACE
+                   ${lib.getExe' nixpkgs.ipvsadm "ipvsadm"} --start-daemon backup --syncid 2 --mcast-interface=$IFACE
                           exit 0
                           ;;
                 "FAULT")  # Perform action for transition to FAULT state
                           exit 0
                           ;;
                 "STOP")  # Perform action for transition to STOP state
-                   ${lib.getExe nixpkgs.ipvsadm} --stop-daemon master
+                   ${lib.getExe' nixpkgs.ipvsadm "ipvsadm"} --stop-daemon master
                    ipvsadm --stop-daemon backup
                           exit 0
                           ;;
                 "MASTER") # Perform action for transition to MASTER state
-                   ${lib.getExe nixpkgs.ipvsadm} --start-daemon master --syncid 1 --mcast-interface=$IFACE
+                   ${lib.getExe' nixpkgs.ipvsadm "ipvsadm"} --start-daemon master --syncid 1 --mcast-interface=$IFACE
                           exit 0
                           ;;
                 *)        echo "Unknown state $${ENDSTATE}"
