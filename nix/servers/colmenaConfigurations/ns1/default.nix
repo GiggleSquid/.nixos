@@ -10,6 +10,7 @@ in
     targetHost = "ns1.dns.lan.gigglesquid.tech";
     tags = [
       "all"
+      "rpi"
       "dns"
       "ns"
     ];

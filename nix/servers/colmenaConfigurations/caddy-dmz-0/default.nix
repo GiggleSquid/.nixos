@@ -10,6 +10,7 @@ in
   deployment = rpi.deployment // {
     targetHost = "dmz-0.caddy.lan.gigglesquid.tech";
     tags = [
+      "rpi"
       "caddy"
       "lb"
       "lb-a"
