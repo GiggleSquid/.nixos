@@ -48,7 +48,6 @@ in
     secrets = {
       "limesurvey/nonce" = { };
       "limesurvey/key" = { };
-      "limesurvey/db_pass" = { };
     };
   };
 
@@ -63,16 +62,18 @@ in
         "pm.min_spare_servers" = 2;
         "pm.start_servers" = 2;
       };
-      virtualHost = {
-        hostName = null;
-      };
+      # We're using caddy instead of the module's built in httpd or nginx.
+      # Explicitly set httpd as the webserver to ensure other options are never used
+      webserver = "httpd";
+      httpd.virtualHost = { };
       encryptionNonceFile = "${config.sops.secrets."limesurvey/nonce".path}";
       encryptionKeyFile = "${config.sops.secrets."limesurvey/key".path}";
     };
 
-    # We're using caddy instead of the module's built in httpd..
+    # We're using caddy instead of the module's built in httpd or nginx.
     # Disable httpd, and set httpd user/group to caddy as the
     # limesurvey module uses that as the php-fpm listen group/user.
+    # Maybe I should just make a PR.
     httpd = {
       enable = lib.mkForce false;
       user = "caddy";
