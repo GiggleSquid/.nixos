@@ -44,6 +44,9 @@ in
   sops = {
     defaultSopsFile = "${self}/sops/squid-rig.yaml";
     secrets = {
+      "grafana/secret_key" = {
+        owner = "grafana";
+      };
       prometheus_web_config = {
         owner = "prometheus";
       };
@@ -143,6 +146,10 @@ in
           root_url = "https://grafana.otel.lan.gigglesquid.tech";
         };
         analytics.reporting_enabled = false;
+        security = {
+          secret_key = "$__file{${config.sops.secrets."grafana/secret_key".path}}";
+          disable_gravatar = true;
+        };
       };
       provision = {
         enable = true;
