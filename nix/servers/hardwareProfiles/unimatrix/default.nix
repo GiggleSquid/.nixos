@@ -6,7 +6,7 @@ in
   imports = with nixos-hardware.nixosModules; [
     common-pc
     common-cpu-intel-cpu-only
-    "${modulesPath}/virtualisation/incus-virtual-machine.nix"
+    "${modulesPath}/virtualisation/lxc-container.nix"
   ];
 
   inherit (common) hardware;
@@ -21,17 +21,4 @@ in
       };
     };
   };
-
-  fileSystems = {
-    "/mnt/borg/repos" = {
-      device = "cephalonas.lan.gigglesquid.tech:/mnt/backups/unimatrix";
-      fsType = "nfs";
-      noCheck = true;
-      options = [
-        "x-systemd.automount"
-        "noauto"
-      ];
-    };
-  };
-
 }

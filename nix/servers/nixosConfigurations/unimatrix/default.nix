@@ -19,7 +19,7 @@ in
   systemd.network = {
     networks = {
       "10-lan" = {
-        matchConfig.Name = "enp5s0";
+        matchConfig.Name = "eth0";
         ipv6AcceptRAConfig = {
           Token = "static:::1:27";
         };
@@ -36,13 +36,13 @@ in
   services = {
     borgbackup.repos = {
       squid-rig = {
-        path = "/mnt/borg/repos/squid-rig_borg";
+        path = "/mnt/unimatrix-storage/squid-rig_borg";
         authorizedKeys = [
           "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIkE7ErVvMkeIHhAMl4zoQ8N2IhvEOl1+4zgFLFb16Pi"
         ];
       };
       squid-top = {
-        path = "/mnt/borg/repos/squid-top_borg";
+        path = "/mnt/unimatrix-storage/squid-top_borg";
         authorizedKeys = [ "" ];
       };
     };
@@ -84,14 +84,14 @@ in
             profiles
             suites
           ];
-        home.stateVersion = "25.05";
+        home.stateVersion = "25.11";
       };
       nixos = {
         imports = with homeSuites; nixos;
-        home.stateVersion = "25.05";
+        home.stateVersion = "25.11";
       };
     };
   };
 
-  system.stateVersion = "25.05";
+  system.stateVersion = "25.11";
 }
