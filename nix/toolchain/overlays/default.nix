@@ -5,12 +5,12 @@ let
 in
 {
   google-fonts = nixpkgs.google-fonts.overrideAttrs (old: {
-    version = "0-unstable-2026-02-13";
+    version = "0-unstable-2026-02-27";
     src = nixpkgs.fetchFromGitHub {
       owner = "google";
       repo = "fonts";
-      rev = "113eb7cbd7958cdbda9a7670d78aae527bbb149a";
-      hash = "sha256-+vFuH1EbrmwlcfIRd4bVqhcGgfdGTEeXpnoWM4C8u4I=";
+      rev = "c8e45997f999c1b23a812d4706df464c13ee8861";
+      hash = "sha256-8uPUf9dSQTDa08J6+kZHjWvh5rHX1REQq7LkhQoCktg=";
     };
   });
 
