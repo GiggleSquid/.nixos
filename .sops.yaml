@@ -62,7 +62,7 @@ keys:
 
   - &vaultwarden age1pv8l33zaz2zteffj0expa4ax7gz9w67v93u33ufql5526luxggqswpjfj4
 
-  - &netbox age17gg7eeagmcnepvdlatnuhu04nmfpy56sffn7c56tp9jzf9atnv9s4u6ev6
+  - &rackpeek age1m2flganq8px9ku5mqv0ddr0mpp6rwyanhjrk42eeusj2fmppy9hs3fw77y
 
 creation_rules:
   - path_regex: sops/[^/]+\.yaml$
@@ -105,4 +105,4 @@ creation_rules:
       - *attic
       - *ncps
       - *vaultwarden
-      - *netbox
+      - *rackpeek
