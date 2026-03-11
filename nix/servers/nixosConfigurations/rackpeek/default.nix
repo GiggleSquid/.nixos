@@ -4,11 +4,11 @@
   config,
 }:
 let
-  inherit (inputs) common nixpkgs self;
+  inherit (inputs) common nixpkgs;
   inherit (cell) hardwareProfiles serverSuites;
   inherit (inputs.cells.squid) nixosSuites homeSuites;
   lib = nixpkgs.lib // builtins;
-  hostName = "netbox";
+  hostName = "rackpeek";
 in
 {
   inherit (common) bee time;
@@ -41,46 +41,40 @@ in
     };
   };
 
-  sops = {
-    defaultSopsFile = "${self}/sops/squid-rig.yaml";
-    secrets = {
-      "netbox/secret-key" = {
-        owner = "netbox";
+  users = {
+    users.rackpeek = {
+      uid = 1654;
+      isSystemUser = true;
+      group = "rackpeek";
+    };
+    groups.rackpeek = {
+      gid = 1654;
+    };
+  };
+
+  systemd.tmpfiles.rules = [ "d /var/lib/rackpeek/config 0775 rackpeek rackpeek" ];
+
+  virtualisation.oci-containers = {
+    backend = "podman";
+    containers = {
+      rackpeek = {
+        image = "aptacode/rackpeek:v1.1.0";
+        autoStart = true;
+        ports = [ "127.0.0.1:8080:8080" ];
+        volumes = [
+          "/var/lib/rackpeek/config:/app/config"
+        ];
+        user = "1654:1654";
       };
     };
   };
 
-  systemd.tmpfiles.rules = [ "d /run/netbox 0750 netbox netbox -" ];
-
   services = {
-    netbox = {
-      enable = true;
-      unixSocket = "/run/netbox/netbox.sock";
-      secretKeyFile = config.sops.secrets."netbox/secret-key".path;
-      plugins =
-        python3Packages: with python3Packages; [
-          netbox-dns
-          netbox-topology-views
-          netbox-contextmenus
-          netbox-reorder-rack
-        ];
-      settings = {
-        ALLOWED_HOSTS = [ "netbox.lan.gigglesquid.tech" ];
-        PLUGINS = [
-          "netbox_dns"
-          "netbox_topology_views"
-          "netbox_contextmenus"
-          "netbox_reorder_rack"
-        ];
-      };
-    };
-
     caddy-squid = {
       enable = true;
-      supplementaryGroups = [ "netbox" ];
     };
     caddy.virtualHosts = {
-      "netbox.lan.gigglesquid.tech" =
+      "rackpeek.lan.gigglesquid.tech" =
         { name, ... }:
         {
           logFormat = ''
@@ -98,11 +92,7 @@ in
               import deny_non_local
               encode zstd gzip
               handle {
-                reverse_proxy unix/${config.services.netbox.unixSocket}
-              }
-              handle_path /static/* {
-                root ${config.services.netbox.dataDir}/static
-                file_server
+                reverse_proxy localhost:8080
               }
             '';
         };
