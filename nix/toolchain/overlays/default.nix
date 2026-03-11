@@ -23,37 +23,6 @@ in
     ];
   });
 
-  # wezterm 'nightly'
-  wezterm = nixpkgs.wezterm.override (
-    let
-      rustPlatform' = nixpkgs.makeRustPlatform {
-        rustc = pkgs.rust-bin.stable.latest.minimal;
-        cargo = pkgs.rust-bin.stable.latest.minimal;
-      };
-    in
-    {
-      rustPlatform = rustPlatform' // {
-        buildRustPackage =
-          args:
-          rustPlatform'.buildRustPackage (
-            args
-            // rec {
-              pname = "wezterm";
-              version = "0-unstable-2026-01-17";
-              src = nixpkgs.fetchFromGitHub {
-                owner = "wez";
-                repo = pname;
-                rev = "05343b387085842b434d267f91b6b0ec157e4331";
-                fetchSubmodules = true;
-                hash = "sha256-V6WvkNZryYofarsyfcmsuvtpNJ/c3O+DmOKNvoYPbmA=";
-              };
-              cargoHash = "sha256-waXq0U2Ud7FhlJn3evO7bZSBsOAA39ObiVWHycNQXmA=";
-            }
-          );
-      };
-    }
-  );
-
   # https://github.com/NixOS/nixpkgs/issues/287646
   kdePackages = nixpkgs.kdePackages // {
     sddm = nixpkgs.kdePackages.sddm.overrideAttrs (old: {
