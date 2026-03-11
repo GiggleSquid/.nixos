@@ -120,7 +120,7 @@ in
         extra = [
           "github.com/BadAimWeeb/caddy-uwsgi-transport@v0.0.0-20240317192154-74a1008b9763"
         ];
-        hash = "sha256-SXmQSoZTrty1dMd7DVXQWjAd9lGlZdzoFIOAfrOdvqE=";
+        hash = "sha256-4nCu+Mi5QpTV21yLR10C8tEekkLOV7EgV13qAArND6E=";
       };
     };
     caddy.virtualHosts = {

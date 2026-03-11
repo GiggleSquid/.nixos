@@ -16,12 +16,12 @@ in
       enable = true;
       plugins = {
         extra = [
-          "github.com/pberkel/caddy-storage-redis@v1.5.0"
-          "github.com/hslatman/caddy-crowdsec-bouncer@v0.9.2"
-          "github.com/mholt/caddy-l4@v0.0.0-20260104223739-97fa8c1b6618"
+          "github.com/pberkel/caddy-storage-redis@v1.6.0"
+          "github.com/hslatman/caddy-crowdsec-bouncer@v0.10.0"
+          "github.com/mholt/caddy-l4@v0.0.0-20260302122623-f7fc5f706193"
           "github.com/tuzzmaniandevil/caddy-dynamic-clientip@v1.0.5"
         ];
-        hash = "sha256-0W5I2d9BUwALRFULbpWgyGRZNiX4iwITGI/znk98UgM=";
+        hash = "sha256-bOsCcqp5SW4m5j/hqJ20R5WgyrYUfnpMeVvOsIgM0a8=";
       };
       extraGlobalConfig = # caddyfile
         ''
@@ -90,9 +90,7 @@ in
               import bunny_acme_settings
               route {
                 crowdsec
-                reverse_proxy https://squidjelly.internal.caddy.lan.gigglesquid.tech {
-                  header_up Host {upstream_hostport}
-                }
+                reverse_proxy https://squidjelly.internal.caddy.lan.gigglesquid.tech
               }
             '';
         };
@@ -113,9 +111,7 @@ in
               import bunny_acme_settings
               route {
                 crowdsec
-                reverse_proxy https://squidseerr.internal.caddy.lan.gigglesquid.tech {
-                  header_up Host {upstream_hostport}
-                }
+                reverse_proxy https://squidseerr.internal.caddy.lan.gigglesquid.tech
               }
             '';
         };
@@ -136,9 +132,7 @@ in
               import bunny_acme_settings
               route {
                 crowdsec
-                reverse_proxy https://squidcasts.internal.caddy.lan.gigglesquid.tech {
-                  header_up Host {upstream_hostport}
-                }
+                reverse_proxy https://squidcasts.internal.caddy.lan.gigglesquid.tech
               }
             '';
         };
@@ -159,9 +153,7 @@ in
               import bunny_acme_settings
               route {
                 crowdsec
-                reverse_proxy https://old.cfwrs.org.uk.internal.caddy.lan.gigglesquid.tech {
-                  header_up Host {upstream_hostport}
-                }
+                reverse_proxy https://old.cfwrs.org.uk.internal.caddy.lan.gigglesquid.tech
               }
             '';
         };
@@ -182,9 +174,7 @@ in
       #         import bunny_acme_settings
       #         route {
       #           crowdsec
-      #           reverse_proxy https://cfwrs.org.uk.internal.caddy.lan.gigglesquid.tech {
-      #             header_up Host {upstream_hostport}
-      #           }
+      #           reverse_proxy https://cfwrs.org.uk.internal.caddy.lan.gigglesquid.tech
       #         }
       #       '';
       #   };
@@ -207,9 +197,7 @@ in
               # import deny_not_bunny_edge
               route {
                 crowdsec
-                reverse_proxy https://thatferret.blog.internal.caddy.lan.gigglesquid.tech {
-                  header_up Host {upstream_hostport}
-                }
+                reverse_proxy https://thatferret.blog.internal.caddy.lan.gigglesquid.tech
               }
             '';
         };
@@ -231,9 +219,7 @@ in
               import common_well-known
               route {
                 crowdsec
-                reverse_proxy https://thatferret.shop.internal.caddy.lan.gigglesquid.tech {
-                  header_up Host {upstream_hostport}
-                }
+                reverse_proxy https://thatferret.shop.internal.caddy.lan.gigglesquid.tech
               }
             '';
         };
@@ -256,9 +242,7 @@ in
               # import deny_not_bunny_edge
               route {
                 crowdsec
-                reverse_proxy https://gigglesquid.tech.internal.caddy.lan.gigglesquid.tech {
-                  header_up Host {upstream_hostport}
-                }
+                reverse_proxy https://gigglesquid.tech.internal.caddy.lan.gigglesquid.tech
               }
             '';
         };
@@ -279,9 +263,7 @@ in
               import bunny_acme_settings
               route {
                 crowdsec
-                reverse_proxy https://umami.internal.caddy.lan.gigglesquid.tech {
-                  header_up Host {upstream_hostport}
-                }
+                reverse_proxy https://umami.internal.caddy.lan.gigglesquid.tech
               }
             '';
         };
@@ -302,9 +284,7 @@ in
               import bunny_acme_settings
               route {
                 crowdsec
-                reverse_proxy https://idm.internal.caddy.lan.gigglesquid.tech {
-                  header_up Host {upstream_hostport}
-                }
+                reverse_proxy https://idm.internal.caddy.lan.gigglesquid.tech
               }
             '';
         };

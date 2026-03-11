@@ -86,16 +86,24 @@ in
   services = {
     uptime-kuma = {
       enable = true;
-      package = pkgs.uptime-kuma;
+      settings = {
+        UPTIME_KUMA_HOST = "::1";
+        UPTIME_KUMA_PORT = "3001";
+        # UPTIME_KUMA_DB_TYPE = "mariadb";
+        # UPTIME_KUMA_DB_SOCKET = "";
+        # UPTIME_KUMA_DB_NAME = "uptime-kuma";
+        # UPTIME_KUMA_DB_USERNAME_FILE = "";
+        # UPTIME_KUMA_DB_PASSWORD_FILE = "";
+      };
     };
     caddy-squid = {
       enable = true;
       externalService = true;
       plugins = {
         extra = [
-          "github.com/hslatman/caddy-crowdsec-bouncer@v0.9.2"
+          "github.com/hslatman/caddy-crowdsec-bouncer@v0.10.0"
         ];
-        hash = "sha256-upxqOJdnxMG40jme4ZdiQSfxIPklOHriLc6SA8n7ylw=";
+        hash = "sha256-iiltx/txuK4rHECJRdHbNwXm6il/o+RgsgrRo00a7nM=";
       };
       extraGlobalConfig = # caddyfile
         ''
@@ -125,9 +133,7 @@ in
               import bunny_acme_settings
               encode zstd gzip
               route {
-                reverse_proxy localhost:3001 {
-                  header_up Host {upstream_hostport}
-                }
+                reverse_proxy localhost:3001
               }
             '';
         };
@@ -148,9 +154,7 @@ in
               import bunny_acme_settings
               encode zstd gzip
               route {
-                reverse_proxy localhost:3001 {
-                  header_up Host {upstream_hostport}
-                }
+                reverse_proxy localhost:3001
               }
             '';
         };

@@ -84,9 +84,9 @@ in
       enable = true;
       plugins = {
         extra = [
-          "github.com/hslatman/caddy-crowdsec-bouncer@v0.9.2"
+          "github.com/hslatman/caddy-crowdsec-bouncer@v0.10.0"
         ];
-        hash = "sha256-HFvhKGVg0kBSnxt1NmI0slmXZjMcLLXphFPtxjjDYFs=";
+        hash = "sha256-c9Y5+szcpl5l/kGJWQJ+OtcAP5h1c3/9BNv7aK1PKxY=";
       };
       extraGlobalConfig = # caddyfile
         ''
@@ -160,9 +160,7 @@ in
               import bunny_acme_settings
               route {
                 crowdsec
-                reverse_proxy http://squidjelly.lan.gigglesquid.tech:5055 {
-                  header_up Host {upstream_hostport}
-                }
+                reverse_proxy http://squidjelly.lan.gigglesquid.tech:5055
               }
             '';
         };
@@ -184,9 +182,7 @@ in
               import deny_non_local
               route {
                 crowdsec
-                reverse_proxy https://squidcasts.lan.gigglesquid.tech {
-                  header_up Host {upstream_hostport}
-                }
+                reverse_proxy https://squidcasts.lan.gigglesquid.tech
               }
             '';
         };
@@ -208,9 +204,7 @@ in
               import deny_non_local
               route {
                 crowdsec
-                reverse_proxy https://squidbit.lan.gigglesquid.tech:8080 {
-                  header_up Host {upstream_hostport}
-                }
+                reverse_proxy https://squidbit.lan.gigglesquid.tech:8080
               }
             '';
         };
@@ -232,9 +226,7 @@ in
               import deny_non_local
               route {
                 crowdsec
-                reverse_proxy https://squidbit.lan.gigglesquid.tech:6791 {
-                  header_up Host {upstream_hostport}
-                }
+                reverse_proxy https://squidbit.lan.gigglesquid.tech:6791
               }
             '';
         };
@@ -256,9 +248,7 @@ in
               import deny_non_local
               route {
                 crowdsec
-                reverse_proxy https://squidbit.lan.gigglesquid.tech:7777 {
-                  header_up Host {upstream_hostport}
-                }
+                reverse_proxy https://squidbit.lan.gigglesquid.tech:7777
               }
             '';
         };
@@ -280,9 +270,7 @@ in
               import deny_non_local
               route {
                 crowdsec
-                reverse_proxy https://squidbit.lan.gigglesquid.tech:8888 {
-                  header_up Host {upstream_hostport}
-                }
+                reverse_proxy https://squidbit.lan.gigglesquid.tech:8888
               }
             '';
         };
@@ -304,9 +292,7 @@ in
               import deny_non_local
               route {
                 crowdsec
-                reverse_proxy https://squidbit.lan.gigglesquid.tech:9595 {
-                  header_up Host {upstream_hostport}
-                }
+                reverse_proxy https://squidbit.lan.gigglesquid.tech:9595
               }
             '';
         };
@@ -539,9 +525,7 @@ in
               import bunny_acme_settings
               route {
                 crowdsec
-                reverse_proxy https://thatferret.blog.lan.gigglesquid.tech {
-                  header_up Host {upstream_hostport}
-                }
+                reverse_proxy https://thatferret.blog.lan.gigglesquid.tech
               }
             '';
         };
@@ -562,9 +546,7 @@ in
               import bunny_acme_settings
               route {
                 crowdsec
-                reverse_proxy https://thatferret.shop.lan.gigglesquid.tech {
-                  header_up Host {upstream_hostport}
-                }
+                reverse_proxy https://thatferret.shop.lan.gigglesquid.tech
               }
             '';
         };
@@ -607,9 +589,7 @@ in
               import bunny_acme_settings
               route {
                 crowdsec
-                reverse_proxy https://gigglesquid.tech.lan.gigglesquid.tech {
-                  header_up Host {upstream_hostport}
-                }
+                reverse_proxy https://gigglesquid.tech.lan.gigglesquid.tech
               }
             '';
         };
@@ -630,9 +610,7 @@ in
               import bunny_acme_settings
               route {
                 crowdsec
-                reverse_proxy https://old.cfwrs.org.uk.lan.gigglesquid.tech {
-                  header_up Host {upstream_hostport}
-                }
+                reverse_proxy https://old.cfwrs.org.uk.lan.gigglesquid.tech
               }
             '';
         };
@@ -653,9 +631,7 @@ in
               import bunny_acme_settings
               route {
                 crowdsec
-                reverse_proxy https://cfwrs.org.uk.lan.gigglesquid.tech {
-                  header_up Host {upstream_hostport}
-                }
+                reverse_proxy https://cfwrs.org.uk.lan.gigglesquid.tech
               }
             '';
         };
@@ -676,9 +652,7 @@ in
               import bunny_acme_settings
               route {
                 crowdsec
-                reverse_proxy https://umami.lan.gigglesquid.tech {
-                  header_up Host {upstream_hostport}
-                }
+                reverse_proxy https://umami.lan.gigglesquid.tech
               }
             '';
         };
@@ -699,9 +673,7 @@ in
               import bunny_acme_settings
               route {
                 crowdsec
-                reverse_proxy https://idm.lan.gigglesquid.tech {
-                  header_up Host {upstream_hostport}
-                }
+                reverse_proxy https://idm.lan.gigglesquid.tech
               }
             '';
         };
@@ -723,57 +695,7 @@ in
               import deny_non_local
               route {
                 crowdsec
-                reverse_proxy https://homepage.lan.gigglesquid.tech {
-                  header_up Host {upstream_hostport}
-                }
-              }
-            '';
-        };
-      "nix-cache.lan.gigglesquid.tech" =
-        { name, ... }:
-        {
-          logFormat = ''
-            output file ${config.services.caddy.logDir}/access-${
-              lib.replaceStrings [ "/" " " ] [ "_" "_" ] name
-            }.log {
-              mode 640
-            }
-            level INFO
-            format json
-          '';
-          extraConfig = # caddyfile
-            ''
-              import bunny_acme_settings
-              import deny_non_local
-              route {
-                crowdsec
-                reverse_proxy https://ncps.lan.gigglesquid.tech {
-                  header_up Host {upstream_hostport}
-                }
-              }
-            '';
-        };
-      "local.nix-cache.lan.gigglesquid.tech" =
-        { name, ... }:
-        {
-          logFormat = ''
-            output file ${config.services.caddy.logDir}/access-${
-              lib.replaceStrings [ "/" " " ] [ "_" "_" ] name
-            }.log {
-              mode 640
-            }
-            level INFO
-            format json
-          '';
-          extraConfig = # caddyfile
-            ''
-              import bunny_acme_settings
-              import deny_non_local
-              route {
-                crowdsec
-                reverse_proxy https://attic.lan.gigglesquid.tech {
-                  header_up Host {upstream_hostport}
-                }
+                reverse_proxy https://homepage.lan.gigglesquid.tech
               }
             '';
         };
@@ -795,9 +717,7 @@ in
               import deny_non_local
               route {
                 crowdsec
-                reverse_proxy https://vaultwarden.lan.gigglesquid.tech {
-                  header_up Host {upstream_hostport}
-                }
+                reverse_proxy https://vaultwarden.lan.gigglesquid.tech
               }
             '';
         };
@@ -819,9 +739,7 @@ in
               import deny_non_local
               route {
                 crowdsec
-                reverse_proxy https://atuin.lan.gigglesquid.tech {
-                  header_up Host {upstream_hostport}
-                }
+                reverse_proxy https://atuin.lan.gigglesquid.tech
               }
             '';
         };
