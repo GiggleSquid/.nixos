@@ -80,6 +80,7 @@ in
     defaultSopsFile = "${self}/sops/squid-rig.yaml";
     secrets = {
       bunny_dns_api_key = { };
+      "harmonia/cache-key/dmz-2-caddy-lan" = { };
       crowdsec_bouncer_api_keys_env = { };
       "crowdsec_bouncer_api_keys/caddy_dmz-2_firewall" = { };
       "valkey/caddy-dmz/env" = { };
@@ -144,7 +145,6 @@ in
           "${config.sops.secrets.crowdsec_bouncer_api_keys_env.path}"
           "${config.sops.secrets."valkey/caddy-dmz/env".path}"
         ];
-        ExecStartPre = [ "${lib.getExe' nixpkgs.coreutils "sleep"} 10" ];
       };
     };
     "redis-${hostName}-a".serviceConfig = {
@@ -159,6 +159,41 @@ in
   };
 
   services = {
+    harmonia-dev = {
+      daemon.enable = true;
+      cache = {
+        enable = true;
+        signKeyPaths = [ config.sops.secrets."harmonia/cache-key/dmz-2-caddy-lan".path ];
+        settings = {
+          bind = "unix:/run/harmonia/socket";
+          priority = 30;
+          enable_compression = true;
+        };
+      };
+    };
+    caddy.virtualHosts = {
+      "harmonia.dmz-2.caddy.lan.gigglesquid.tech" =
+        { name, ... }:
+        {
+          logFormat = ''
+            output file ${config.services.caddy.logDir}/access-${
+              lib.replaceStrings [ "/" " " ] [ "_" "_" ] name
+            }.log {
+              mode 640
+            }
+            level INFO
+            format json
+          '';
+          extraConfig = # caddyfile
+            ''
+              import bunny_acme_settings
+              import deny_non_local
+              handle {
+                reverse_proxy unix//run/harmonia/socket
+              }
+            '';
+        };
+    };
     redis = {
       package = nixpkgs.valkey;
       servers = {
@@ -274,6 +309,7 @@ in
         lib.concatLists [
           nixosSuites.server
           base-rpi
+          harmonia
         ];
     in
     lib.concatLists [

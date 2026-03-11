@@ -19,7 +19,6 @@ rec {
   ];
 
   server = base ++ [
-    attic-nix-cache
     userProfiles.nixos
     userProfiles.squid
   ];
@@ -30,7 +29,6 @@ rec {
   ];
 
   pc = base ++ [
-    attic-nix-cache
     fonts
     gpg
     userProfiles.squid

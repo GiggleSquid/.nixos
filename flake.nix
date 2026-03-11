@@ -96,6 +96,10 @@
       url = "github:nixos/nixpkgs/nixos-25.11-small";
     };
 
+    harmonia = {
+      url = "github:nix-community/harmonia";
+    };
+
     simple-nixos-mailserver = {
       url = "gitlab:simple-nixos-mailserver/nixos-mailserver/master";
     };
@@ -185,12 +189,10 @@
     extra-experimental-features = "nix-command flakes";
 
     extra-substituters = [
-      "https://nix-cache.lan.gigglesquid.tech"
-      "https://local.nix-cache.lan.gigglesquid.tech/attic"
+      "https://ncps.lan.gigglesquid.tech"
     ];
     extra-trusted-public-keys = [
-      "nix-cache.lan.gigglesquid.tech:sQW0gKIG9hooFPBoFDoiDbToJXPhFWpTI4NqNY1MYaA="
-      "attic:4reipGK1ubbnLAmGWWtjD2bpuqSWTEsaYuREMEcz7Ro="
+      "ncps.lan.gigglesquid.tech-1:5nmh9QZ6q8GYDPUfInjMiooLPnGo9q5xV984DlmVtQo="
     ];
   };
 }

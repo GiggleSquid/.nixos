@@ -20,13 +20,15 @@ in
   systemd.network = {
     networks = {
       "10-lan" = {
-        matchConfig.Name = "eth0";
+        matchConfig.Name = lib.mkForce "eth0";
         ipv6AcceptRAConfig = {
-          Token = "static:::12";
+          Token = "static:::13";
           UseDNS = false;
         };
         address = [
-          "10.3.0.12/23"
+          "10.3.0.13/23"
+          "10.3.0.14/23"
+          "2a0b:9401:64:3::14/64"
         ];
         gateway = [
           "10.3.0.1"
@@ -44,6 +46,7 @@ in
     secrets = {
       bunny_dns_api_key = { };
       lego_pfx_pass = { };
+      "harmonia/cache-key/ns2-dns-lan" = { };
     };
   };
 
@@ -61,7 +64,7 @@ in
       dnsProvider = "bunny";
       credentialFiles = {
         "BUNNY_API_KEY_FILE" = "${config.sops.secrets.bunny_dns_api_key.path}";
-        "BUNNY_PROPAGATION_TIMEOUT_FILE" = nixpkgs.writeText "BUNNY_PROPAGATION_TIMEOUT" ''360'';
+        "BUNNY_PROPAGATION_TIMEOUT_FILE" = nixpkgs.writeText "BUNNY_PROPAGATION_TIMEOUT" "360";
       };
       postRun = # bash
         ''
@@ -70,6 +73,61 @@ in
           chmod -v 644 ns2.dns.lan.gigglesquid.tech.pfx
           cp -vp ns2.dns.lan.gigglesquid.tech.pfx /var/lib/technitium-dns-server/
         '';
+    };
+  };
+
+  systemd.services = {
+    caddy = {
+      after = [ "technitium.service" ];
+      serviceConfig = {
+        # 5 min delay to allow technitium to provide dns resolution as this system
+        # relies on itself for dns and caddy is using domains in trusted proxies
+        ExecStartPre = lib.mkForce "${lib.getExe' nixpkgs.coreutils "sleep"} 300";
+        TimeoutStartSec = 305;
+      };
+    };
+  };
+
+  services = {
+    harmonia-dev = {
+      daemon.enable = true;
+      cache = {
+        enable = true;
+        signKeyPaths = [ config.sops.secrets."harmonia/cache-key/ns2-dns-lan".path ];
+        settings = {
+          bind = "unix:/run/harmonia/socket";
+          priority = 30;
+          enable_compression = true;
+        };
+      };
+    };
+
+    caddy-squid = {
+      enable = true;
+      extraGlobalConfig = "default_bind 10.3.0.14 2a0b:9401:64:3::14";
+    };
+    caddy.virtualHosts = {
+      "harmonia.ns2.dns.lan.gigglesquid.tech" =
+        { name, ... }:
+        {
+          logFormat = ''
+            output file ${config.services.caddy.logDir}/access-${
+              lib.replaceStrings [ "/" " " ] [ "_" "_" ] name
+            }.log {
+              mode 640
+            }
+            level INFO
+            format json
+          '';
+          extraConfig = # caddyfile
+            ''
+              import bunny_acme_settings
+              import deny_non_local
+              handle {
+                reverse_proxy unix//run/harmonia/socket
+              }
+            '';
+        };
     };
   };
 
@@ -84,6 +142,8 @@ in
           nixosSuites.server
           base
           dns-server
+          caddy-server
+          harmonia
         ];
     in
     lib.concatLists [
