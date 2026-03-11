@@ -41,24 +41,16 @@ in
     };
   };
 
-  users = {
-    users.rackpeek = {
-      uid = 1654;
-      isSystemUser = true;
-      group = "rackpeek";
-    };
-    groups.rackpeek = {
-      gid = 1654;
-    };
-  };
-
-  systemd.tmpfiles.rules = [ "d /var/lib/rackpeek/config 0775 rackpeek rackpeek" ];
+  systemd.tmpfiles.rules = [
+    "d /var/lib/rackpeek 0755 1654 1654"
+    "d /var/lib/rackpeek/config 0755 1654 1654"
+  ];
 
   virtualisation.oci-containers = {
     backend = "podman";
     containers = {
       rackpeek = {
-        image = "aptacode/rackpeek:v1.1.0";
+        image = "aptacode/rackpeek:v1.3.0";
         autoStart = true;
         ports = [ "127.0.0.1:8080:8080" ];
         volumes = [
