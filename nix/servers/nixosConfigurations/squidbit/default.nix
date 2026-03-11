@@ -197,6 +197,68 @@ in
       enable = true;
       package = nixpkgs.qbittorrent-nox;
       group = "media";
+      serverConfig = {
+        Application = {
+          FileLogger = {
+            Age = 1;
+            AgeType = 1;
+            Backup = true;
+            DeleteOld = true;
+            Enabled = true;
+            MaxSizeBytes = 66560;
+            Path = "/var/lib/qbittorrent/qBittorrent/data/logs";
+          };
+        };
+        AutoRun = {
+          enabled = true;
+          program = ''${
+            nixpkgs.writers.writeBash "qbit_set_perms.sh" # bash
+              ''
+                find "$1" -type f -exec chmod 664 -- {} +
+                find "$1" -type d -exec chmod 775 -- {} +
+              ''
+          } \"%F\"'';
+        };
+        BitTorrent = {
+          Session = {
+            BTProtocol = "Both";
+            DHTEnabled = false;
+            DefaultSavePath = "/mnt/media/torrents/seeding";
+            GlobalDLSpeedLimit = 2560;
+            GlobalUPSpeedLimit = 2048;
+            GlobalMaxRatio = 5;
+            ResumeDataStorageType = "SQLite";
+            Interface = "wg0";
+            InterfaceName = "wg0";
+            PeXEnabled = false;
+            QueueingSystemEnabled = false;
+            ReannounceWhenAddressChanged = true;
+            ShareLimitAction = "Stop";
+            TempPath = "/mnt/media/torrents/downloads";
+            TempPathEnabled = true;
+          };
+        };
+        Core = {
+          AutoDeleteAddedTorrentFile = "Never";
+        };
+        Network = {
+          PortForwardingEnabled = false;
+        };
+        Preferences = {
+          WebUI = {
+            AlternativeUIEnabled = true;
+            RootFolder = "${nixpkgs.vuetorrent}/share/vuetorrent";
+            LocalHostAuth = false;
+            Password_PBKDF2 = "@ByteArray(EzCUrXuAE5GXCCdjC80EvQ==:WlNlfCKkek8mKW5fmGQLNHtOUHJC0TidLVTJ6ysdk6lRMleA9VCtm1q7m//gGRYM8m60WLPX/ehV1Mss6uukvQ==)";
+            Username = "squid";
+            HTTPS = {
+              Enabled = true;
+              CertificatePath = "/var/lib/qBittorrent/fullchain.pem";
+              KeyPath = "/var/lib/qBittorrent/key.pem";
+            };
+          };
+        };
+      };
     };
     nzbget = {
       enable = true;
