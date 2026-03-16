@@ -27,6 +27,7 @@
             allowedSignersFile = "${config.home.homeDirectory}/.config/git/allowed_signers";
           };
         };
+        push.autoSetupRemote = true;
       };
 
       signing = {
