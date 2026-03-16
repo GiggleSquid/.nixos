@@ -2,7 +2,6 @@
 let
   inherit (inputs) common nixpkgs self;
   inherit (cell)
-    machineProfiles
     hardwareProfiles
     nixosSuites
     homeSuites
@@ -44,11 +43,33 @@ in
     };
   };
 
+  services = {
+    proxmox-backup-client = {
+      enable = true;
+      backup = {
+        frequency = "2/06:30";
+        environmentFile = config.sops.secrets."pbc/squid-top/env".path;
+        archives = [
+          {
+            name = "home";
+            type = "pxar";
+            sourcePath = "/home";
+          }
+        ];
+        ns = "baremetal/squid-top";
+        keyFile = config.sops.secrets."pbc/squid-top/encryption_key".path;
+        exclude = [
+          "**/.cache"
+          "**/baloo"
+        ];
+      };
+    };
+  };
+
   imports =
     let
       profiles = [
         hardwareProfiles.squid-top
-        machineProfiles.squid-top
       ];
       suites =
         with nixosSuites;

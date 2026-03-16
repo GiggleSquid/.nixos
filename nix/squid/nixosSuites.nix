@@ -37,6 +37,7 @@ rec {
     printing
     email
     archiving-utils
+    nixosModules.proxmox-backup-client
   ];
 
   desktop = pc ++ [

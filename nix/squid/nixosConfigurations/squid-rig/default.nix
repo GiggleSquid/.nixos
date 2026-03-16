@@ -6,7 +6,6 @@
 let
   inherit (inputs) common nixpkgs self;
   inherit (cell)
-    machineProfiles
     hardwareProfiles
     nixosSuites
     homeSuites
@@ -50,6 +49,28 @@ in
       layout = "us";
       variant = "colemak_dh_wide_iso";
     };
+    proxmox-backup-client = {
+      enable = true;
+      backup = {
+        frequency = "2/06:30";
+        environmentFile = config.sops.secrets."pbc/squid-rig/env".path;
+        archives = [
+          {
+            name = "home";
+            type = "pxar";
+            sourcePath = "/home";
+          }
+        ];
+        ns = "baremetal/squid-rig";
+        keyFile = config.sops.secrets."pbc/squid-rig/encryption_key".path;
+        exclude = [
+          "**/.cache"
+          "**/baloo"
+          "**/.boinc"
+          "squid/Documents/game_mod_archive"
+        ];
+      };
+    };
   };
 
   programs.ladybird.enable = true;
@@ -58,7 +79,6 @@ in
     let
       profiles = [
         hardwareProfiles.squid-rig
-        machineProfiles.squid-rig
       ];
       suites =
         with nixosSuites;

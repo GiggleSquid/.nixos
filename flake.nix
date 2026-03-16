@@ -40,7 +40,6 @@
             (functions "serverSuites")
             (functions "k3sSuites")
 
-            (functions "machineProfiles")
             (functions "hardwareProfiles")
             (functions "nixosProfiles")
             (functions "userProfiles")
