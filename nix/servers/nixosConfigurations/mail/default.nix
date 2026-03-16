@@ -4,7 +4,7 @@
   config,
 }:
 let
-  inherit (inputs) common nixpkgs self;
+  inherit (inputs) common nixpkgs;
   inherit (cell) hardwareProfiles serverSuites;
   inherit (inputs.cells.squid) nixosSuites homeSuites;
   lib = nixpkgs.lib // builtins;
@@ -38,30 +38,27 @@ in
     };
   };
 
-  sops = {
-    defaultSopsFile = "${self}/sops/squid-rig.yaml";
-    secrets = {
-      bunny_dns_api_key = { };
-      crowdsec_bouncer_api_keys_env = { };
-      "crowdsec_bouncer_api_keys/mail_firewall" = { };
-      "mailserver/pass/postmaster@gigglesquid.tech" = { };
-      "mailserver/pass/jack.connors@gigglesquid.tech" = { };
-      "mailserver/pass/kraken.lan@gigglesquid.tech" = { };
-      "mailserver/pass/cephalonas.lan@gigglesquid.tech" = { };
-      "mailserver/pass/pbs.cephalonas.lan@gigglesquid.tech" = { };
-      "mailserver/pass/vaultwarden.lan@gigglesquid.tech" = { };
-      "mailserver/pass/hello@thatferret.blog" = { };
-      "mailserver/pass/privacy@thatferret.blog" = { };
-      "mailserver/pass/jack.connors@thatferret.blog" = { };
-      "mailserver/pass/hello@thatferret.shop" = { };
-      "mailserver/pass/privacy@thatferret.shop" = { };
-      "mailserver/pass/notifications@thatferret.shop" = { };
-      "mailserver/pass/jack.connors@thatferret.shop" = { };
-      "mailserver/pass/contact@cfwrs.org.uk" = { };
-      "mailserver/pass/privacy@cfwrs.org.uk" = { };
-      "mailserver/pass/notifications@cfwrs.org.uk" = { };
-      "mailserver/pass/jack.connors@cfwrs.org.uk" = { };
-    };
+  sops.secrets = {
+    bunny_dns_api_key = { };
+    crowdsec_bouncer_api_keys_env = { };
+    "crowdsec_bouncer_api_keys/mail_firewall" = { };
+    "mailserver/pass/postmaster@gigglesquid.tech" = { };
+    "mailserver/pass/jack.connors@gigglesquid.tech" = { };
+    "mailserver/pass/tentacle0@kraken.lan.gigglesquid.tech" = { };
+    "mailserver/pass/alerts@cephalonas.lan.gigglesquid.tech" = { };
+    "mailserver/pass/notifications@pbs.cephalonas.lan.gigglesquid.tech" = { };
+    "mailserver/pass/warden@vaultwarden.lan.gigglesquid.tech" = { };
+    "mailserver/pass/hello@thatferret.blog" = { };
+    "mailserver/pass/privacy@thatferret.blog" = { };
+    "mailserver/pass/jack.connors@thatferret.blog" = { };
+    "mailserver/pass/hello@thatferret.shop" = { };
+    "mailserver/pass/privacy@thatferret.shop" = { };
+    "mailserver/pass/notifications@thatferret.shop" = { };
+    "mailserver/pass/jack.connors@thatferret.shop" = { };
+    "mailserver/pass/contact@cfwrs.org.uk" = { };
+    "mailserver/pass/privacy@cfwrs.org.uk" = { };
+    "mailserver/pass/notifications@cfwrs.org.uk" = { };
+    "mailserver/pass/jack.connors@cfwrs.org.uk" = { };
   };
 
   security.acme = {
@@ -98,6 +95,10 @@ in
     fqdn = "mail.gigglesquid.tech";
     domains = [
       "gigglesquid.tech"
+      "kraken.lan.gigglesquid.tech"
+      "cephalonas.lan.gigglesquid.tech"
+      "pbs.cephalonas.lan.gigglesquid.tech"
+      "vaultwarden.lan.gigglesquid.tech"
       "thatferret.blog"
       "thatferret.shop"
       "cfwrs.org"
@@ -153,22 +154,23 @@ in
       "jack.connors@gigglesquid.tech" = {
         hashedPasswordFile = "${config.sops.secrets."mailserver/pass/jack.connors@gigglesquid.tech".path}";
       };
-      "kraken.lan@gigglesquid.tech" = {
-        hashedPasswordFile = "${config.sops.secrets."mailserver/pass/kraken.lan@gigglesquid.tech".path}";
-        sendOnly = true;
-      };
-      "cephalonas.lan@gigglesquid.tech" = {
-        hashedPasswordFile = "${config.sops.secrets."mailserver/pass/cephalonas.lan@gigglesquid.tech".path
+      "tentacle0@kraken.lan.gigglesquid.tech" = {
+        hashedPasswordFile = "${config.sops.secrets."mailserver/pass/tentacle0@kraken.lan.gigglesquid.tech".path
         }";
         sendOnly = true;
       };
-      "pbs.cephalonas.lan@gigglesquid.tech" = {
-        hashedPasswordFile = "${config.sops.secrets."mailserver/pass/pbs.cephalonas.lan@gigglesquid.tech".path
+      "alerts@cephalonas.lan.gigglesquid.tech" = {
+        hashedPasswordFile = "${config.sops.secrets."mailserver/pass/alerts@cephalonas.lan.gigglesquid.tech".path
         }";
         sendOnly = true;
       };
-      "vaultwarden.lan@gigglesquid.tech" = {
-        hashedPasswordFile = "${config.sops.secrets."mailserver/pass/vaultwarden.lan@gigglesquid.tech".path
+      "notifications@pbs.cephalonas.lan.gigglesquid.tech" = {
+        hashedPasswordFile = "${config.sops.secrets."mailserver/pass/notifications@pbs.cephalonas.lan.gigglesquid.tech".path
+        }";
+        sendOnly = true;
+      };
+      "warden@vaultwarden.lan.gigglesquid.tech" = {
+        hashedPasswordFile = "${config.sops.secrets."mailserver/pass/warden@vaultwarden.lan.gigglesquid.tech".path
         }";
         sendOnly = true;
       };
@@ -220,7 +222,6 @@ in
       # };
     };
     extraVirtualAliases = { };
-    borgbackup = { };
   };
 
   services = {
