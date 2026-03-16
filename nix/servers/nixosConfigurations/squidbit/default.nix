@@ -62,6 +62,11 @@ in
       mode = "0440";
       group = "media";
     };
+    sonarr_api_key = {
+      mode = "0440";
+      group = "media";
+    };
+    "cross_seed/settings.json" = { };
   };
 
   security.acme = {
@@ -216,6 +221,10 @@ in
             BTProtocol = "Both";
             DHTEnabled = false;
             DefaultSavePath = "/mnt/media/torrents/seeding";
+            DisableAutoTMMTriggers = {
+              CategorySavePathChanged = false;
+              DefaultSavePathChanged = false;
+            };
             GlobalDLSpeedLimit = 2560;
             GlobalUPSpeedLimit = 2048;
             GlobalMaxRatio = 5;
@@ -226,6 +235,7 @@ in
             QueueingSystemEnabled = false;
             ReannounceWhenAddressChanged = true;
             ShareLimitAction = "Stop";
+            Tags = "cross-seed";
             TempPath = "/mnt/media/torrents/downloads";
             TempPathEnabled = true;
           };
@@ -254,6 +264,7 @@ in
     };
     nzbget = {
       enable = true;
+      user = "qbittorrent";
       group = "media";
       settings = {
         MainDir = "/mnt/media/nzb";
