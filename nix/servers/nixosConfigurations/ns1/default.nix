@@ -4,7 +4,7 @@
   config,
 }:
 let
-  inherit (inputs) rpi nixpkgs self;
+  inherit (inputs) rpi nixpkgs;
   inherit (cell) hardwareProfiles serverSuites;
   inherit (inputs.cells.squid) nixosSuites homeSuites;
   lib = nixpkgs.lib // builtins;
@@ -41,13 +41,10 @@ in
     };
   };
 
-  sops = {
-    defaultSopsFile = "${self}/sops/squid-rig.yaml";
-    secrets = {
-      bunny_dns_api_key = { };
-      lego_pfx_pass = { };
-      "harmonia/cache-key/ns1-dns-lan" = { };
-    };
+  sops.secrets = {
+    bunny_dns_api_key = { };
+    lego_pfx_pass = { };
+    "harmonia/cache-key/ns1-dns-lan" = { };
   };
 
   security.acme = {

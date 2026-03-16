@@ -4,7 +4,7 @@
   config,
 }:
 let
-  inherit (inputs) common nixpkgs self;
+  inherit (inputs) common nixpkgs;
   inherit (cell) hardwareProfiles serverSuites;
   inherit (inputs.cells.squid) nixosSuites homeSuites;
   lib = nixpkgs.lib // builtins;
@@ -41,21 +41,18 @@ in
     };
   };
 
-  sops = {
-    defaultSopsFile = "${self}/sops/squid-rig.yaml";
-    secrets = {
-      "grafana/secret_key" = {
-        owner = "grafana";
-      };
-      prometheus_web_config = {
-        owner = "prometheus";
-      };
-      prometheus_basic_auth_env_var = {
-        owner = "prometheus";
-      };
-      prometheus_exporters_pve = { };
-      prometheus_exporters_idrac = { };
+  sops.secrets = {
+    "grafana/secret_key" = {
+      owner = "grafana";
     };
+    prometheus_web_config = {
+      owner = "prometheus";
+    };
+    prometheus_basic_auth_env_var = {
+      owner = "prometheus";
+    };
+    prometheus_exporters_pve = { };
+    prometheus_exporters_idrac = { };
   };
 
   systemd.services = {

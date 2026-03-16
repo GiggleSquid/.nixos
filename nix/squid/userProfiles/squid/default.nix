@@ -1,14 +1,6 @@
-{
-  inputs,
-  cell,
-  config,
-}:
-let
-  inherit (inputs) self nixpkgs;
-in
+{ config }:
 {
   sops.secrets.user_pass_squid = {
-    sopsFile = "${self}/sops/squid-rig.yaml";
     neededForUsers = true;
   };
   users = {

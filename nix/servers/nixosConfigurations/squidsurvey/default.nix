@@ -4,7 +4,7 @@
   config,
 }:
 let
-  inherit (inputs) common nixpkgs self;
+  inherit (inputs) common nixpkgs;
   inherit (cell) hardwareProfiles serverSuites;
   inherit (inputs.cells.squid) nixosSuites homeSuites;
   lib = nixpkgs.lib // builtins;
@@ -43,12 +43,9 @@ in
     };
   };
 
-  sops = {
-    defaultSopsFile = "${self}/sops/squid-rig.yaml";
-    secrets = {
-      "limesurvey/nonce" = { };
-      "limesurvey/key" = { };
-    };
+  sops.secrets = {
+    "limesurvey/nonce" = { };
+    "limesurvey/key" = { };
   };
 
   services = {

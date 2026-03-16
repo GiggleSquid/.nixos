@@ -1,6 +1,10 @@
-{ inputs, cell }:
+{
+  inputs,
+  cell,
+  config,
+}:
 let
-  inherit (inputs) common nixpkgs self;
+  inherit (inputs) common nixpkgs;
   inherit (cell)
     hardwareProfiles
     nixosSuites
@@ -41,6 +45,11 @@ in
         # ];
       };
     };
+  };
+
+  sops.secrets = {
+    "pbc/squid-top/encryption_key" = { };
+    "pbc/squid-top/env" = { };
   };
 
   services = {

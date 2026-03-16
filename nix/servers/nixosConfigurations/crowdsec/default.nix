@@ -4,7 +4,7 @@
   config,
 }:
 let
-  inherit (inputs) common nixpkgs self;
+  inherit (inputs) common nixpkgs;
   inherit (cell) hardwareProfiles serverSuites;
   inherit (inputs.cells.squid) nixosSuites homeSuites;
   lib = nixpkgs.lib // builtins;
@@ -41,13 +41,10 @@ in
     };
   };
 
-  sops = {
-    defaultSopsFile = "${self}/sops/squid-rig.yaml";
-    secrets = {
-      bunny_dns_api_key = { };
-      crowdsec_enroll_key = { };
-      "crowdsec_bouncer_api_keys/crowdsec_firewall" = { };
-    };
+  sops.secrets = {
+    bunny_dns_api_key = { };
+    crowdsec_enroll_key = { };
+    "crowdsec_bouncer_api_keys/crowdsec_firewall" = { };
   };
 
   security.acme = {
@@ -62,7 +59,7 @@ in
       dnsProvider = "bunny";
       credentialFiles = {
         "BUNNY_API_KEY_FILE" = "${config.sops.secrets.bunny_dns_api_key.path}";
-        "BUNNY_PROPAGATION_TIMEOUT_FILE" = nixpkgs.writeText "BUNNY_PROPAGATION_TIMEOUT" ''360'';
+        "BUNNY_PROPAGATION_TIMEOUT_FILE" = nixpkgs.writeText "BUNNY_PROPAGATION_TIMEOUT" "360";
       };
     };
     certs = {

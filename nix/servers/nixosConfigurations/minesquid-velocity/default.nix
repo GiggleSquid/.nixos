@@ -4,7 +4,7 @@
   config,
 }:
 let
-  inherit (inputs) common nixpkgs self;
+  inherit (inputs) common nixpkgs;
   inherit (cell) hardwareProfiles serverSuites;
   inherit (inputs.cells.squid) nixosSuites homeSuites;
   inherit (inputs.cells.toolchain) pkgs;
@@ -41,10 +41,7 @@ in
     };
   };
 
-  sops = {
-    defaultSopsFile = "${self}/sops/squid-rig.yaml";
-    secrets."minesquid_env_vars" = { };
-  };
+  sops.secrets."minesquid_env_vars" = { };
 
   services = {
     minecraft-servers = {

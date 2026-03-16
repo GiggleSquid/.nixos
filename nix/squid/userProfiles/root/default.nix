@@ -1,10 +1,6 @@
-{ inputs, config }:
-let
-  inherit (inputs) self;
-in
+{ config }:
 {
   sops.secrets.user_pass_root = {
-    sopsFile = "${self}/sops/squid-rig.yaml";
     neededForUsers = true;
   };
   users = {

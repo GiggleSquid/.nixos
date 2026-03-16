@@ -4,7 +4,7 @@
   config,
 }:
 let
-  inherit (inputs) common nixpkgs self;
+  inherit (inputs) common nixpkgs;
   inherit (cell) hardwareProfiles serverSuites;
   inherit (inputs.cells.squid) nixosSuites homeSuites;
   inherit (inputs.cells.toolchain) pkgs;
@@ -43,10 +43,7 @@ in
     };
   };
 
-  sops = {
-    defaultSopsFile = "${self}/sops/squid-rig.yaml";
-    secrets."minesquid_env_vars" = { };
-  };
+  sops.secrets."minesquid_env_vars" = { };
 
   services = {
     minecraft-servers = {
@@ -101,7 +98,7 @@ in
             };
             "plugins/floodgate.jar" = pkgs.fetchurl {
               url = "https://download.geysermc.org/v2/projects/floodgate/versions/latest/builds/latest/downloads/spigot";
-              hash = "sha256-lnLGEWtBGuQSFU7fLZMVxLZ9sbNtGJhUedPMl8S0WrU=";
+              hash = "sha256-c5N3B5s2L67M9dFvMUK6A0CphupISzcPIOymngWBDrY=";
             };
 
             "plugins/stargate-rewitten.jar" = ././Stargate-1.0.0.16-ALPHA.jar;

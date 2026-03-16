@@ -4,10 +4,9 @@
   config,
 }:
 let
-  inherit (inputs) common nixpkgs self;
+  inherit (inputs) common nixpkgs;
   inherit (cell) hardwareProfiles serverSuites;
   inherit (inputs.cells.squid) nixosSuites homeSuites;
-  inherit (inputs.cells.toolchain) pkgs;
 
   lib = nixpkgs.lib // builtins;
   hostName = "uptime";
@@ -67,12 +66,9 @@ in
     };
   };
 
-  sops = {
-    defaultSopsFile = "${self}/sops/squid-rig.yaml";
-    secrets = {
-      crowdsec_bouncer_api_keys_env = { };
-      "crowdsec_bouncer_api_keys/uptime_firewall" = { };
-    };
+  sops.secrets = {
+    crowdsec_bouncer_api_keys_env = { };
+    "crowdsec_bouncer_api_keys/uptime_firewall" = { };
   };
 
   systemd.services = {

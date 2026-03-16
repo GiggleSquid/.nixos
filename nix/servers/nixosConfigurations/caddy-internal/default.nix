@@ -4,7 +4,7 @@
   config,
 }:
 let
-  inherit (inputs) common nixpkgs self;
+  inherit (inputs) common nixpkgs;
   inherit (cell) hardwareProfiles serverSuites;
   inherit (inputs.cells.squid) nixosSuites homeSuites;
   lib = nixpkgs.lib // builtins;
@@ -54,14 +54,11 @@ in
     groups.alloy = { };
   };
 
-  sops = {
-    defaultSopsFile = "${self}/sops/squid-rig.yaml";
-    secrets = {
-      crowdsec_bouncer_api_keys_env = { };
-      prometheus_basic_auth = {
-        mode = "0440";
-        owner = "alloy";
-      };
+  sops.secrets = {
+    crowdsec_bouncer_api_keys_env = { };
+    prometheus_basic_auth = {
+      mode = "0440";
+      owner = "alloy";
     };
   };
 

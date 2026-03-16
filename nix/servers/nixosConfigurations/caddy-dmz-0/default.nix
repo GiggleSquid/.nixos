@@ -4,7 +4,7 @@
   config,
 }:
 let
-  inherit (inputs) rpi nixpkgs self;
+  inherit (inputs) rpi nixpkgs;
   inherit (cell) serverSuites hardwareProfiles nixosProfiles;
   inherit (inputs.cells.squid) nixosSuites homeSuites;
   lib = nixpkgs.lib // builtins;
@@ -76,22 +76,19 @@ in
     };
   };
 
-  sops = {
-    defaultSopsFile = "${self}/sops/squid-rig.yaml";
-    secrets = {
-      bunny_dns_api_key = { };
-      "harmonia/cache-key/dmz-0-caddy-lan" = { };
-      crowdsec_bouncer_api_keys_env = { };
-      "crowdsec_bouncer_api_keys/caddy_dmz-0_firewall" = { };
-      "valkey/caddy-dmz/env" = { };
-      "valkey/caddy-dmz/acl" = {
-        group = "valkey";
-        mode = "440";
-      };
-      "valkey/caddy-dmz/includes/replication" = {
-        group = "valkey";
-        mode = "440";
-      };
+  sops.secrets = {
+    bunny_dns_api_key = { };
+    "harmonia/cache-key/dmz-0-caddy-lan" = { };
+    crowdsec_bouncer_api_keys_env = { };
+    "crowdsec_bouncer_api_keys/caddy_dmz-0_firewall" = { };
+    "valkey/caddy-dmz/env" = { };
+    "valkey/caddy-dmz/acl" = {
+      group = "valkey";
+      mode = "440";
+    };
+    "valkey/caddy-dmz/includes/replication" = {
+      group = "valkey";
+      mode = "440";
     };
   };
 

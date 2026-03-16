@@ -4,7 +4,7 @@
   config,
 }:
 let
-  inherit (inputs) common nixpkgs self;
+  inherit (inputs) common nixpkgs;
   inherit (cell) hardwareProfiles serverSuites;
   inherit (inputs.cells.squid) nixosSuites homeSuites;
   lib = nixpkgs.lib // builtins;
@@ -50,25 +50,17 @@ in
     };
   };
 
-  sops = {
-    defaultSopsFile = "${self}/sops/squid-rig.yaml";
-    secrets = {
-      bunny_dns_api_key = { };
-      lego_pfx_pass = { };
-      "pia/pia_env" = { };
-      "pia/ca.rsa.4096.crt" = { };
-      "prowlarr/env" = { };
-      "radarr/env" = { };
-      "sonarr/env" = { };
-      radarr_api_key = {
-        mode = "0440";
-        group = "media";
-      };
-      sonarr_api_key = {
-        mode = "0440";
-        group = "media";
-      };
-      "cross_seed/settings.json" = { };
+  sops.secrets = {
+    bunny_dns_api_key = { };
+    lego_pfx_pass = { };
+    "pia/pia_env" = { };
+    "pia/ca.rsa.4096.crt" = { };
+    "prowlarr/env" = { };
+    "radarr/env" = { };
+    "sonarr/env" = { };
+    radarr_api_key = {
+      mode = "0440";
+      group = "media";
     };
   };
 

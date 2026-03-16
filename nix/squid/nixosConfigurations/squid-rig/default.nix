@@ -44,6 +44,11 @@ in
     };
   };
 
+  sops.secrets = {
+    "pbc/squid-rig/encryption_key" = { };
+    "pbc/squid-rig/env" = { };
+  };
+
   services = {
     xserver.xkb = lib.mkForce {
       layout = "us";

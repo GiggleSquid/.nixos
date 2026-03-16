@@ -4,7 +4,7 @@
   config,
 }:
 let
-  inherit (inputs) self nixpkgs;
+  inherit (inputs) nixpkgs;
   lib = nixpkgs.lib;
 in
 let
@@ -64,14 +64,11 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    sops = {
-      defaultSopsFile = lib.mkDefault "${self}/sops/squid-rig.yaml";
-      secrets = {
-        bunny_dns_api_key_caddy = { };
-        ipv6_prefix_env = { };
-        ipv4_subnet_env = { };
-        ipv4_static_env = { };
-      };
+    sops.secrets = {
+      bunny_dns_api_key_caddy = { };
+      ipv6_prefix_env = { };
+      ipv4_subnet_env = { };
+      ipv4_static_env = { };
     };
 
     networking.firewall = {

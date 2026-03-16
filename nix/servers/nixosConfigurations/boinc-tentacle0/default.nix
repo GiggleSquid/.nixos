@@ -1,6 +1,6 @@
 { inputs, cell }:
 let
-  inherit (inputs) common nixpkgs self;
+  inherit (inputs) common nixpkgs;
   inherit (cell) hardwareProfiles serverSuites;
   inherit (inputs.cells.squid) nixosSuites homeSuites nixosProfiles;
   lib = nixpkgs.lib // builtins;

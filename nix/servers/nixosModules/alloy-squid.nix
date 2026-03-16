@@ -4,7 +4,6 @@
   config,
 }:
 let
-  inherit (inputs) self;
   lib = inputs.nixpkgs.lib;
 in
 let
@@ -203,13 +202,10 @@ in
       ++ cfg.supplementaryGroups;
     };
 
-    sops = {
-      defaultSopsFile = "${self}/sops/squid-rig.yaml";
-      secrets = {
-        prometheus_basic_auth = {
-          mode = "0440";
-          owner = "alloy";
-        };
+    sops.secrets = {
+      prometheus_basic_auth = {
+        mode = "0440";
+        owner = "alloy";
       };
     };
 

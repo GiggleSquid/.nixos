@@ -4,7 +4,7 @@
   config,
 }:
 let
-  inherit (inputs) common nixpkgs self;
+  inherit (inputs) common nixpkgs;
   inherit (cell) hardwareProfiles serverSuites;
   inherit (inputs.cells.squid) nixosSuites homeSuites;
   lib = nixpkgs.lib // builtins;
@@ -38,12 +38,9 @@ in
     };
   };
 
-  sops = {
-    defaultSopsFile = "${self}/sops/squid-rig.yaml";
-    secrets = {
-      bunny_dns_api_key = { };
-      lego_pfx_pass = { };
-    };
+  sops.secrets = {
+    bunny_dns_api_key = { };
+    lego_pfx_pass = { };
   };
 
   security.acme = {
@@ -60,7 +57,7 @@ in
       dnsProvider = "bunny";
       credentialFiles = {
         "BUNNY_API_KEY_FILE" = "${config.sops.secrets.bunny_dns_api_key.path}";
-        "BUNNY_PROPAGATION_TIMEOUT_FILE" = nixpkgs.writeText "BUNNY_PROPAGATION_TIMEOUT" ''360'';
+        "BUNNY_PROPAGATION_TIMEOUT_FILE" = nixpkgs.writeText "BUNNY_PROPAGATION_TIMEOUT" "360";
       };
       postRun = # bash
         ''
@@ -91,6 +88,10 @@ in
     };
   };
 
+  systemd.services = {
+    jellyfin.after = [ "mnt-media.mount" ];
+  };
+
   fileSystems = {
     "/mnt/media" = {
       device = "cephalonas.lan.gigglesquid.tech:/mnt/main/media";
@@ -98,8 +99,7 @@ in
       noCheck = true;
       options = [
         "nolock"
-        "_netdev"
-        "nconnect=6"
+        "nconnect=16"
       ];
     };
   };

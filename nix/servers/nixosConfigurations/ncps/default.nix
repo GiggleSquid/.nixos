@@ -4,7 +4,7 @@
   config,
 }:
 let
-  inherit (inputs) common nixpkgs self;
+  inherit (inputs) common nixpkgs;
   inherit (cell) hardwareProfiles serverSuites;
   inherit (inputs.cells.squid) nixosSuites homeSuites;
   lib = nixpkgs.lib // builtins;
@@ -41,13 +41,10 @@ in
     };
   };
 
-  sops = {
-    defaultSopsFile = "${self}/sops/squid-rig.yaml";
-    secrets = {
-      "ncps/s3-access-key-id" = { };
-      "ncps/s3-secret-access-key" = { };
-      "ncps/cache-secret-key" = { };
-    };
+  sops.secrets = {
+    "ncps/s3-access-key-id" = { };
+    "ncps/s3-secret-access-key" = { };
+    "ncps/cache-secret-key" = { };
   };
 
   systemd.services = {

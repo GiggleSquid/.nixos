@@ -1,6 +1,6 @@
 { inputs }:
 let
-  inherit (inputs) nixpkgs;
+  inherit (inputs) nixpkgs self;
   lib = nixpkgs.lib;
 in
 {
@@ -27,6 +27,10 @@ in
       experimental-features = "nix-command flakes";
     };
     registry.nixpkgs.flake = nixpkgs;
+  };
+
+  sops = {
+    defaultSopsFile = "${self}/sops/squid-rig.yaml";
   };
 
   zramSwap = {
