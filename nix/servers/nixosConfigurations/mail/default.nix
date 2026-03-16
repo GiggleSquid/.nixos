@@ -116,7 +116,7 @@ in
     useFsLayout = true;
     useUTF8FolderNames = true;
     virusScanning = true;
-    dkimKeyType = "ed25519";
+    dkim.defaults.keyType = "ed25519";
 
     fullTextSearch = {
       enable = true;
