@@ -9,6 +9,7 @@ let
     hardwareProfiles
     nixosSuites
     homeSuites
+    homeProfiles
     ;
   lib = nixpkgs.lib // builtins;
 in
@@ -101,12 +102,19 @@ in
     useUserPackages = true;
     useGlobalPkgs = true;
     backupFileExtension = "hm-bak";
+    sharedModules = [
+      inputs.sops-nix.homeManagerModules.sops
+    ];
     users = {
       squid = {
+        sops = {
+          age.keyFile = "/home/squid/.config/sops/age/keys.txt";
+          defaultSopsFile = "${self}/sops/squid-rig.yaml";
+        };
         imports =
           let
             modules = [ ];
-            profiles = [ ];
+            profiles = with homeProfiles; [ nixconf ];
             suites =
               with homeSuites;
               lib.concatLists [
@@ -119,7 +127,10 @@ in
             profiles
             suites
           ];
-        home.stateVersion = "25.05";
+        home = {
+          homeDirectory = "/home/squid";
+          stateVersion = "25.05";
+        };
       };
     };
   };
