@@ -51,6 +51,7 @@ in
         filter_mode_shell_up_key_binding = "host";
         enter_accept = true;
         store_failed = false;
+        sync.records = true;
       };
     };
 
