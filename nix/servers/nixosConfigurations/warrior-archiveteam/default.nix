@@ -123,6 +123,10 @@ in
     };
   };
 
+  services = {
+    alloy-squid.enable = true;
+  };
+
   imports =
     let
       profiles = [ hardwareProfiles.vms ];
