@@ -45,6 +45,16 @@ in
       host = "::1";
     };
 
+    postgresql = {
+      settings = {
+        max_connections = 100;
+        shared_buffers = "256MB";
+        effective_cache_size = "1GB";
+        work_mem = "4MB";
+        maintenance_work_mem = "64MB";
+      };
+    };
+
     caddy-squid = {
       enable = true;
     };
