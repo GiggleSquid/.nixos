@@ -42,16 +42,16 @@ in
       daemon.enable = true;
       enableFishIntegration = true;
       settings = {
-        auto_sync = true;
         dialect = "uk";
+        auto_sync = true;
         sync_address = "https://service.atuin.lan.gigglesquid.tech";
-        sync_frequency = "10m";
+        sync_frequency = "5m";
+        sync.records = true;
         inline_height = 0;
         search_mode = "fuzzy";
         filter_mode_shell_up_key_binding = "host";
         enter_accept = true;
         store_failed = false;
-        sync.records = true;
       };
     };
 
