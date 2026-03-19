@@ -259,6 +259,7 @@ in
               CertificatePath = "/var/lib/qBittorrent/fullchain.pem";
               KeyPath = "/var/lib/qBittorrent/key.pem";
             };
+            BanDuration = 60;
           };
         };
       };
