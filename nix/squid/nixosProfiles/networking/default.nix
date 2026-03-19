@@ -29,13 +29,17 @@ in
 
   systemd.network = {
     enable = true;
+    wait-online.extraArgs = [ "--dns" ];
     networks = {
       "10-lan" = {
         DHCP = lib.mkDefault "no";
         networkConfig = {
           IPv6PrivacyExtensions = lib.mkDefault "no";
         };
-        linkConfig.RequiredForOnline = lib.mkDefault "routable";
+        linkConfig = {
+          RequiredForOnline = lib.mkDefault "routable";
+          RequiredFamilyForOnline = lib.mkDefault "both";
+        };
       };
     };
   };

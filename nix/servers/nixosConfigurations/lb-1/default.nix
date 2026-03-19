@@ -33,7 +33,10 @@ in
           "enp6s18.101"
         ];
         networkConfig.LinkLocalAddressing = "no";
-        linkConfig.RequiredForOnline = "carrier";
+        linkConfig = {
+          RequiredForOnline = "routable";
+          RequiredFamilyForOnline = "both";
+        };
       };
       "30-enp6s18.100" = {
         matchConfig.Name = "enp6s18.100";

@@ -74,15 +74,16 @@ in
   };
 
   systemd.services = {
-    caddy = {
-      after = [ "technitium.service" ];
+    wait-for-dns-resolution = {
+      description = "Wait for DNS resolution to become available";
+      after = [ "nss-lookup.target" ];
+      wantedBy = [ "multi-user.target" ];
       serviceConfig = {
-        # 5 min delay to allow technitium to provide dns resolution as this system
-        # relies on itself for dns and caddy is using domains in trusted proxies
-        ExecStartPre = lib.mkForce "${lib.getExe' nixpkgs.coreutils "sleep"} 300";
-        TimeoutStartSec = 305;
+        Type = "oneshot";
+        ExecStart = "${lib.getExe nixpkgs.bash} -c 'until ${lib.getExe' nixpkgs.host "host"} ns1.dns.lan.gigglesquid.tech; do ${lib.getExe' nixpkgs.coreutils "sleep"} 1; done'";
       };
     };
+    caddy.after = [ "wait-for-dns-resolution.service" ];
   };
 
   services = {

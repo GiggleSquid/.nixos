@@ -34,6 +34,7 @@ in
           # to set net.ipv6.conf.<interface>.disable_ipv6 = 0 at boot
           LinkLocalAddressing = "no";
         };
+        linkConfig.RequiredFamilyForOnline = "ipv4";
         address = [
           "10.3.1.30/23"
         ];

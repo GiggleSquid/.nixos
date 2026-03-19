@@ -138,21 +138,17 @@ in
         "redis-${hostName}-c.service"
       ];
       serviceConfig = {
+        # allow valkey to to come up an accept connections
+        ExecStartPre = [ "${lib.getExe' nixpkgs.coreutils "sleep"} 10" ];
         EnvironmentFile = [
           "${config.sops.secrets.crowdsec_bouncer_api_keys_env.path}"
           "${config.sops.secrets."valkey/caddy-dmz/env".path}"
         ];
       };
     };
-    "redis-${hostName}-a".serviceConfig = {
-      ExecStartPre = [ "${lib.getExe' nixpkgs.coreutils "sleep"} 20" ];
-    };
-    "redis-${hostName}-b".serviceConfig = {
-      ExecStartPre = [ "${lib.getExe' nixpkgs.coreutils "sleep"} 20" ];
-    };
-    "redis-${hostName}-c".serviceConfig = {
-      ExecStartPre = [ "${lib.getExe' nixpkgs.coreutils "sleep"} 20" ];
-    };
+    "redis-${hostName}-a".after = [ "network-online.target" ];
+    "redis-${hostName}-b".after = [ "network-online.target" ];
+    "redis-${hostName}-c".after = [ "network-online.target" ];
   };
 
   services = {
@@ -199,6 +195,7 @@ in
           bind = "127.0.0.1 ::1 ${hostIPv4} ${hostIPv6}";
           port = 6380;
           appendOnly = true;
+          logfile = "\"\"";
           # requirePassFile = "${config.sops.secrets."valkey/caddy-dmz/pass".path}";
           settings = {
             # # TLS
@@ -225,6 +222,7 @@ in
           bind = "127.0.0.1 ::1 ${hostIPv4} ${hostIPv6}";
           port = 6381;
           appendOnly = true;
+          logfile = "\"\"";
           # requirePassFile = "${config.sops.secrets."valkey/caddy-dmz/pass".path}";
           settings = {
             # # TLS
@@ -251,6 +249,7 @@ in
           bind = "127.0.0.1 ::1 ${hostIPv4} ${hostIPv6}";
           port = 6382;
           appendOnly = true;
+          logfile = "\"\"";
           # requirePassFile = "${config.sops.secrets."valkey/caddy-dmz/pass".path}";
           settings = {
             # # TLS
