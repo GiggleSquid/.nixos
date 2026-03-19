@@ -1,7 +1,3 @@
-# This example uses YAML anchors which allows reuse of multiple keys 
-# without having to repeat yourself.
-# Also see https://github.com/Mic92/dotfiles/blob/master/nixos/.sops.yaml
-# for a more complex example.
 keys:
   - &squid age1dwp8gxep67hf2mux2e54qqel6cs7ndvp008vsdv5t984s68reu0sxkm04q
 
@@ -22,6 +18,8 @@ keys:
   - &ns2 age1t423w78ykm3c8yqe2jdw5t87pckev278tfvwgtshcetu2yve7e7sv5edv9
 
   - &mail age1vyvzys6ugu8hxzyetfnvtcjxf2emf8e37zk6tkmz7lllk2rm9fwsw8w2df
+
+  - &homepage age1njr78flwklqtgrsgnkcyfcf8yhh28lmy04v3exedhkdwewlgd4usxjmvrq
 
   - &i2p age1naucvcsg7p4hjp3fz0y0dh2c6c6ue5wph2paza26r8qzryl87dzq48r9ck
 
@@ -81,6 +79,7 @@ creation_rules:
       - *ns1
       - *ns2
       - *mail
+      - *homepage
       - *i2p
       - *crowdsec
       - *otel
