@@ -167,6 +167,7 @@ in
                         type = "truenas";
                         url = url;
                         key = "{{HOMEPAGE_VAR_TRUENAS_KEY}}";
+                        version = 2;
                         enablePools = true;
                       };
                     };
