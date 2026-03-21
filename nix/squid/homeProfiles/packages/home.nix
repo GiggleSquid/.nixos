@@ -10,7 +10,7 @@ in
     framesh
     freecad-qt6
     gimp
-    pkgs.gridcoin-research
+    gridcoin-research
     haruna
     imagemagick
     inkscape
